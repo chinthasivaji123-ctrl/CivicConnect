@@ -1,0 +1,1071 @@
+/* =====================================================
+   CIVICCONNECT LOGIN CHOICE PAGE
+   PREMIUM ROLE SELECTION UI
+===================================================== */
+
+
+/* ================= GLOBAL ================= */
+
+*{
+    box-sizing:border-box;
+}
+
+
+/* ================= PAGE ================= */
+
+.login-choice-container{
+
+    min-height:100vh;
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+    overflow:auto;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a,
+        #0f766e
+    );
+
+}
+
+
+/* ================= MAIN CONTAINER ================= */
+
+.login-choice-box{
+
+    width:1150px;
+
+    max-width:100%;
+
+    min-height:620px;
+
+    display:flex;
+
+    overflow:hidden;
+
+    border-radius:35px;
+
+    background:
+    rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(25px);
+
+    -webkit-backdrop-filter:blur(25px);
+
+    border:
+    1px solid rgba(255,255,255,.25);
+
+    box-shadow:
+    0 30px 80px rgba(0,0,0,.45);
+
+    animation:
+    pageEntry .8s ease;
+
+}
+
+
+@keyframes pageEntry{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+
+    }
+
+}
+
+
+/* =====================================================
+   LEFT INFORMATION SECTION
+===================================================== */
+
+.login-info{
+
+    width:40%;
+
+    flex:0 0 40%;
+
+    padding:60px 45px;
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    background:
+    linear-gradient(
+        160deg,
+        rgba(2,6,23,.95),
+        rgba(30,64,175,.85)
+    );
+
+}
+
+
+.logo-icon{
+
+    font-size:65px;
+
+    margin-bottom:20px;
+
+    animation:
+    logoFloat 3s infinite ease-in-out;
+
+}
+
+
+@keyframes logoFloat{
+
+    0%,
+    100%{
+
+        transform:
+        translateY(0);
+
+    }
+
+    50%{
+
+        transform:
+        translateY(-12px);
+
+    }
+
+}
+
+
+.login-info h1{
+
+    font-size:48px;
+
+    margin:
+    0 0 10px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    text-shadow:
+    0 5px 15px rgba(0,0,0,.5);
+
+}
+
+
+.login-info h3{
+
+    font-size:22px;
+
+    color:#bae6fd;
+
+    margin:
+    0 0 15px;
+
+}
+
+
+.login-info p{
+
+    font-size:17px;
+
+    line-height:1.6;
+
+    color:#f8fafc;
+
+    margin:0;
+
+}
+
+
+.features{
+
+    margin-top:35px;
+
+}
+
+
+.features div{
+
+    margin:18px 0;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    color:#e0f2fe;
+
+}
+
+
+/* =====================================================
+   RIGHT LOGIN SECTION
+===================================================== */
+
+.login-section{
+
+    width:60%;
+
+    flex:1 1 60%;
+
+    min-width:0;
+
+    padding:60px;
+
+    background:#f8fafc;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:stretch;
+
+}
+
+
+.login-section h2{
+
+    text-align:center;
+
+    font-size:35px;
+
+    color:#0f172a;
+
+    margin:
+    0 0 10px;
+
+    font-weight:500;
+
+}
+
+
+.login-subtitle{
+
+    text-align:center;
+
+    color:#64748b;
+
+    margin:
+    0 0 40px;
+
+    font-size:17px;
+
+}
+
+
+/* =====================================================
+   LOGIN CARDS CONTAINER
+===================================================== */
+
+.login-cards{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:stretch;
+
+    gap:35px;
+
+}
+
+
+/* =====================================================
+   INDIVIDUAL LOGIN CARD
+===================================================== */
+
+.login-card{
+
+    flex:
+    1 1 0;
+
+    width:auto;
+
+    min-width:0;
+
+    min-height:390px;
+
+    padding:
+    40px 30px;
+
+    background:white;
+
+    border-radius:28px;
+
+    text-align:center;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    box-shadow:
+    0 15px 35px rgba(15,23,42,.15);
+
+    transition:
+    transform .35s ease,
+    box-shadow .35s ease;
+
+}
+
+
+.login-card:hover{
+
+    transform:
+    translateY(-12px);
+
+    box-shadow:
+    0 25px 55px rgba(15,23,42,.25);
+
+}
+
+
+/* =====================================================
+   ROLE ICON
+===================================================== */
+
+.role-icon{
+
+    width:80px;
+
+    height:80px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:50px;
+
+    margin:
+    0 auto 20px;
+
+    flex-shrink:0;
+
+}
+
+
+/* =====================================================
+   CARD TITLE
+===================================================== */
+
+.login-card h3{
+
+    width:100%;
+
+    font-size:25px;
+
+    line-height:1.3;
+
+    color:#1e40af;
+
+    margin:
+    0 0 18px;
+
+    font-weight:500;
+
+    white-space:normal;
+
+}
+
+
+/* =====================================================
+   CARD DESCRIPTION
+===================================================== */
+
+.login-card p{
+
+    width:100%;
+
+    max-width:250px;
+
+    margin:
+    0 auto;
+
+    color:#64748b;
+
+    line-height:1.7;
+
+    font-size:16px;
+
+    min-height:82px;
+
+}
+
+
+/* =====================================================
+   LOGIN BUTTON
+===================================================== */
+
+.login-card button{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:auto;
+
+    padding:15px 18px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+
+}
+
+
+.login-card button:hover{
+
+    transform:
+    scale(1.04);
+
+    box-shadow:
+    0 10px 25px rgba(37,99,235,.35);
+
+}
+
+
+.login-card button:active{
+
+    transform:
+    scale(.98);
+
+}
+
+
+/* =====================================================
+   ADMIN BUTTON
+===================================================== */
+
+.admin-card button{
+
+    background:
+    linear-gradient(
+        135deg,
+        #7c3aed,
+        #2563eb
+    );
+
+}
+
+
+.admin-card button:hover{
+
+    box-shadow:
+    0 10px 25px rgba(124,58,237,.35);
+
+}
+
+
+/* =====================================================
+   CARD INDIVIDUAL EFFECTS
+===================================================== */
+
+.citizen-card{
+
+    border-top:
+    4px solid #06b6d4;
+
+}
+
+
+.admin-card{
+
+    border-top:
+    4px solid #7c3aed;
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:1100px){
+
+    .login-choice-container{
+
+        padding:25px;
+
+    }
+
+
+    .login-choice-box{
+
+        width:100%;
+
+    }
+
+
+    .login-info{
+
+        padding:
+        45px 35px;
+
+    }
+
+
+    .login-info h1{
+
+        font-size:40px;
+
+    }
+
+
+    .login-section{
+
+        padding:
+        45px 35px;
+
+    }
+
+
+    .login-cards{
+
+        gap:20px;
+
+    }
+
+
+    .login-card{
+
+        padding:
+        35px 22px;
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE / SMALL TABLET
+===================================================== */
+
+@media(max-width:900px){
+
+    .login-choice-container{
+
+        min-height:100vh;
+
+        padding:20px;
+
+        align-items:flex-start;
+
+    }
+
+
+    .login-choice-box{
+
+        flex-direction:column;
+
+        width:100%;
+
+        min-height:auto;
+
+        border-radius:28px;
+
+    }
+
+
+    .login-info{
+
+        width:100%;
+
+        flex:0 0 auto;
+
+        padding:
+        40px 30px;
+
+        text-align:center;
+
+        align-items:center;
+
+    }
+
+
+    .logo-icon{
+
+        font-size:55px;
+
+    }
+
+
+    .login-info h1{
+
+        font-size:38px;
+
+    }
+
+
+    .login-info h3{
+
+        font-size:20px;
+
+    }
+
+
+    .login-info p{
+
+        max-width:500px;
+
+    }
+
+
+    .features{
+
+        width:100%;
+
+        max-width:500px;
+
+        text-align:left;
+
+        margin-top:25px;
+
+    }
+
+
+    .features div{
+
+        margin:14px 0;
+
+        font-size:15px;
+
+    }
+
+
+    .login-section{
+
+        width:100%;
+
+        flex:0 0 auto;
+
+        padding:
+        40px 25px;
+
+    }
+
+
+    .login-cards{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+        gap:25px;
+
+    }
+
+
+    .login-card{
+
+        width:100%;
+
+        min-height:360px;
+
+        flex:none;
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+    .login-choice-container{
+
+        padding:12px;
+
+    }
+
+
+    .login-choice-box{
+
+        border-radius:22px;
+
+    }
+
+
+    .login-info{
+
+        padding:
+        35px 22px;
+
+    }
+
+
+    .login-info h1{
+
+        font-size:32px;
+
+    }
+
+
+    .login-info h3{
+
+        font-size:18px;
+
+    }
+
+
+    .login-info p{
+
+        font-size:15px;
+
+    }
+
+
+    .features div{
+
+        font-size:14px;
+
+    }
+
+
+    .login-section{
+
+        padding:
+        35px 18px;
+
+    }
+
+
+    .login-section h2{
+
+        font-size:29px;
+
+    }
+
+
+    .login-subtitle{
+
+        font-size:15px;
+
+        margin-bottom:30px;
+
+    }
+
+
+    .login-card{
+
+        min-height:350px;
+
+        padding:
+        32px 22px;
+
+        border-radius:24px;
+
+    }
+
+
+    .role-icon{
+
+        font-size:45px;
+
+        width:70px;
+
+        height:70px;
+
+    }
+
+
+    .login-card h3{
+
+        font-size:23px;
+
+    }
+
+
+    .login-card p{
+
+        font-size:15px;
+
+    }
+
+
+    .login-card button{
+
+        font-size:15px;
+
+        padding:14px;
+
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media(max-width:400px){
+
+    .login-info h1{
+
+        font-size:28px;
+
+    }
+
+
+    .login-section h2{
+
+        font-size:26px;
+
+    }
+
+
+    .login-card{
+
+        min-height:330px;
+
+        padding:
+        28px 18px;
+
+    }
+
+
+    .login-card h3{
+
+        font-size:21px;
+
+    }
+
+}
+
+/* =====================================================
+   FINAL LOGIN CARD LAYOUT FIX
+   Overrides any conflicting/global CSS
+===================================================== */
+
+.login-choice-container .login-section .login-cards{
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:stretch !important;
+    justify-content:center !important;
+    gap:35px !important;
+    width:100% !important;
+}
+
+
+/* BOTH CARDS */
+
+.login-choice-container .login-section .login-card{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+
+    width:260px !important;
+    min-width:260px !important;
+    max-width:260px !important;
+
+    min-height:390px !important;
+
+    padding:40px 25px !important;
+
+    text-align:center !important;
+
+    box-sizing:border-box !important;
+}
+
+
+/* CITIZEN CARD */
+
+.login-choice-container .login-section .login-card.citizen-card{
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+
+    width:260px !important;
+    min-width:260px !important;
+    max-width:260px !important;
+}
+
+
+/* ADMIN CARD */
+
+.login-choice-container .login-section .login-card.admin-card{
+
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+
+    width:260px !important;
+    min-width:260px !important;
+    max-width:260px !important;
+}
+
+
+/* ICON */
+
+.login-choice-container .login-card .role-icon{
+
+    display:flex !important;
+
+    width:80px !important;
+    height:80px !important;
+
+    margin:
+    0 auto 20px !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    flex:none !important;
+
+    font-size:50px !important;
+
+}
+
+
+/* TITLE */
+
+.login-choice-container .login-card h3{
+
+    display:block !important;
+
+    width:100% !important;
+
+    margin:
+    0 0 18px !important;
+
+    text-align:center !important;
+
+    font-size:25px !important;
+
+    line-height:1.3 !important;
+
+    white-space:normal !important;
+
+}
+
+
+/* DESCRIPTION */
+
+.login-choice-container .login-card p{
+
+    display:block !important;
+
+    width:100% !important;
+
+    max-width:240px !important;
+
+    margin:
+    0 auto !important;
+
+    text-align:center !important;
+
+    min-height:82px !important;
+
+    line-height:1.6 !important;
+
+}
+
+
+/* BUTTON */
+
+.login-choice-container .login-card button{
+
+    display:block !important;
+
+    width:100% !important;
+
+    margin-top:auto !important;
+
+    padding:
+    15px !important;
+
+    text-align:center !important;
+
+    white-space:normal !important;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:900px){
+
+    .login-choice-container .login-section .login-cards{
+
+        flex-direction:column !important;
+
+        align-items:center !important;
+
+        gap:25px !important;
+
+    }
+
+
+    .login-choice-container .login-section .login-card,
+    .login-choice-container .login-section .login-card.citizen-card,
+    .login-choice-container .login-section .login-card.admin-card{
+
+        width:100% !important;
+
+        min-width:0 !important;
+
+        max-width:400px !important;
+
+    }
+
+}

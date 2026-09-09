@@ -1,0 +1,35 @@
+[
+    {
+        "state":"Andhra Pradesh",
+        "districts":[
+            {
+                "district":"Visakhapatnam",
+                "cities":[
+                    "Visakhapatnam",
+                    "Anakapalle",
+                    "Bheemunipatnam"
+                ]
+            },
+            {
+                "district":"Vijayawada",
+                "cities":[
+                    "Vijayawada",
+                    "Gannavaram",
+                    "Nandigama"
+                ]
+            }
+        ]
+    },
+    {
+        "state":"Telangana",
+        "districts":[
+            {
+                "district":"Hyderabad",
+                "cities":[
+                    "Hyderabad",
+                    "Secunderabad"
+                ]
+            }
+        ]
+    }
+]

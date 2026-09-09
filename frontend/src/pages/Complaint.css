@@ -1,0 +1,90 @@
+.complaint-container{
+
+min-height:calc(100vh - 80px);
+
+background:#f1f5f9;
+
+padding:50px;
+
+}
+
+
+
+.complaint-container h1{
+
+color:#2563eb;
+
+font-size:35px;
+
+}
+
+
+
+.complaint-form{
+
+margin-top:30px;
+
+background:white;
+
+width:500px;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+display:flex;
+
+flex-direction:column;
+
+gap:20px;
+
+}
+
+
+
+.complaint-form input,
+.complaint-form select,
+.complaint-form textarea{
+
+
+padding:15px;
+
+font-size:16px;
+
+border:1px solid #cbd5e1;
+
+border-radius:10px;
+
+}
+
+
+
+.complaint-form textarea{
+
+height:120px;
+
+resize:none;
+
+}
+
+
+
+.complaint-form button{
+
+padding:15px;
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:18px;
+
+}

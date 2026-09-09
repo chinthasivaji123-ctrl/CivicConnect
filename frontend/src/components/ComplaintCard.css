@@ -1,0 +1,1377 @@
+/* =========================================================
+   CIVICCONNECT
+   COMPLAINT CARD
+   REFERENCE DESIGN
+   ALL CLASSES ARE cc-* TO AVOID CSS CONFLICTS
+========================================================= */
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.cc-card {
+
+    width: 100%;
+    min-width: 0;
+
+    min-height: 390px;
+
+    padding: 28px 28px 22px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 8px 25px rgba(15, 23, 42, 0.05);
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.cc-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 35px rgba(15, 23, 42, 0.09);
+
+    border-color: #d5dfeb;
+
+}
+
+
+/* =========================================================
+   STATUS TOP LINE
+========================================================= */
+
+.cc-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+
+    background: transparent;
+
+}
+
+
+/* Pending */
+
+.cc-card.cc-status-pending::before {
+
+    background: #f59e0b;
+
+}
+
+
+/* In Progress */
+
+.cc-card.cc-status-in-progress::before {
+
+    background: #0ea5e9;
+
+}
+
+
+/* Resolved */
+
+.cc-card.cc-status-resolved::before {
+
+    background: #22c55e;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.cc-header {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 14px;
+
+    margin-bottom: 30px;
+
+    min-width: 0;
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+.cc-category {
+
+    min-width: 0;
+    max-width: 68%;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
+    color: #0866d8;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    box-sizing: border-box;
+
+}
+
+
+/* Category icon */
+
+.cc-category-icon {
+
+    width: 22px;
+    height: 22px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+
+}
+
+
+/* Category text */
+
+.cc-category-text {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+
+/* =========================================================
+   CATEGORY COLORS
+========================================================= */
+
+.cc-status-pending .cc-category {
+
+    background: #eff6ff;
+
+    color: #1265d8;
+
+}
+
+
+.cc-status-in-progress .cc-category {
+
+    background: #eff6ff;
+
+    color: #1265d8;
+
+}
+
+
+.cc-status-resolved .cc-category {
+
+    background: #ecfdf3;
+
+    color: #159447;
+
+}
+
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+.cc-status {
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 10px 13px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+}
+
+
+/* Pending */
+
+.cc-status-badge-pending {
+
+    background: #fff7ed;
+
+    color: #c65300;
+
+}
+
+
+/* In Progress */
+
+.cc-status-badge-in-progress {
+
+    background: #eff6ff;
+
+    color: #0869d7;
+
+}
+
+
+/* Resolved */
+
+.cc-status-badge-resolved {
+
+    background: #ecfdf3;
+
+    color: #128a45;
+
+}
+
+
+/* =========================================================
+   STATUS ICON
+========================================================= */
+
+.cc-status-icon {
+
+    width: 24px;
+    height: 24px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+}
+
+
+/* Pending */
+
+.cc-status-badge-pending .cc-status-icon {
+
+    background: #ffedd5;
+
+    color: #d97706;
+
+}
+
+
+/* In Progress */
+
+.cc-status-badge-in-progress .cc-status-icon {
+
+    background: #dbeafe;
+
+    color: #0284c7;
+
+}
+
+
+/* Resolved */
+
+.cc-status-badge-resolved .cc-status-icon {
+
+    background: #d1fae5;
+
+    color: #059669;
+
+}
+
+
+/* =========================================================
+   MAIN AREA
+========================================================= */
+
+.cc-main {
+
+    width: 100%;
+
+    min-width: 0;
+
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        132px;
+
+    column-gap: 24px;
+
+    align-items: start;
+
+}
+
+
+/* =========================================================
+   INFORMATION AREA
+========================================================= */
+
+.cc-info {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.cc-title {
+
+    width: 100%;
+
+    margin: 0 0 12px;
+
+    padding: 0;
+
+    color: #111827;
+
+    font-size: 21px;
+
+    line-height: 1.3;
+
+    font-weight: 750;
+
+    letter-spacing: -0.35px;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 2;
+
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+.cc-location {
+
+    width: 100%;
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    margin-bottom: 18px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.45;
+
+}
+
+
+/* Location icon */
+
+.cc-location-icon {
+
+    flex-shrink: 0;
+
+    font-size: 15px;
+
+    line-height: 1.4;
+
+}
+
+
+/* Location text */
+
+.cc-location-text {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 2;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.cc-description {
+
+    width: 100%;
+
+    margin: 0;
+
+    padding: 0;
+
+    color: #334155;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 3;
+
+}
+
+
+/* =========================================================
+   PRIORITY
+========================================================= */
+
+.cc-priority {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 20px;
+
+    padding: 8px 13px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    box-sizing: border-box;
+
+}
+
+
+/* Priority dot */
+
+.cc-priority-dot {
+
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+}
+
+
+/* High */
+
+.cc-priority-high {
+
+    color: #dc2626;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+}
+
+
+/* Medium */
+
+.cc-priority-medium {
+
+    color: #c87900;
+
+    background: #fffbeb;
+
+    border: 1px solid #fde68a;
+
+}
+
+
+/* Low */
+
+.cc-priority-low {
+
+    color: #16a34a;
+
+    background: #f0fdf4;
+
+    border: 1px solid #bbf7d0;
+
+}
+
+
+/* =========================================================
+   IMAGE BOX
+========================================================= */
+
+.cc-image-box {
+
+    width: 132px;
+
+    height: 162px;
+
+    flex-shrink: 0;
+
+    position: relative;
+
+    align-self: flex-start;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    border: 1px solid #dbe3ec;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1f5f9,
+            #e2e8f0
+        );
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.cc-image {
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition:
+        transform 0.4s ease;
+
+}
+
+
+/* Image hover */
+
+.cc-card:hover .cc-image {
+
+    transform: scale(1.04);
+
+}
+
+
+/* =========================================================
+   NO IMAGE
+========================================================= */
+
+.cc-no-image {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1f5f9,
+            #e2e8f0
+        );
+
+}
+
+
+/* No image icon */
+
+.cc-no-image-icon {
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    box-shadow:
+        0 5px 15px rgba(15, 23, 42, 0.08);
+
+    font-size: 23px;
+
+}
+
+
+/* No image text */
+
+.cc-no-image-text {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.cc-footer {
+
+    width: 100%;
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: auto;
+
+    padding-top: 19px;
+
+    border-top: 1px solid #e5eaf0;
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+.cc-date {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    white-space: nowrap;
+
+}
+
+
+/* Date icon */
+
+.cc-date-icon {
+
+    font-size: 15px;
+
+    line-height: 1;
+
+}
+
+
+/* =========================================================
+   COMPLAINT ID
+========================================================= */
+
+.cc-id {
+
+    margin-left: auto;
+
+    padding: 9px 13px;
+
+    border-radius: 999px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   DETAILS LINK
+========================================================= */
+
+.cc-details {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 10px 13px;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.cc-details:hover {
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    transform: translateX(2px);
+
+}
+
+
+.cc-details-arrow {
+
+    font-size: 16px;
+
+    line-height: 1;
+
+    transition:
+        transform 0.2s ease;
+
+}
+
+
+.cc-details:hover .cc-details-arrow {
+
+    transform: translateX(3px);
+
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .cc-card {
+
+        padding: 25px 24px 20px;
+
+        min-height: 375px;
+
+    }
+
+
+    .cc-main {
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            125px;
+
+        column-gap: 20px;
+
+    }
+
+
+    .cc-image-box {
+
+        width: 125px;
+
+        height: 155px;
+
+    }
+
+
+    .cc-title {
+
+        font-size: 19px;
+
+    }
+
+
+    .cc-category {
+
+        font-size: 13px;
+
+        padding: 10px 12px;
+
+    }
+
+
+    .cc-status {
+
+        font-size: 13px;
+
+        padding: 10px 12px;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .cc-card {
+
+        padding: 23px;
+
+        min-height: 365px;
+
+    }
+
+
+    .cc-header {
+
+        margin-bottom: 24px;
+
+    }
+
+
+    .cc-main {
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            115px;
+
+        column-gap: 18px;
+
+    }
+
+
+    .cc-image-box {
+
+        width: 115px;
+
+        height: 145px;
+
+    }
+
+
+    .cc-title {
+
+        font-size: 18px;
+
+    }
+
+
+    .cc-location {
+
+        font-size: 13px;
+
+    }
+
+
+    .cc-description {
+
+        font-size: 13px;
+
+    }
+
+
+    .cc-priority {
+
+        margin-top: 15px;
+
+    }
+
+
+    .cc-footer {
+
+        gap: 10px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .cc-card {
+
+        min-height: auto;
+
+        padding: 20px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .cc-header {
+
+        align-items: flex-start;
+
+        gap: 10px;
+
+        margin-bottom: 20px;
+
+    }
+
+
+    .cc-category {
+
+        max-width: 65%;
+
+        padding: 9px 11px;
+
+        font-size: 12px;
+
+    }
+
+
+    .cc-category-icon {
+
+        font-size: 15px;
+
+    }
+
+
+    .cc-status {
+
+        padding: 9px 10px;
+
+        font-size: 12px;
+
+        gap: 6px;
+
+    }
+
+
+    .cc-status-icon {
+
+        width: 21px;
+        height: 21px;
+
+        font-size: 13px;
+
+    }
+
+
+    .cc-main {
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            105px;
+
+        column-gap: 15px;
+
+    }
+
+
+    .cc-image-box {
+
+        width: 105px;
+
+        height: 130px;
+
+        border-radius: 13px;
+
+    }
+
+
+    .cc-title {
+
+        font-size: 17px;
+
+        margin-bottom: 9px;
+
+    }
+
+
+    .cc-location {
+
+        font-size: 12px;
+
+        margin-bottom: 12px;
+
+    }
+
+
+    .cc-description {
+
+        font-size: 12px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .cc-priority {
+
+        margin-top: 13px;
+
+        padding: 7px 10px;
+
+        font-size: 11px;
+
+    }
+
+
+    .cc-footer {
+
+        margin-top: 22px;
+
+        padding-top: 16px;
+
+        gap: 10px;
+
+    }
+
+
+    .cc-date,
+    .cc-id,
+    .cc-details {
+
+        font-size: 11px;
+
+    }
+
+
+    .cc-id {
+
+        padding: 8px 10px;
+
+    }
+
+
+    .cc-details {
+
+        padding: 9px 10px;
+
+    }
+
+
+    .cc-details-arrow {
+
+        font-size: 14px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .cc-card {
+
+        padding: 17px;
+
+    }
+
+
+    .cc-header {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .cc-category {
+
+        max-width: 100%;
+
+    }
+
+
+    .cc-status {
+
+        margin-left: auto;
+
+    }
+
+
+    .cc-main {
+
+        grid-template-columns: 1fr;
+
+        row-gap: 17px;
+
+    }
+
+
+    .cc-image-box {
+
+        width: 100%;
+
+        height: 190px;
+
+        order: -1;
+
+    }
+
+
+    .cc-title {
+
+        font-size: 18px;
+
+    }
+
+
+    .cc-location {
+
+        font-size: 13px;
+
+    }
+
+
+    .cc-description {
+
+        font-size: 13px;
+
+    }
+
+
+    .cc-footer {
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .cc-id {
+
+        margin-left: 0;
+
+    }
+
+
+    .cc-details {
+
+        margin-left: auto;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .cc-header {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+    .cc-category {
+
+        max-width: 100%;
+
+    }
+
+
+    .cc-status {
+
+        width: fit-content;
+
+        margin-left: 0;
+
+    }
+
+
+    .cc-main {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .cc-image-box {
+
+        height: 180px;
+
+    }
+
+
+    .cc-footer {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+    }
+
+
+    .cc-id {
+
+        width: fit-content;
+
+    }
+
+
+    .cc-details {
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .cc-card,
+    .cc-image,
+    .cc-details,
+    .cc-details-arrow {
+
+        transition: none;
+
+    }
+
+}
