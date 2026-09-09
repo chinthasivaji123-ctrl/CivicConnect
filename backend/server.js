@@ -4,7 +4,12 @@
 
 require("dotenv").config();
 
-
+console.log(
+    "JWT_SECRET STATUS:",
+    process.env.JWT_SECRET
+        ? "LOADED"
+        : "NOT LOADED"
+);
 
 // =====================================================
 // IMPORTS
