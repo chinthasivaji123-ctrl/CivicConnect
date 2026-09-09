@@ -434,11 +434,9 @@ function AdminDashboard(){
     ) => {
 
         return [
-            complaint?.address?.street || complaint?.street,
-            complaint?.address?.city || complaint?.city,
-            complaint?.address?.district || complaint?.district,
-            complaint?.address?.state || complaint?.state,
-            complaint?.address?.pincode || complaint?.pincode
+            complaint?.city,
+            complaint?.district,
+            complaint?.state
         ]
         .filter(Boolean)
         .join(", ");
@@ -988,7 +986,6 @@ function AdminDashboard(){
 
                         const city =
                             String(
-                                complaint?.address?.city ||
                                 complaint?.city ||
                                 ""
                             )
@@ -997,7 +994,6 @@ function AdminDashboard(){
 
                         const district =
                             String(
-                                complaint?.address?.district ||
                                 complaint?.district ||
                                 ""
                             )
@@ -1006,7 +1002,6 @@ function AdminDashboard(){
 
                         const state =
                             String(
-                                complaint?.address?.state ||
                                 complaint?.state ||
                                 ""
                             )
@@ -1015,17 +1010,7 @@ function AdminDashboard(){
 
                         const pincode =
                             String(
-                                complaint?.address?.pincode ||
                                 complaint?.pincode ||
-                                ""
-                            )
-                            .toLowerCase();
-
-
-                        const street =
-                            String(
-                                complaint?.address?.street ||
-                                complaint?.street ||
                                 ""
                             )
                             .toLowerCase();
@@ -1079,10 +1064,6 @@ function AdminDashboard(){
                             ) ||
 
                             pincode.includes(
-                                searchValue
-                            ) ||
-
-                            street.includes(
                                 searchValue
                             ) ||
 
@@ -1803,11 +1784,8 @@ function AdminDashboard(){
                 complaint => {
 
                     const city =
-                        complaint?.address?.city ||
                         complaint?.city ||
-                        complaint?.address?.district ||
                         complaint?.district ||
-                        complaint?.address?.state ||
                         complaint?.state ||
                         "Unknown";
 
@@ -3115,7 +3093,10 @@ function AdminDashboard(){
                                 const image =
                                     complaint?.image
                                     ?
-                                    `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/uploads/${complaint.image}`
+                                    `${(
+    import.meta.env.VITE_API_URL ||
+    "http://localhost:5000/api"
+).replace(/\/api\/?$/, "")}/uploads/${complaint.image}`
                                     :
                                     null;
 
