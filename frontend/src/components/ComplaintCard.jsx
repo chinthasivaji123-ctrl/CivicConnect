@@ -162,11 +162,13 @@ function ComplaintCard({ complaint }) {
     /* =====================================================
        IMAGE
     ===================================================== */
-
-    const imageUrl =
-        complaint?.image
-            ? `http://localhost:5000/uploads/${complaint.image}`
-            : null;
+const imageUrl =
+    complaint?.image
+        ? `${(
+            import.meta.env.VITE_API_URL ||
+            "http://localhost:5000/api"
+        ).replace(/\/api\/?$/, "")}/uploads/${complaint.image}`
+        : null;
 
 
     /* =====================================================
