@@ -52,14 +52,11 @@ function CreateComplaint() {
 
     const [selectedState, setSelectedState] = useState(null);
 
-    const [selectedDistrict, setSelectedDistrict] = useState(null);
-
-    const [selectedCity, setSelectedCity] = useState(null);
-
 
     const [loading, setLoading] = useState(false);
 
     const [message, setMessage] = useState("");
+
 
 
     // ================= CATEGORY =================
@@ -104,6 +101,7 @@ function CreateComplaint() {
     ];
 
 
+
     // ================= LOAD STATES =================
 
     useEffect(() => {
@@ -126,7 +124,10 @@ function CreateComplaint() {
             }
             catch (err) {
 
-                console.log(err);
+                console.log(
+                    "LOAD STATES ERROR:",
+                    err
+                );
 
             }
 
@@ -136,6 +137,7 @@ function CreateComplaint() {
         loadStates();
 
     }, []);
+
 
 
     // ================= INPUT =================
@@ -157,6 +159,7 @@ function CreateComplaint() {
         }));
 
     };
+
 
 
     // ================= IMAGE =================
@@ -196,6 +199,7 @@ function CreateComplaint() {
     };
 
 
+
     const removeImage = () => {
 
         setImage(null);
@@ -205,7 +209,8 @@ function CreateComplaint() {
     };
 
 
-    // ================= DISTRICT =================
+
+    // ================= DISTRICTS =================
 
     const getDistricts = async (state) => {
 
@@ -230,18 +235,26 @@ function CreateComplaint() {
         }
         catch (err) {
 
-            console.log(err);
+            console.log(
+                "LOAD DISTRICTS ERROR:",
+                err
+            );
+
+            setDistrictOptions([]);
 
         }
 
     };
 
 
-    // ================= CITY =================
+
+    // ================= CITY SEARCH =================
 
     const searchCity = async (value) => {
 
         if (!value || value.length < 2) {
+
+            setCityOptions([]);
 
             return;
 
@@ -270,11 +283,15 @@ function CreateComplaint() {
         }
         catch (err) {
 
-            console.log(err);
+            console.log(
+                "SEARCH CITY ERROR:",
+                err
+            );
 
         }
 
     };
+
 
 
     // ================= PINCODE =================
@@ -284,7 +301,7 @@ function CreateComplaint() {
         if (formData.pincode.length !== 6) {
 
             alert(
-                "Enter valid pincode"
+                "Enter valid 6-digit pincode"
             );
 
             return;
@@ -302,7 +319,23 @@ function CreateComplaint() {
             const data = res.data;
 
 
-            const state = {
+            if (
+                !data ||
+                !data.state ||
+                !data.district ||
+                !data.city
+            ) {
+
+                alert(
+                    "Address could not be found for this pincode"
+                );
+
+                return;
+
+            }
+
+
+            const stateOption = {
 
                 value: data.state,
                 label: data.state
@@ -310,37 +343,25 @@ function CreateComplaint() {
             };
 
 
-            const district = {
-
-                value: data.district,
-                label: data.district
-
-            };
+            setSelectedState(
+                stateOption
+            );
 
 
-            const city = {
+            /*
+             * Load the full district list for the selected state.
+             * The citizen can still manually change the district.
+             */
 
-                value: data.city,
-                label: data.city
-
-            };
-
-
-            setSelectedState(state);
-
-            setSelectedDistrict(district);
-
-            setSelectedCity(city);
+            await getDistricts(
+                data.state
+            );
 
 
-            setDistrictOptions([
-                district
-            ]);
-
-            setCityOptions([
-                city
-            ]);
-
+            /*
+             * Store the pincode result as a suggestion.
+             * These values remain editable.
+             */
 
             setFormData(prev => ({
 
@@ -354,21 +375,25 @@ function CreateComplaint() {
 
 
             alert(
-                "Address Found"
+                "Address suggestion found. Please verify and correct the address before submitting."
             );
 
         }
         catch (err) {
 
-            console.log(err);
+            console.log(
+                "PINCODE SEARCH ERROR:",
+                err
+            );
 
             alert(
-                "Invalid Pincode"
+                "Unable to find address for this pincode. You can enter the address manually."
             );
 
         }
 
     };
+
 
 
     // ================= SUBMIT =================
@@ -393,6 +418,64 @@ function CreateComplaint() {
 
             alert(
                 "Description should contain minimum 20 characters"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !formData.pincode ||
+            formData.pincode.length !== 6
+        ) {
+
+            alert(
+                "Enter a valid 6-digit pincode"
+            );
+
+            return;
+
+        }
+
+
+        if (!formData.state) {
+
+            alert(
+                "Select state"
+            );
+
+            return;
+
+        }
+
+
+        if (!formData.district.trim()) {
+
+            alert(
+                "Enter district"
+            );
+
+            return;
+
+        }
+
+
+        if (!formData.city.trim()) {
+
+            alert(
+                "Enter city / town"
+            );
+
+            return;
+
+        }
+
+
+        if (!formData.street.trim()) {
+
+            alert(
+                "Enter street / area / landmark"
             );
 
             return;
@@ -438,9 +521,12 @@ function CreateComplaint() {
 
                 {
                     headers: {
+
                         "Content-Type":
                             "multipart/form-data"
+
                     }
+
                 }
 
             );
@@ -463,7 +549,10 @@ function CreateComplaint() {
         }
         catch (err) {
 
-            console.log(err);
+            console.log(
+                "CREATE COMPLAINT ERROR:",
+                err
+            );
 
             alert(
                 err.response?.data?.message ||
@@ -478,6 +567,7 @@ function CreateComplaint() {
         }
 
     };
+
 
 
     // ================= SELECT STYLES =================
@@ -576,6 +666,7 @@ function CreateComplaint() {
     };
 
 
+
     return (
 
         <div className="create-page">
@@ -614,6 +705,7 @@ function CreateComplaint() {
                     </div>
 
                 </div>
+
 
 
                 {/* ================= MAIN CARD ================= */}
@@ -658,6 +750,7 @@ function CreateComplaint() {
                         </div>
 
                     </div>
+
 
 
                     {/* ================= PROGRESS ================= */}
@@ -735,6 +828,7 @@ function CreateComplaint() {
                     </div>
 
 
+
                     <form onSubmit={handleSubmit}>
 
 
@@ -762,6 +856,7 @@ function CreateComplaint() {
                                 </div>
 
                             </div>
+
 
 
                             {/* TITLE */}
@@ -798,6 +893,7 @@ function CreateComplaint() {
                                 />
 
                             </div>
+
 
 
                             {/* DESCRIPTION */}
@@ -870,6 +966,7 @@ function CreateComplaint() {
                             </div>
 
 
+
                             {/* CATEGORY */}
 
                             <div className="field-group">
@@ -924,6 +1021,7 @@ function CreateComplaint() {
                         </div>
 
 
+
                         {/* ================= LOCATION ================= */}
 
                         <div className="form-section">
@@ -942,12 +1040,13 @@ function CreateComplaint() {
                                     </h2>
 
                                     <p>
-                                        Help authorities find the exact location.
+                                        Use the pincode finder or enter the address manually.
                                     </p>
 
                                 </div>
 
                             </div>
+
 
 
                             {/* PINCODE QUICK FIND */}
@@ -966,8 +1065,8 @@ function CreateComplaint() {
                                     </strong>
 
                                     <span>
-                                        Enter your pincode to automatically
-                                        find your location.
+                                        Pincode lookup provides a suggestion only.
+                                        Please verify and correct the address below.
                                     </span>
 
                                 </div>
@@ -1025,7 +1124,20 @@ function CreateComplaint() {
 
                                 </div>
 
+
                             </div>
+
+
+
+                            {/* MANUAL ADDRESS */}
+
+                            <div className="field-hint">
+
+                                ✏️ Pincode lookup is optional. You can enter
+                                and correct your address manually.
+
+                            </div>
+
 
 
                             {/* STATE */}
@@ -1056,10 +1168,6 @@ function CreateComplaint() {
                                     onChange={(selected) => {
 
                                         setSelectedState(selected);
-
-                                        setSelectedDistrict(null);
-
-                                        setSelectedCity(null);
 
                                         setDistrictOptions([]);
 
@@ -1098,14 +1206,17 @@ function CreateComplaint() {
                             </div>
 
 
+
                             {/* DISTRICT + CITY */}
 
                             <div className="location-grid">
 
 
+                                {/* DISTRICT */}
+
                                 <div className="field-group">
 
-                                    <label>
+                                    <label htmlFor="district">
 
                                         District
 
@@ -1116,49 +1227,43 @@ function CreateComplaint() {
                                     </label>
 
 
-                                    <Select
+                                    <input
 
-                                        className="select-box"
+                                        id="district"
 
-                                        options={districtOptions}
+                                        className="complaint-input"
 
-                                        placeholder={
-                                            selectedState
-                                                ? "Select district"
-                                                : "Select state first"
-                                        }
+                                        name="district"
 
-                                        value={selectedDistrict}
+                                        placeholder="Enter district name"
 
-                                        onChange={(selected) => {
+                                        value={formData.district}
 
-                                            setSelectedDistrict(selected);
+                                        onChange={handleChange}
 
-                                            setFormData(prev => ({
+                                        autoComplete="address-level2"
 
-                                                ...prev,
-
-                                                district:
-                                                    selected?.value || ""
-
-                                            }));
-
-                                        }}
-
-                                        styles={selectStyles}
-
-                                        isDisabled={!selectedState}
-
-                                        isSearchable
+                                        required
 
                                     />
+
+
+                                    <div className="field-hint">
+
+                                        Type your district manually. You can correct
+                                        the pincode suggestion if needed.
+
+                                    </div>
 
                                 </div>
 
 
+
+                                {/* CITY */}
+
                                 <div className="field-group">
 
-                                    <label>
+                                    <label htmlFor="city">
 
                                         City / Town
 
@@ -1169,45 +1274,38 @@ function CreateComplaint() {
                                     </label>
 
 
-                                    <Select
+                                    <input
 
-                                        className="select-box"
+                                        id="city"
 
-                                        options={cityOptions}
+                                        className="complaint-input"
 
-                                        placeholder="Search your city"
+                                        name="city"
 
-                                        isSearchable
+                                        placeholder="Enter city or town name"
 
-                                        value={selectedCity}
+                                        value={formData.city}
 
-                                        onInputChange={
-                                            searchCity
-                                        }
+                                        onChange={handleChange}
 
-                                        onChange={(selected) => {
+                                        autoComplete="address-level2"
 
-                                            setSelectedCity(selected);
-
-                                            setFormData(prev => ({
-
-                                                ...prev,
-
-                                                city:
-                                                    selected?.value || ""
-
-                                            }));
-
-                                        }}
-
-                                        styles={selectStyles}
+                                        required
 
                                     />
+
+
+                                    <div className="field-hint">
+
+                                        Type your city or town manually.
+
+                                    </div>
 
                                 </div>
 
 
                             </div>
+
 
 
                             {/* STREET */}
@@ -1239,14 +1337,24 @@ function CreateComplaint() {
 
                                     onChange={handleChange}
 
+                                    autoComplete="street-address"
+
                                     required
 
                                 />
+
+                                <div className="field-hint">
+
+                                    Enter the exact street, area, landmark,
+                                    building, or nearby location.
+
+                                </div>
 
                             </div>
 
 
                         </div>
+
 
 
                         {/* ================= IMAGE ================= */}
@@ -1315,6 +1423,7 @@ function CreateComplaint() {
                             </label>
 
 
+
                             {/* IMAGE PREVIEW */}
 
                             {preview && (
@@ -1369,6 +1478,7 @@ function CreateComplaint() {
                         </div>
 
 
+
                         {/* ================= SUCCESS ================= */}
 
                         {message && (
@@ -1394,6 +1504,7 @@ function CreateComplaint() {
                             </div>
 
                         )}
+
 
 
                         {/* ================= SUBMIT ================= */}
@@ -1458,6 +1569,7 @@ function CreateComplaint() {
                     </form>
 
                 </div>
+
 
 
                 {/* ================= FOOTER NOTE ================= */}
