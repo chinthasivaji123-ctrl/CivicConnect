@@ -45,7 +45,7 @@ ChartJS.register(
 );
 
 
-function AdminDashboard(){
+function AdminDashboard() {
 
     const navigate = useNavigate();
 
@@ -54,33 +54,33 @@ function AdminDashboard(){
        STATES
     ===================================================== */
 
-    const [complaints,setComplaints] = useState([]);
+    const [complaints, setComplaints] = useState([]);
 
-    const [loading,setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
-    const [refreshing,setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
-    const [error,setError] = useState("");
+    const [error, setError] = useState("");
 
 
     /* ================= FILTERS ================= */
 
-    const [search,setSearch] = useState("");
+    const [search, setSearch] = useState("");
 
-    const [statusFilter,setStatusFilter] = useState("All");
+    const [statusFilter, setStatusFilter] = useState("All");
 
-    const [categoryFilter,setCategoryFilter] = useState("All");
+    const [categoryFilter, setCategoryFilter] = useState("All");
 
-    const [priorityFilter,setPriorityFilter] = useState("All");
+    const [priorityFilter, setPriorityFilter] = useState("All");
 
-    const [dateFilter,setDateFilter] = useState("All");
+    const [dateFilter, setDateFilter] = useState("All");
 
-    const [sortBy,setSortBy] = useState("newest");
+    const [sortBy, setSortBy] = useState("newest");
 
 
     /* ================= PAGINATION ================= */
 
-    const [currentPage,setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const complaintsPerPage = 6;
 
@@ -92,7 +92,7 @@ function AdminDashboard(){
 
     const fetchComplaints = async () => {
 
-        try{
+        try {
 
             setError("");
 
@@ -102,21 +102,22 @@ function AdminDashboard(){
             const data =
                 response?.data;
 
-               console.log(
-    "ADMIN COMPLAINT DATA:",
-    data
-); 
+
+            console.log(
+                "ADMIN COMPLAINT DATA:",
+                data
+            );
 
 
-            if(Array.isArray(data)){
+            if (Array.isArray(data)) {
 
                 setComplaints(data);
 
             }
 
-            else if(
+            else if (
                 Array.isArray(data?.complaints)
-            ){
+            ) {
 
                 setComplaints(
                     data.complaints
@@ -124,7 +125,7 @@ function AdminDashboard(){
 
             }
 
-            else{
+            else {
 
                 setComplaints([]);
 
@@ -132,7 +133,7 @@ function AdminDashboard(){
 
         }
 
-        catch(err){
+        catch (err) {
 
             console.error(
                 "FETCH COMPLAINTS ERROR:",
@@ -146,7 +147,7 @@ function AdminDashboard(){
 
         }
 
-        finally{
+        finally {
 
             setLoading(false);
 
@@ -157,11 +158,11 @@ function AdminDashboard(){
     };
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
         fetchComplaints();
 
-    },[]);
+    }, []);
 
 
 
@@ -188,7 +189,7 @@ function AdminDashboard(){
         status
     ) => {
 
-        try{
+        try {
 
             await API.put(
                 `/complaints/status/${id}`,
@@ -208,12 +209,12 @@ function AdminDashboard(){
                                 complaint?.id;
 
 
-                            if(
+                            if (
                                 String(
                                     complaintId
                                 ) ===
                                 String(id)
-                            ){
+                            ) {
 
                                 return {
                                     ...complaint,
@@ -231,7 +232,7 @@ function AdminDashboard(){
 
         }
 
-        catch(err){
+        catch (err) {
 
             console.error(
                 "UPDATE STATUS ERROR:",
@@ -263,14 +264,14 @@ function AdminDashboard(){
             );
 
 
-        if(!confirmDelete){
+        if (!confirmDelete) {
 
             return;
 
         }
 
 
-        try{
+        try {
 
             await API.delete(
                 `/complaints/delete/${id}`
@@ -300,7 +301,7 @@ function AdminDashboard(){
 
         }
 
-        catch(err){
+        catch (err) {
 
             console.error(
                 "DELETE COMPLAINT ERROR:",
@@ -375,7 +376,7 @@ function AdminDashboard(){
         complaint
     ) => {
 
-        if(!complaint?.createdAt){
+        if (!complaint?.createdAt) {
 
             return null;
 
@@ -388,11 +389,11 @@ function AdminDashboard(){
             );
 
 
-        if(
+        if (
             Number.isNaN(
                 date.getTime()
             )
-        ){
+        ) {
 
             return null;
 
@@ -453,9 +454,82 @@ function AdminDashboard(){
 
             complaint?.address?.pincode ||
             complaint?.pincode
+
         ]
-        .filter(Boolean)
-        .join(", ");
+            .filter(Boolean)
+            .join(", ");
+
+    };
+
+
+
+    /* =====================================================
+       IMAGE URL
+       
+       IMPORTANT:
+       
+       New complaints:
+       Cloudinary complete URL
+
+       Old complaints:
+       Only filename stored in MongoDB
+    ===================================================== */
+
+    const getImageUrl = (
+        image
+    ) => {
+
+        if (!image) {
+
+            return null;
+
+        }
+
+
+        const imageValue =
+            String(image).trim();
+
+
+        if (!imageValue) {
+
+            return null;
+
+        }
+
+
+        /* ================================================
+           CLOUDINARY IMAGE
+        ================================================ */
+
+        if (
+            imageValue.startsWith("http://") ||
+            imageValue.startsWith("https://")
+        ) {
+
+            return imageValue;
+
+        }
+
+
+        /* ================================================
+           OLD LOCAL IMAGE
+        ================================================ */
+
+        const apiUrl =
+            import.meta.env.VITE_API_URL ||
+            "http://localhost:5000/api";
+
+
+        const serverUrl =
+            apiUrl.replace(
+                /\/api\/?$/,
+                ""
+            );
+
+
+        return (
+            `${serverUrl}/uploads/${imageValue}`
+        );
 
     };
 
@@ -554,8 +628,6 @@ function AdminDashboard(){
 
     /* =====================================================
        SPECIFIC DATE MATCH
-       IMPORTANT:
-       This is BEFORE statistics useMemo.
     ===================================================== */
 
     const matchesSpecificDate = (
@@ -567,7 +639,7 @@ function AdminDashboard(){
             getDate(complaint);
 
 
-        if(!complaintDate){
+        if (!complaintDate) {
 
             return false;
 
@@ -576,7 +648,6 @@ function AdminDashboard(){
 
         const target =
             new Date();
-
 
         target.setDate(
             target.getDate() +
@@ -608,7 +679,7 @@ function AdminDashboard(){
             getDate(complaint);
 
 
-        if(!complaintDate){
+        if (!complaintDate) {
 
             return false;
 
@@ -619,18 +690,18 @@ function AdminDashboard(){
             new Date();
 
 
-        if(
+        if (
             dateFilter === "All"
-        ){
+        ) {
 
             return true;
 
         }
 
 
-        if(
+        if (
             dateFilter === "Today"
-        ){
+        ) {
 
             return (
                 complaintDate >=
@@ -643,9 +714,9 @@ function AdminDashboard(){
         }
 
 
-        if(
+        if (
             dateFilter === "Yesterday"
-        ){
+        ) {
 
             const yesterday =
                 new Date(now);
@@ -666,9 +737,9 @@ function AdminDashboard(){
         }
 
 
-        if(
+        if (
             dateFilter === "7days"
-        ){
+        ) {
 
             const date =
                 new Date(now);
@@ -686,9 +757,9 @@ function AdminDashboard(){
         }
 
 
-        if(
+        if (
             dateFilter === "30days"
-        ){
+        ) {
 
             const date =
                 new Date(now);
@@ -706,9 +777,9 @@ function AdminDashboard(){
         }
 
 
-        if(
+        if (
             dateFilter === "Week"
-        ){
+        ) {
 
             return (
                 complaintDate >=
@@ -718,9 +789,9 @@ function AdminDashboard(){
         }
 
 
-        if(
+        if (
             dateFilter === "Month"
-        ){
+        ) {
 
             return (
                 complaintDate >=
@@ -740,21 +811,22 @@ function AdminDashboard(){
        CATEGORIES
     ===================================================== */
 
-    const categories = useMemo(()=>{
+    const categories =
+        useMemo(() => {
 
-        return [
-            ...new Set(
-                complaints
-                .map(
-                    complaint =>
-                        complaint?.category
+            return [
+                ...new Set(
+                    complaints
+                        .map(
+                            complaint =>
+                                complaint?.category
+                        )
+                        .filter(Boolean)
                 )
-                .filter(Boolean)
-            )
-        ]
-        .sort();
+            ]
+                .sort();
 
-    },[complaints]);
+        }, [complaints]);
 
 
 
@@ -762,23 +834,24 @@ function AdminDashboard(){
        PRIORITIES
     ===================================================== */
 
-    const priorities = useMemo(()=>{
+    const priorities =
+        useMemo(() => {
 
-        const values =
-            complaints
-            .map(
-                complaint =>
-                    complaint?.priority
-            )
-            .filter(Boolean);
+            const values =
+                complaints
+                    .map(
+                        complaint =>
+                            complaint?.priority
+                    )
+                    .filter(Boolean);
 
 
-        return [
-            ...new Set(values)
-        ]
-        .sort();
+            return [
+                ...new Set(values)
+            ]
+                .sort();
 
-    },[complaints]);
+        }, [complaints]);
 
 
 
@@ -786,141 +859,145 @@ function AdminDashboard(){
        BASE STATISTICS
     ===================================================== */
 
-    const statistics = useMemo(()=>{
+    const statistics =
+        useMemo(() => {
 
-        const total =
-            complaints.length;
-
-
-        const pending =
-            complaints.filter(
-                complaint =>
-                    getStatus(
-                        complaint
-                    )
-                    .toLowerCase() ===
-                    "pending"
-            ).length;
+            const total =
+                complaints.length;
 
 
-        const inProgress =
-            complaints.filter(
-                complaint =>
-                    getStatus(
-                        complaint
-                    )
-                    .toLowerCase()
-                    .replace(/\s+/g," ")
-                    .trim() ===
-                    "in progress"
-            ).length;
-
-
-        const resolved =
-            complaints.filter(
-                complaint =>
-                    getStatus(
-                        complaint
-                    )
-                    .toLowerCase() ===
-                    "resolved"
-            ).length;
-
-
-        const resolutionRate =
-            total > 0
-                ?
-                Math.round(
-                    (
-                        resolved /
-                        total
-                    ) * 100
-                )
-                :
-                0;
-
-
-        const today =
-            complaints.filter(
-                complaint =>
-                    matchesSpecificDate(
-                        complaint,
-                        0
-                    )
-            ).length;
-
-
-        const yesterday =
-            complaints.filter(
-                complaint =>
-                    matchesSpecificDate(
-                        complaint,
-                        -1
-                    )
-            ).length;
-
-
-        const week =
-            complaints.filter(
-                complaint => {
-
-                    const date =
-                        getDate(
+            const pending =
+                complaints.filter(
+                    complaint =>
+                        getStatus(
                             complaint
+                        )
+                            .toLowerCase() ===
+                        "pending"
+                ).length;
+
+
+            const inProgress =
+                complaints.filter(
+                    complaint =>
+                        getStatus(
+                            complaint
+                        )
+                            .toLowerCase()
+                            .replace(
+                                /\s+/g,
+                                " "
+                            )
+                            .trim() ===
+                        "in progress"
+                ).length;
+
+
+            const resolved =
+                complaints.filter(
+                    complaint =>
+                        getStatus(
+                            complaint
+                        )
+                            .toLowerCase() ===
+                        "resolved"
+                ).length;
+
+
+            const resolutionRate =
+                total > 0
+                    ?
+                    Math.round(
+                        (
+                            resolved /
+                            total
+                        ) * 100
+                    )
+                    :
+                    0;
+
+
+            const today =
+                complaints.filter(
+                    complaint =>
+                        matchesSpecificDate(
+                            complaint,
+                            0
+                        )
+                ).length;
+
+
+            const yesterday =
+                complaints.filter(
+                    complaint =>
+                        matchesSpecificDate(
+                            complaint,
+                            -1
+                        )
+                ).length;
+
+
+            const week =
+                complaints.filter(
+                    complaint => {
+
+                        const date =
+                            getDate(
+                                complaint
+                            );
+
+                        return (
+                            date &&
+                            date >=
+                            startOfWeek()
                         );
 
-                    return (
-                        date &&
-                        date >=
-                        startOfWeek()
-                    );
-
-                }
-            ).length;
+                    }
+                ).length;
 
 
-        const month =
-            complaints.filter(
-                complaint => {
+            const month =
+                complaints.filter(
+                    complaint => {
 
-                    const date =
-                        getDate(
-                            complaint
+                        const date =
+                            getDate(
+                                complaint
+                            );
+
+                        return (
+                            date &&
+                            date >=
+                            startOfMonth()
                         );
 
-                    return (
-                        date &&
-                        date >=
-                        startOfMonth()
-                    );
-
-                }
-            ).length;
+                    }
+                ).length;
 
 
-        return {
+            return {
 
-            total,
+                total,
 
-            pending,
+                pending,
 
-            inProgress,
+                inProgress,
 
-            resolved,
+                resolved,
 
-            resolutionRate,
+                resolutionRate,
 
-            today,
+                today,
 
-            yesterday,
+                yesterday,
 
-            week,
+                week,
 
-            month
+                month
 
-        };
+            };
 
-    },[complaints]);
+        }, [complaints]);
 
 
 
@@ -928,351 +1005,352 @@ function AdminDashboard(){
        FILTERED COMPLAINTS
     ===================================================== */
 
-    const filteredComplaints = useMemo(()=>{
+    const filteredComplaints =
+        useMemo(() => {
 
-        let result =
-            [...complaints];
-
-
-        const searchValue =
-            search
-            .trim()
-            .toLowerCase();
+            let result =
+                [...complaints];
 
 
-        /* ================= SEARCH ================= */
+            const searchValue =
+                search
+                    .trim()
+                    .toLowerCase();
 
-        if(searchValue){
+
+            /* ================= SEARCH ================= */
+
+            if (searchValue) {
+
+                result =
+                    result.filter(
+                        complaint => {
+
+                            const id =
+                                String(
+                                    getComplaintId(
+                                        complaint
+                                    )
+                                )
+                                    .toLowerCase();
+
+
+                            const title =
+                                String(
+                                    complaint?.title ||
+                                    ""
+                                )
+                                    .toLowerCase();
+
+
+                            const description =
+                                String(
+                                    complaint?.description ||
+                                    ""
+                                )
+                                    .toLowerCase();
+
+
+                            const category =
+                                String(
+                                    getCategory(
+                                        complaint
+                                    )
+                                )
+                                    .toLowerCase();
+
+
+                            const citizen =
+                                String(
+                                    getCitizenName(
+                                        complaint
+                                    )
+                                )
+                                    .toLowerCase();
+
+
+                            const email =
+                                String(
+                                    getCitizenEmail(
+                                        complaint
+                                    )
+                                )
+                                    .toLowerCase();
+
+
+                            const city =
+                                String(
+                                    complaint?.address?.city ||
+                                    complaint?.city ||
+                                    ""
+                                )
+                                    .toLowerCase();
+
+
+                            const district =
+                                String(
+                                    complaint?.address?.district ||
+                                    complaint?.district ||
+                                    ""
+                                )
+                                    .toLowerCase();
+
+
+                            const state =
+                                String(
+                                    complaint?.address?.state ||
+                                    complaint?.state ||
+                                    ""
+                                )
+                                    .toLowerCase();
+
+
+                            const pincode =
+                                String(
+                                    complaint?.address?.pincode ||
+                                    complaint?.pincode ||
+                                    ""
+                                )
+                                    .toLowerCase();
+
+
+                            const priority =
+                                String(
+                                    getPriority(
+                                        complaint
+                                    )
+                                )
+                                    .toLowerCase();
+
+
+                            return (
+
+                                id.includes(
+                                    searchValue
+                                ) ||
+
+                                title.includes(
+                                    searchValue
+                                ) ||
+
+                                description.includes(
+                                    searchValue
+                                ) ||
+
+                                category.includes(
+                                    searchValue
+                                ) ||
+
+                                citizen.includes(
+                                    searchValue
+                                ) ||
+
+                                email.includes(
+                                    searchValue
+                                ) ||
+
+                                city.includes(
+                                    searchValue
+                                ) ||
+
+                                district.includes(
+                                    searchValue
+                                ) ||
+
+                                state.includes(
+                                    searchValue
+                                ) ||
+
+                                pincode.includes(
+                                    searchValue
+                                ) ||
+
+                                priority.includes(
+                                    searchValue
+                                )
+
+                            );
+
+                        }
+                    );
+
+            }
+
+
+
+            /* ================= STATUS ================= */
+
+            if (
+                statusFilter !== "All"
+            ) {
+
+                result =
+                    result.filter(
+                        complaint =>
+                            getStatus(
+                                complaint
+                            )
+                                .toLowerCase()
+                                .trim() ===
+                            statusFilter
+                                .toLowerCase()
+                                .trim()
+                    );
+
+            }
+
+
+
+            /* ================= CATEGORY ================= */
+
+            if (
+                categoryFilter !== "All"
+            ) {
+
+                result =
+                    result.filter(
+                        complaint =>
+                            getCategory(
+                                complaint
+                            ) ===
+                            categoryFilter
+                    );
+
+            }
+
+
+
+            /* ================= PRIORITY ================= */
+
+            if (
+                priorityFilter !== "All"
+            ) {
+
+                result =
+                    result.filter(
+                        complaint =>
+                            getPriority(
+                                complaint
+                            ) ===
+                            priorityFilter
+                    );
+
+            }
+
+
+
+            /* ================= DATE ================= */
 
             result =
                 result.filter(
-                    complaint => {
-
-                        const id =
-                            String(
-                                getComplaintId(
-                                    complaint
-                                )
-                            )
-                            .toLowerCase();
+                    complaint =>
+                        matchesDateFilter(
+                            complaint
+                        )
+                );
 
 
-                        const title =
-                            String(
-                                complaint?.title ||
-                                ""
-                            )
-                            .toLowerCase();
 
+            /* ================= SORT ================= */
 
-                        const description =
-                            String(
-                                complaint?.description ||
-                                ""
-                            )
-                            .toLowerCase();
+            result.sort(
+                (a, b) => {
 
-
-                        const category =
-                            String(
-                                getCategory(
-                                    complaint
-                                )
-                            )
-                            .toLowerCase();
-
-
-                        const citizen =
-                            String(
-                                getCitizenName(
-                                    complaint
-                                )
-                            )
-                            .toLowerCase();
-
-
-                        const email =
-                            String(
-                                getCitizenEmail(
-                                    complaint
-                                )
-                            )
-                            .toLowerCase();
-
-
-                        const city =
-                            String(
-                                complaint?.address?.city ||
-                                complaint?.city ||
-                                ""
-                            )
-                            .toLowerCase();
-
-
-                        const district =
-                            String(
-                                complaint?.address?.district ||
-                                complaint?.district ||
-                                ""
-                            )
-                            .toLowerCase();
-
-
-                        const state =
-                            String(
-                                complaint?.address?.state ||
-                                complaint?.state ||
-                                ""
-                            )
-                            .toLowerCase();
-
-
-                        const pincode =
-                            String(
-                                complaint?.address?.pincode ||
-                                complaint?.pincode ||
-                                ""
-                            )
-                            .toLowerCase();
-
-
-                        const priority =
-                            String(
-                                getPriority(
-                                    complaint
-                                )
-                            )
-                            .toLowerCase();
-
+                    if (
+                        sortBy === "newest"
+                    ) {
 
                         return (
-
-                            id.includes(
-                                searchValue
-                            ) ||
-
-                            title.includes(
-                                searchValue
-                            ) ||
-
-                            description.includes(
-                                searchValue
-                            ) ||
-
-                            category.includes(
-                                searchValue
-                            ) ||
-
-                            citizen.includes(
-                                searchValue
-                            ) ||
-
-                            email.includes(
-                                searchValue
-                            ) ||
-
-                            city.includes(
-                                searchValue
-                            ) ||
-
-                            district.includes(
-                                searchValue
-                            ) ||
-
-                            state.includes(
-                                searchValue
-                            ) ||
-
-                            pincode.includes(
-                                searchValue
-                            ) ||
-
-                            priority.includes(
-                                searchValue
+                            (
+                                getDate(b)
+                                    ?.getTime() ||
+                                0
                             )
-
+                            -
+                            (
+                                getDate(a)
+                                    ?.getTime() ||
+                                0
+                            )
                         );
 
                     }
-                );
-
-        }
 
 
+                    if (
+                        sortBy === "oldest"
+                    ) {
 
-        /* ================= STATUS ================= */
+                        return (
+                            (
+                                getDate(a)
+                                    ?.getTime() ||
+                                0
+                            )
+                            -
+                            (
+                                getDate(b)
+                                    ?.getTime() ||
+                                0
+                            )
+                        );
 
-        if(
-            statusFilter !== "All"
-        ){
-
-            result =
-                result.filter(
-                    complaint =>
-                        getStatus(
-                            complaint
-                        )
-                        .toLowerCase()
-                        .trim() ===
-                        statusFilter
-                        .toLowerCase()
-                        .trim()
-                );
-
-        }
+                    }
 
 
+                    if (
+                        sortBy === "titleAsc"
+                    ) {
 
-        /* ================= CATEGORY ================= */
-
-        if(
-            categoryFilter !== "All"
-        ){
-
-            result =
-                result.filter(
-                    complaint =>
-                        getCategory(
-                            complaint
-                        ) ===
-                        categoryFilter
-                );
-
-        }
-
-
-
-        /* ================= PRIORITY ================= */
-
-        if(
-            priorityFilter !== "All"
-        ){
-
-            result =
-                result.filter(
-                    complaint =>
-                        getPriority(
-                            complaint
-                        ) ===
-                        priorityFilter
-                );
-
-        }
-
-
-
-        /* ================= DATE ================= */
-
-        result =
-            result.filter(
-                complaint =>
-                    matchesDateFilter(
-                        complaint
-                    )
-            );
-
-
-
-        /* ================= SORT ================= */
-
-        result.sort(
-            (a,b)=>{
-
-                if(
-                    sortBy === "newest"
-                ){
-
-                    return (
-                        (
-                            getDate(b)
-                            ?.getTime() ||
-                            0
-                        )
-                        -
-                        (
-                            getDate(a)
-                            ?.getTime() ||
-                            0
-                        )
-                    );
-
-                }
-
-
-                if(
-                    sortBy === "oldest"
-                ){
-
-                    return (
-                        (
-                            getDate(a)
-                            ?.getTime() ||
-                            0
-                        )
-                        -
-                        (
-                            getDate(b)
-                            ?.getTime() ||
-                            0
-                        )
-                    );
-
-                }
-
-
-                if(
-                    sortBy === "titleAsc"
-                ){
-
-                    return String(
-                        a?.title ||
-                        ""
-                    )
-                    .localeCompare(
-                        String(
-                            b?.title ||
-                            ""
-                        )
-                    );
-
-                }
-
-
-                if(
-                    sortBy === "titleDesc"
-                ){
-
-                    return String(
-                        b?.title ||
-                        ""
-                    )
-                    .localeCompare(
-                        String(
+                        return String(
                             a?.title ||
                             ""
                         )
-                    );
+                            .localeCompare(
+                                String(
+                                    b?.title ||
+                                    ""
+                                )
+                            );
+
+                    }
+
+
+                    if (
+                        sortBy === "titleDesc"
+                    ) {
+
+                        return String(
+                            b?.title ||
+                            ""
+                        )
+                            .localeCompare(
+                                String(
+                                    a?.title ||
+                                    ""
+                                )
+                            );
+
+                    }
+
+
+                    return 0;
 
                 }
+            );
 
 
-                return 0;
+            return result;
 
-            }
-        );
-
-
-        return result;
-
-    },[
-        complaints,
-        search,
-        statusFilter,
-        categoryFilter,
-        priorityFilter,
-        dateFilter,
-        sortBy
-    ]);
+        }, [
+            complaints,
+            search,
+            statusFilter,
+            categoryFilter,
+            priorityFilter,
+            dateFilter,
+            sortBy
+        ]);
 
 
 
@@ -1289,6 +1367,7 @@ function AdminDashboard(){
 
     const currentComplaints =
         filteredComplaints.slice(
+
             (
                 currentPage - 1
             ) *
@@ -1296,15 +1375,15 @@ function AdminDashboard(){
 
             currentPage *
             complaintsPerPage
+
         );
 
 
-
-    useEffect(()=>{
+    useEffect(() => {
 
         setCurrentPage(1);
 
-    },[
+    }, [
         search,
         statusFilter,
         categoryFilter,
@@ -1314,12 +1393,12 @@ function AdminDashboard(){
     ]);
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(
+        if (
             totalPages > 0 &&
             currentPage > totalPages
-        ){
+        ) {
 
             setCurrentPage(
                 totalPages
@@ -1327,7 +1406,7 @@ function AdminDashboard(){
 
         }
 
-    },[
+    }, [
         totalPages,
         currentPage
     ]);
@@ -1382,31 +1461,33 @@ function AdminDashboard(){
 
     const statusChartData = {
 
-        labels:[
+        labels: [
             "Pending",
             "In Progress",
             "Resolved"
         ],
 
-        datasets:[
+        datasets: [
             {
-                data:[
+
+                data: [
                     statistics.pending,
                     statistics.inProgress,
                     statistics.resolved
                 ],
 
-                backgroundColor:[
+                backgroundColor: [
                     "#f59e0b",
                     "#3b82f6",
                     "#10b981"
                 ],
 
-                borderColor:"#ffffff",
+                borderColor: "#ffffff",
 
-                borderWidth:3,
+                borderWidth: 3,
 
-                hoverOffset:8
+                hoverOffset: 8
+
             }
         ]
 
@@ -1415,14 +1496,18 @@ function AdminDashboard(){
 
     const statusChartOptions = {
 
-        responsive:true,
+        responsive: true,
 
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
 
-        plugins:{
-            legend:{
-                position:"bottom"
+        plugins: {
+
+            legend: {
+
+                position: "bottom"
+
             }
+
         }
 
     };
@@ -1434,7 +1519,7 @@ function AdminDashboard(){
     ===================================================== */
 
     const categoryCounts =
-        useMemo(()=>{
+        useMemo(() => {
 
             const counts = {};
 
@@ -1460,7 +1545,7 @@ function AdminDashboard(){
 
             return counts;
 
-        },[complaints]);
+        }, [complaints]);
 
 
     const categoryLabels =
@@ -1474,8 +1559,9 @@ function AdminDashboard(){
         labels:
             categoryLabels,
 
-        datasets:[
+        datasets: [
             {
+
                 label:
                     "Complaints",
 
@@ -1487,7 +1573,7 @@ function AdminDashboard(){
                             ]
                     ),
 
-                backgroundColor:[
+                backgroundColor: [
                     "#2563eb",
                     "#7c3aed",
                     "#06b6d4",
@@ -1498,9 +1584,10 @@ function AdminDashboard(){
                     "#6366f1"
                 ],
 
-                borderRadius:8,
+                borderRadius: 8,
 
-                borderSkipped:false
+                borderSkipped: false
+
             }
         ]
 
@@ -1509,24 +1596,34 @@ function AdminDashboard(){
 
     const categoryChartOptions = {
 
-        responsive:true,
+        responsive: true,
 
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
 
-        plugins:{
-            legend:{
-                display:false
+        plugins: {
+
+            legend: {
+
+                display: false
+
             }
+
         },
 
-        scales:{
-            y:{
-                beginAtZero:true,
+        scales: {
 
-                ticks:{
-                    precision:0
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    precision: 0
+
                 }
+
             }
+
         }
 
     };
@@ -1538,7 +1635,7 @@ function AdminDashboard(){
     ===================================================== */
 
     const priorityCounts =
-        useMemo(()=>{
+        useMemo(() => {
 
             const counts = {};
 
@@ -1564,7 +1661,7 @@ function AdminDashboard(){
 
             return counts;
 
-        },[complaints]);
+        }, [complaints]);
 
 
     const priorityLabels =
@@ -1578,8 +1675,9 @@ function AdminDashboard(){
         labels:
             priorityLabels,
 
-        datasets:[
+        datasets: [
             {
+
                 label:
                     "Complaints",
 
@@ -1594,20 +1692,62 @@ function AdminDashboard(){
                 backgroundColor:
                     priorityLabels.map(
                         priority => {
-                            const value = String(priority).toLowerCase();
 
-                            if(value === "urgent") return "#ef4444";
-                            if(value === "high") return "#f97316";
-                            if(value === "medium") return "#f59e0b";
-                            if(value === "low") return "#10b981";
+                            const value =
+                                String(
+                                    priority
+                                ).toLowerCase();
+
+
+                            if (
+                                value ===
+                                "urgent"
+                            ) {
+
+                                return "#ef4444";
+
+                            }
+
+
+                            if (
+                                value ===
+                                "high"
+                            ) {
+
+                                return "#f97316";
+
+                            }
+
+
+                            if (
+                                value ===
+                                "medium"
+                            ) {
+
+                                return "#f59e0b";
+
+                            }
+
+
+                            if (
+                                value ===
+                                "low"
+                            ) {
+
+                                return "#10b981";
+
+                            }
+
 
                             return "#64748b";
+
                         }
                     ),
 
-                borderRadius:8,
+                borderRadius: 8,
 
-                borderSkipped:false
+                borderSkipped: false
+
             }
         ]
 
@@ -1616,24 +1756,34 @@ function AdminDashboard(){
 
     const priorityChartOptions = {
 
-        responsive:true,
+        responsive: true,
 
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
 
-        plugins:{
-            legend:{
-                display:false
+        plugins: {
+
+            legend: {
+
+                display: false
+
             }
+
         },
 
-        scales:{
-            y:{
-                beginAtZero:true,
+        scales: {
 
-                ticks:{
-                    precision:0
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    precision: 0
+
                 }
+
             }
+
         }
 
     };
@@ -1645,18 +1795,18 @@ function AdminDashboard(){
     ===================================================== */
 
     const timeAnalytics =
-        useMemo(()=>{
+        useMemo(() => {
 
             const days = [];
 
             const counts = [];
 
 
-            for(
+            for (
                 let i = 6;
                 i >= 0;
                 i--
-            ){
+            ) {
 
                 const date =
                     new Date();
@@ -1691,8 +1841,10 @@ function AdminDashboard(){
 
                             return (
                                 complaintDate &&
-                                complaintDate >= start &&
-                                complaintDate <= end
+                                complaintDate >=
+                                start &&
+                                complaintDate <=
+                                end
                             );
 
                         }
@@ -1703,8 +1855,8 @@ function AdminDashboard(){
                     date.toLocaleDateString(
                         "en-IN",
                         {
-                            day:"2-digit",
-                            month:"short"
+                            day: "2-digit",
+                            month: "short"
                         }
                     )
                 );
@@ -1718,11 +1870,14 @@ function AdminDashboard(){
 
 
             return {
+
                 days,
+
                 counts
+
             };
 
-        },[complaints]);
+        }, [complaints]);
 
 
     const timeChartData = {
@@ -1730,33 +1885,37 @@ function AdminDashboard(){
         labels:
             timeAnalytics.days,
 
-        datasets:[
+        datasets: [
             {
+
                 label:
                     "Complaints",
 
                 data:
                     timeAnalytics.counts,
 
-                tension:.35,
+                tension: .35,
 
-                fill:true,
+                fill: true,
 
-                borderColor:"#2563eb",
+                borderColor: "#2563eb",
 
-                backgroundColor:"rgba(37,99,235,0.12)",
+                backgroundColor:
+                    "rgba(37,99,235,0.12)",
 
-                borderWidth:3,
+                borderWidth: 3,
 
-                pointRadius:4,
+                pointRadius: 4,
 
-                pointHoverRadius:7,
+                pointHoverRadius: 7,
 
-                pointBackgroundColor:"#2563eb",
+                pointBackgroundColor:
+                    "#2563eb",
 
-                pointBorderColor:"#ffffff",
+                pointBorderColor:
+                    "#ffffff",
 
-                pointBorderWidth:2
+                pointBorderWidth: 2
 
             }
         ]
@@ -1766,24 +1925,34 @@ function AdminDashboard(){
 
     const timeChartOptions = {
 
-        responsive:true,
+        responsive: true,
 
-        maintainAspectRatio:false,
+        maintainAspectRatio: false,
 
-        plugins:{
-            legend:{
-                display:false
+        plugins: {
+
+            legend: {
+
+                display: false
+
             }
+
         },
 
-        scales:{
-            y:{
-                beginAtZero:true,
+        scales: {
 
-                ticks:{
-                    precision:0
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    precision: 0
+
                 }
+
             }
+
         }
 
     };
@@ -1795,7 +1964,7 @@ function AdminDashboard(){
     ===================================================== */
 
     const locationCounts =
-        useMemo(()=>{
+        useMemo(() => {
 
             const counts = {};
 
@@ -1826,16 +1995,16 @@ function AdminDashboard(){
             return Object.entries(
                 counts
             )
-            .sort(
-                (a,b) =>
-                    b[1] - a[1]
-            )
-            .slice(
-                0,
-                5
-            );
+                .sort(
+                    (a, b) =>
+                        b[1] - a[1]
+                )
+                .slice(
+                    0,
+                    5
+                );
 
-        },[complaints]);
+        }, [complaints]);
 
 
 
@@ -1847,7 +2016,7 @@ function AdminDashboard(){
         dateValue
     ) => {
 
-        if(!dateValue){
+        if (!dateValue) {
 
             return "N/A";
 
@@ -1860,11 +2029,11 @@ function AdminDashboard(){
             );
 
 
-        if(
+        if (
             Number.isNaN(
                 date.getTime()
             )
-        ){
+        ) {
 
             return "N/A";
 
@@ -1874,11 +2043,11 @@ function AdminDashboard(){
         return date.toLocaleString(
             "en-IN",
             {
-                day:"2-digit",
-                month:"short",
-                year:"numeric",
-                hour:"2-digit",
-                minute:"2-digit"
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
             }
         );
 
@@ -1897,11 +2066,11 @@ function AdminDashboard(){
         return String(
             status || "Pending"
         )
-        .toLowerCase()
-        .replace(
-            /\s+/g,
-            "-"
-        );
+            .toLowerCase()
+            .replace(
+                /\s+/g,
+                "-"
+            );
 
     };
 
@@ -1913,11 +2082,11 @@ function AdminDashboard(){
         return String(
             priority || "Normal"
         )
-        .toLowerCase()
-        .replace(
-            /\s+/g,
-            "-"
-        );
+            .toLowerCase()
+            .replace(
+                /\s+/g,
+                "-"
+            );
 
     };
 
@@ -1927,9 +2096,9 @@ function AdminDashboard(){
        LOADING
     ===================================================== */
 
-    if(loading){
+    if (loading) {
 
-        return(
+        return (
 
             <div className="admin-loading">
 
@@ -1959,9 +2128,9 @@ function AdminDashboard(){
        ERROR
     ===================================================== */
 
-    if(error){
+    if (error) {
 
-        return(
+        return (
 
             <div className="admin-error-page">
 
@@ -1996,7 +2165,7 @@ function AdminDashboard(){
        RETURN
     ===================================================== */
 
-    return(
+    return (
 
         <div className="admin-dashboard">
 
@@ -2094,10 +2263,10 @@ function AdminDashboard(){
                         {new Date().toLocaleDateString(
                             "en-IN",
                             {
-                                weekday:"long",
-                                day:"numeric",
-                                month:"long",
-                                year:"numeric"
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric"
                             }
                         )}
                     </strong>
@@ -2638,7 +2807,7 @@ function AdminDashboard(){
                                 :
 
                                 locationCounts.map(
-                                    ([city,count],index) => {
+                                    ([city, count], index) => {
 
                                         const percentage =
                                             statistics.total > 0
@@ -2653,7 +2822,7 @@ function AdminDashboard(){
                                                 0;
 
 
-                                        return(
+                                        return (
 
                                             <div
                                                 className="location-row"
@@ -2743,13 +2912,18 @@ function AdminDashboard(){
                     </div>
 
                     <p>
+
                         {filteredComplaints.length}
+
                         {" "}
+
                         matching complaint
+
                         {filteredComplaints.length !== 1
                             ? "s"
                             : ""
                         }
+
                     </p>
 
                 </div>
@@ -3113,18 +3287,17 @@ function AdminDashboard(){
                                     );
 
 
+                                /* =================================================
+                                   IMPORTANT IMAGE FIX
+                                ================================================= */
+
                                 const image =
-                                    complaint?.image
-                                    ?
-                                    `${(
-    import.meta.env.VITE_API_URL ||
-    "http://localhost:5000/api"
-).replace(/\/api\/?$/, "")}/uploads/${complaint.image}`
-                                    :
-                                    null;
+                                    getImageUrl(
+                                        complaint?.image
+                                    );
 
 
-                                return(
+                                return (
 
                                     <article
                                         className="admin-complaint-card"
@@ -3144,6 +3317,11 @@ function AdminDashboard(){
                                                     src={image}
                                                     alt="Complaint evidence"
                                                     onError={e => {
+
+                                                        console.error(
+                                                            "ADMIN IMAGE LOAD ERROR:",
+                                                            image
+                                                        );
 
                                                         e.currentTarget.style.display =
                                                             "none";
@@ -3179,12 +3357,20 @@ function AdminDashboard(){
                                                 <div>
 
                                                     <div className="complaint-id">
-                                                        ID: {String(id).slice(-10)}
+
+                                                        ID: {
+                                                            String(id)
+                                                                .slice(-10)
+                                                        }
+
                                                     </div>
 
                                                     <h3>
+
                                                         {complaint?.title ||
+
                                                             "Untitled Complaint"}
+
                                                     </h3>
 
                                                 </div>
@@ -3214,6 +3400,7 @@ function AdminDashboard(){
                                             <p className="complaint-description">
 
                                                 {complaint?.description ||
+
                                                     "No description available."}
 
                                             </p>
@@ -3236,9 +3423,11 @@ function AdminDashboard(){
                                                         </small>
 
                                                         <strong>
+
                                                             {getCitizenName(
                                                                 complaint
                                                             )}
+
                                                         </strong>
 
                                                     </div>
@@ -3260,9 +3449,11 @@ function AdminDashboard(){
                                                         </small>
 
                                                         <strong>
+
                                                             {getCategory(
                                                                 complaint
                                                             )}
+
                                                         </strong>
 
                                                     </div>
@@ -3284,10 +3475,13 @@ function AdminDashboard(){
                                                         </small>
 
                                                         <strong>
+
                                                             {getLocation(
                                                                 complaint
                                                             ) ||
-                                                            "Location unavailable"}
+
+                                                                "Location unavailable"}
+
                                                         </strong>
 
                                                     </div>
@@ -3309,9 +3503,11 @@ function AdminDashboard(){
                                                         </small>
 
                                                         <strong>
+
                                                             {formatDateTime(
                                                                 complaint?.createdAt
                                                             )}
+
                                                         </strong>
 
                                                     </div>
@@ -3343,8 +3539,8 @@ function AdminDashboard(){
                                                     "in progress" &&
 
                                                     status
-                                                    .toLowerCase()
-                                                    .trim() !==
+                                                        .toLowerCase()
+                                                        .trim() !==
                                                     "resolved" && (
 
                                                     <button
@@ -3438,13 +3634,13 @@ function AdminDashboard(){
                                     length:
                                         totalPages
                                 },
-                                (_,index) => {
+                                (_, index) => {
 
                                     const page =
                                         index + 1;
 
 
-                                    return(
+                                    return (
 
                                         <button
                                             key={page}

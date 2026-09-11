@@ -1,18 +1,37 @@
 /* =====================================================
    CIVICCONNECT CREATE COMPLAINT
-   PREMIUM SMART CITY UI v5
+   PREMIUM SMART CITY UI
+   MOBILE RESPONSIVE VERSION
 ===================================================== */
 
 
 /* =====================================================
-   GLOBAL
+   GLOBAL RESET
+===================================================== */
+
+.create-page,
+.create-page *,
+.create-page *::before,
+.create-page *::after{
+
+    box-sizing:border-box;
+
+}
+
+
+/* =====================================================
+   PAGE
 ===================================================== */
 
 .create-page{
 
+    width:100%;
+
     min-height:100vh;
 
     padding:30px 20px 50px;
+
+    overflow-x:hidden;
 
     background:
         radial-gradient(
@@ -78,6 +97,8 @@
 
     justify-content:space-between;
 
+    gap:15px;
+
     margin-bottom:22px;
 
 }
@@ -88,6 +109,8 @@
     display:flex;
 
     align-items:center;
+
+    justify-content:center;
 
     gap:7px;
 
@@ -108,6 +131,8 @@
     cursor:pointer;
 
     transition:.25s ease;
+
+    white-space:nowrap;
 
 }
 
@@ -148,6 +173,8 @@
 
     letter-spacing:-.5px;
 
+    white-space:nowrap;
+
 }
 
 
@@ -163,6 +190,8 @@
     width:38px;
 
     height:38px;
+
+    flex-shrink:0;
 
     display:flex;
 
@@ -194,6 +223,8 @@
 .complaint-container{
 
     width:100%;
+
+    max-width:100%;
 
     background:
         rgba(255,255,255,.94);
@@ -249,6 +280,8 @@
     align-items:center;
 
     gap:18px;
+
+    width:100%;
 
     padding-bottom:28px;
 
@@ -371,6 +404,8 @@
             #f8f7ff
         );
 
+    overflow:hidden;
+
 }
 
 
@@ -384,6 +419,8 @@
 
     flex-shrink:0;
 
+    min-width:0;
+
 }
 
 
@@ -392,6 +429,8 @@
     width:32px;
 
     height:32px;
+
+    flex-shrink:0;
 
     display:flex;
 
@@ -481,6 +520,8 @@
 
 .form-section{
 
+    width:100%;
+
     margin-bottom:32px;
 
     padding:27px;
@@ -501,6 +542,8 @@
     align-items:center;
 
     gap:13px;
+
+    width:100%;
 
     margin-bottom:25px;
 
@@ -580,6 +623,8 @@
 
 .field-group{
 
+    width:100%;
+
     margin-bottom:21px;
 
 }
@@ -624,6 +669,8 @@
 
     justify-content:space-between;
 
+    gap:10px;
+
 }
 
 
@@ -635,6 +682,8 @@
 
 
 .character-count{
+
+    flex-shrink:0;
 
     margin-bottom:8px;
 
@@ -661,7 +710,11 @@
 .complaint-input,
 .complaint-textarea{
 
+    display:block;
+
     width:100%;
+
+    max-width:100%;
 
     box-sizing:border-box;
 
@@ -751,6 +804,8 @@
 
     width:100%;
 
+    max-width:100%;
+
 }
 
 
@@ -776,6 +831,8 @@
 
     gap:18px;
 
+    width:100%;
+
 }
 
 
@@ -788,11 +845,13 @@
     display:grid;
 
     grid-template-columns:
-        auto 1fr auto;
+        auto minmax(0,1fr) auto;
 
     align-items:center;
 
     gap:14px;
+
+    width:100%;
 
     margin-bottom:24px;
 
@@ -818,6 +877,8 @@
 
     height:43px;
 
+    flex-shrink:0;
+
     display:flex;
 
     align-items:center;
@@ -832,6 +893,13 @@
 
     box-shadow:
         0 5px 15px rgba(37,99,235,.08);
+
+}
+
+
+.pincode-card-content{
+
+    min-width:0;
 
 }
 
@@ -872,12 +940,16 @@
 
     gap:8px;
 
+    min-width:0;
+
 }
 
 
 .pincode-box .complaint-input{
 
     width:145px;
+
+    min-width:0;
 
     margin:0;
 
@@ -889,6 +961,8 @@
 .pin-btn{
 
     height:48px;
+
+    flex-shrink:0;
 
     padding:0 18px;
 
@@ -1090,6 +1164,8 @@
 
 .image-preview{
 
+    width:100%;
+
     margin-top:20px;
 
     padding:15px;
@@ -1158,6 +1234,8 @@
 
     width:100%;
 
+    max-width:100%;
+
     max-height:330px;
 
     object-fit:cover;
@@ -1212,6 +1290,8 @@
     align-items:center;
 
     gap:13px;
+
+    width:100%;
 
     margin-bottom:25px;
 
@@ -1297,6 +1377,8 @@
     justify-content:space-between;
 
     gap:20px;
+
+    width:100%;
 
     padding-top:5px;
 
@@ -1512,7 +1594,7 @@
     .pincode-card{
 
         grid-template-columns:
-            auto 1fr;
+            auto minmax(0,1fr);
 
     }
 
@@ -1552,15 +1634,32 @@
 
     .create-page{
 
+        width:100%;
+
+        min-width:0;
+
         padding:
             20px
             12px
             35px;
 
+        overflow-x:hidden;
+
+    }
+
+
+    .create-wrapper{
+
+        width:100%;
+
+        min-width:0;
+
     }
 
 
     .create-topbar{
+
+        width:100%;
 
         margin-bottom:17px;
 
@@ -1596,6 +1695,8 @@
 
     .complaint-container{
 
+        width:100%;
+
         padding:25px 18px;
 
         border-radius:24px;
@@ -1605,9 +1706,18 @@
 
     .form-header{
 
+        width:100%;
+
         align-items:flex-start;
 
         gap:12px;
+
+    }
+
+
+    .form-header > div:last-child{
+
+        min-width:0;
 
     }
 
@@ -1640,6 +1750,8 @@
 
 
     .form-progress{
+
+        width:100%;
 
         padding:13px;
 
@@ -1677,6 +1789,8 @@
 
 
     .form-section{
+
+        width:100%;
 
         padding:20px 16px;
 
@@ -1729,17 +1843,36 @@
 
     .create-page{
 
+        width:100%;
+
+        min-width:0;
+
         padding:
             15px
             9px
             30px;
+
+        overflow-x:hidden;
+
+    }
+
+
+    .create-wrapper{
+
+        width:100%;
+
+        min-width:0;
 
     }
 
 
     .create-topbar{
 
+        width:100%;
+
         align-items:center;
+
+        gap:8px;
 
     }
 
@@ -1770,14 +1903,27 @@
 
         border-radius:10px;
 
+        font-size:11px;
+
     }
 
 
     .complaint-container{
 
+        width:100%;
+
         padding:22px 13px;
 
         border-radius:21px;
+
+    }
+
+
+    .form-header{
+
+        width:100%;
+
+        gap:9px;
 
     }
 
@@ -1820,6 +1966,8 @@
 
     .form-progress{
 
+        width:100%;
+
         margin-bottom:25px;
 
         padding:11px;
@@ -1828,6 +1976,8 @@
 
 
     .form-section{
+
+        width:100%;
 
         padding:18px 13px;
 
@@ -1875,6 +2025,8 @@
     .complaint-input,
     .complaint-textarea{
 
+        width:100%;
+
         padding:13px 14px;
 
         font-size:14px;
@@ -1891,7 +2043,14 @@
     }
 
 
+    /* ================= PINCODE ================= */
+
     .pincode-card{
+
+        width:100%;
+
+        grid-template-columns:
+            auto minmax(0,1fr);
 
         padding:13px;
 
@@ -1929,6 +2088,10 @@
 
     .pincode-box{
 
+        width:100%;
+
+        min-width:0;
+
         gap:7px;
 
     }
@@ -1936,7 +2099,11 @@
 
     .pincode-box .complaint-input{
 
+        width:auto;
+
         min-width:0;
+
+        flex:1;
 
         padding:12px;
 
@@ -1953,6 +2120,8 @@
 
     }
 
+
+    /* ================= IMAGE ================= */
 
     .upload-area,
     .upload-content{
@@ -2005,6 +2174,8 @@
     }
 
 
+    /* ================= SUCCESS ================= */
+
     .success-message{
 
         align-items:flex-start;
@@ -2025,7 +2196,11 @@
     }
 
 
+    /* ================= SUBMIT ================= */
+
     .complaint-button{
+
+        width:100%;
 
         padding:15px;
 
@@ -2049,9 +2224,28 @@
 
 @media(max-width:380px){
 
+    .create-page{
+
+        padding:
+            12px
+            7px
+            25px;
+
+        overflow-x:hidden;
+
+    }
+
+
+    .create-topbar{
+
+        gap:6px;
+
+    }
+
+
     .create-brand{
 
-        font-size:14px;
+        font-size:13px;
 
     }
 
@@ -2062,14 +2256,25 @@
 
         height:28px;
 
+        font-size:13px;
+
     }
 
 
     .back-dashboard-btn{
 
-        font-size:11px;
+        font-size:10px;
 
         padding:7px 8px;
+
+    }
+
+
+    .complaint-container{
+
+        padding:20px 11px;
+
+        border-radius:19px;
 
     }
 
@@ -2083,7 +2288,7 @@
 
     .form-header{
 
-        gap:9px;
+        gap:7px;
 
     }
 
@@ -2102,7 +2307,7 @@
     .pincode-card{
 
         grid-template-columns:
-            auto 1fr;
+            auto minmax(0,1fr);
 
     }
 
@@ -2111,12 +2316,54 @@
 
         grid-column:1 / -1;
 
+        width:100%;
+
     }
 
 
     .pincode-box .complaint-input{
 
+        width:auto;
+
+        flex:1;
+
+    }
+
+
+    .pin-btn{
+
+        min-width:70px;
+
+        padding:0 10px;
+
+    }
+
+}
+
+
+/* =====================================================
+   PREVENT MOBILE HORIZONTAL OVERFLOW
+===================================================== */
+
+@media(max-width:700px){
+
+    html,
+    body{
+
+        max-width:100%;
+
+        overflow-x:hidden;
+
+    }
+
+
+    #root{
+
         width:100%;
+
+        max-width:100%;
+
+        overflow-x:hidden;
 
     }
 

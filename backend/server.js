@@ -4,7 +4,9 @@
 
 require("dotenv").config();
 
-
+console.log("Cloudinary cloud name:", process.env.CLOUDINARY_CLOUD_NAME);
+console.log("Cloudinary API key exists:", !!process.env.CLOUDINARY_API_KEY);
+console.log("Cloudinary API secret exists:", !!process.env.CLOUDINARY_API_SECRET);
 
 // =====================================================
 // IMPORTS
@@ -66,6 +68,17 @@ app.use(
 
 );
 
+app.use((req, res, next) => {
+
+    console.log("");
+    console.log("========== INCOMING REQUEST ==========");
+    console.log("METHOD:", req.method);
+    console.log("URL:", req.originalUrl);
+    console.log("======================================");
+
+    next();
+
+});
 
 
 
@@ -76,6 +89,7 @@ app.use(
 const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:5174",
+    "http://localhost:5177",
     process.env.CLIENT_URL
 ].filter(Boolean);
 

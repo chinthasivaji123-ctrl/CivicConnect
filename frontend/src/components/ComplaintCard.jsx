@@ -54,8 +54,10 @@ function ComplaintCard({ complaint }) {
     const category =
         complaint?.category || "Other";
 
+
     const status =
         complaint?.status || "Pending";
+
 
     const priority =
         complaint?.priority || "Medium";
@@ -91,12 +93,16 @@ function ComplaintCard({ complaint }) {
 
 
         if (!location) {
+
             return "Location not provided";
+
         }
 
 
         if (typeof location === "string") {
+
             return location;
+
         }
 
 
@@ -116,10 +122,12 @@ function ComplaintCard({ complaint }) {
             return parts.length
                 ? parts.join(", ")
                 : "Location not provided";
+
         }
 
 
         return "Location not provided";
+
     };
 
 
@@ -135,7 +143,9 @@ function ComplaintCard({ complaint }) {
 
 
         if (!dateValue) {
+
             return "Date not available";
+
         }
 
 
@@ -144,31 +154,69 @@ function ComplaintCard({ complaint }) {
 
 
         if (Number.isNaN(date.getTime())) {
+
             return "Date not available";
+
         }
 
 
         return date.toLocaleDateString(
+
             "en-IN",
+
             {
+
                 day: "2-digit",
                 month: "short",
                 year: "numeric"
+
             }
+
         );
+
     };
 
 
     /* =====================================================
-       IMAGE
+       IMAGE URL
+       
+       OLD COMPLAINTS:
+       filename only
+       Example:
+       1785686058509-road-damage.png
+
+       NEW COMPLAINTS:
+       Cloudinary URL
+       Example:
+       https://res.cloudinary.com/...
     ===================================================== */
-const imageUrl =
-    complaint?.image
-        ? `${(
-            import.meta.env.VITE_API_URL ||
-            "http://localhost:5000/api"
-        ).replace(/\/api\/?$/, "")}/uploads/${complaint.image}`
-        : null;
+
+    const getImageUrl = (image) => {
+
+        if (!image) {
+
+            return null;
+
+        }
+
+
+        if (
+            image.startsWith("http://") ||
+            image.startsWith("https://")
+        ) {
+
+            return image;
+
+        }
+
+
+        return `http://localhost:5000/uploads/${image}`;
+
+    };
+
+
+    const imageUrl =
+        getImageUrl(complaint?.image);
 
 
     /* =====================================================
@@ -194,14 +242,21 @@ const imageUrl =
     const getStatusIcon = () => {
 
         if (status === "Resolved") {
+
             return "✓";
+
         }
+
 
         if (status === "In Progress") {
+
             return "◔";
+
         }
 
+
         return "⌛";
+
     };
 
 
@@ -228,11 +283,16 @@ const imageUrl =
                 <div className="cc-category">
 
                     <span className="cc-category-icon">
+
                         {categoryIcon}
+
                     </span>
 
+
                     <span className="cc-category-text">
+
                         {displayCategory}
+
                     </span>
 
                 </div>
@@ -245,11 +305,16 @@ const imageUrl =
                 >
 
                     <span className="cc-status-icon">
+
                         {getStatusIcon()}
+
                     </span>
 
+
                     <span className="cc-status-text">
+
                         {status}
+
                     </span>
 
                 </div>
@@ -274,8 +339,10 @@ const imageUrl =
                     {/* TITLE */}
 
                     <h3 className="cc-title">
+
                         {complaint?.title ||
                             "Untitled Complaint"}
+
                     </h3>
 
 
@@ -284,11 +351,16 @@ const imageUrl =
                     <div className="cc-location">
 
                         <span className="cc-location-icon">
+
                             📍
+
                         </span>
 
+
                         <span className="cc-location-text">
+
                             {getLocation()}
+
                         </span>
 
                     </div>
@@ -312,8 +384,11 @@ const imageUrl =
 
                         <span className="cc-priority-dot"></span>
 
+
                         <span>
+
                             {priority}
+
                         </span>
 
                     </div>
@@ -346,11 +421,16 @@ const imageUrl =
                         <div className="cc-no-image">
 
                             <div className="cc-no-image-icon">
+
                                 🏙️
+
                             </div>
 
+
                             <span className="cc-no-image-text">
+
                                 No image
+
                             </span>
 
                         </div>
@@ -374,11 +454,16 @@ const imageUrl =
                 <div className="cc-date">
 
                     <span className="cc-date-icon">
+
                         📅
+
                     </span>
 
+
                     <span>
+
                         {getFormattedDate()}
+
                     </span>
 
                 </div>
@@ -401,11 +486,16 @@ const imageUrl =
                 >
 
                     <span>
+
                         View Details
+
                     </span>
 
+
                     <span className="cc-details-arrow">
+
                         →
+
                     </span>
 
                 </Link>

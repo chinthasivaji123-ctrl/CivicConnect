@@ -7,12 +7,14 @@ const router = express.Router();
 // MIDDLEWARE
 // =====================================================
 
-const authMiddleware = require("../middleware/authMiddleware");
+const authMiddleware =
+    require("../middleware/authMiddleware");
 
-const adminMiddleware = require("../middleware/adminMiddleware");
+const adminMiddleware =
+    require("../middleware/adminMiddleware");
 
-const upload = require("../middleware/upload");
-
+const upload =
+    require("../middleware/upload");
 
 
 
@@ -34,30 +36,17 @@ const {
 
     deleteComplaint,
 
-    getComplaintStats
+    getComplaintStats,
 
+    getRecentComplaints
 
 } = require("../controllers/complaintController");
-
-
-
-
 
 
 // =====================================================
 // CREATE COMPLAINT
 // POST /api/complaints/create
-//
-// Access:
-// Citizen
-//
-// Authentication:
-// Required
-//
-// Upload:
-// Complaint Image
 // =====================================================
-
 
 router.post(
 
@@ -65,29 +54,69 @@ router.post(
 
     authMiddleware,
 
-    upload.single("image"),
+    (req, res, next) => {
+
+        console.log("");
+        console.log("========================================");
+        console.log("CREATE COMPLAINT ROUTE REACHED");
+        console.log("========================================");
+
+        upload.single("image")(req, res, (error) => {
+
+            if (error) {
+
+                console.log("");
+                console.log("========================================");
+                console.log("MULTER ERROR");
+                console.log("========================================");
+
+                console.log("Error name:", error.name);
+                console.log("Error message:", error.message);
+                console.log("Error code:", error.code);
+
+                return res.status(400).json({
+
+                    success: false,
+
+                    message:
+                        error.message ||
+                        "Image upload middleware failed",
+
+                    error:
+                        error.code || error.name
+
+                });
+
+            }
+
+            console.log("✅ MULTER PROCESSING SUCCESS");
+
+            console.log(
+                "File:",
+                req.file
+                    ? {
+                        originalname: req.file.originalname,
+                        mimetype: req.file.mimetype,
+                        size: req.file.size
+                    }
+                    : "NO FILE"
+            );
+
+            next();
+
+        });
+
+    },
 
     createComplaint
 
 );
 
 
-
-
-
-
-
 // =====================================================
-// GET LOGGED-IN USER COMPLAINTS
+// GET MY COMPLAINTS
 // GET /api/complaints/my
-//
-// Access:
-// Citizen
-//
-// Purpose:
-// Shows complaints created by user
 // =====================================================
-
 
 router.get(
 
@@ -100,23 +129,10 @@ router.get(
 );
 
 
-
-
-
-
-
-
 // =====================================================
 // GET ALL COMPLAINTS
 // GET /api/complaints/all
-//
-// Access:
-// Admin
-//
-// IMPORTANT:
-// Keep this route before /:id
 // =====================================================
-
 
 router.get(
 
@@ -131,30 +147,10 @@ router.get(
 );
 
 
-
-
-
-
-
-
 // =====================================================
 // GET COMPLAINT STATISTICS
 // GET /api/complaints/stats
-//
-// Access:
-// Admin
-//
-// Purpose:
-// Dashboard Analytics
-//
-// Returns:
-// Total complaints
-// Pending count
-// In Progress count
-// Resolved count
-// Category wise count
 // =====================================================
-
 
 router.get(
 
@@ -169,27 +165,10 @@ router.get(
 );
 
 
-
-
-
-
-
-
 // =====================================================
 // UPDATE COMPLAINT STATUS
 // PUT /api/complaints/status/:id
-//
-// Access:
-// Admin
-//
-// Status:
-// Pending
-// In Progress
-// Resolved
-//
-// Also creates notification
 // =====================================================
-
 
 router.put(
 
@@ -204,22 +183,10 @@ router.put(
 );
 
 
-
-
-
-
-
-
 // =====================================================
 // DELETE COMPLAINT
 // DELETE /api/complaints/delete/:id
-//
-// Access:
-// Admin
-//
-// Also sends notification
 // =====================================================
-
 
 router.delete(
 
@@ -234,23 +201,10 @@ router.delete(
 );
 
 
-
-
-
-
-
-
 // =====================================================
 // GET SINGLE COMPLAINT
 // GET /api/complaints/:id
-//
-// Access:
-// Citizen + Admin
-//
-// Purpose:
-// Complaint details page
 // =====================================================
-
 
 router.get(
 
@@ -263,15 +217,8 @@ router.get(
 );
 
 
-
-
-
-
-
-
 // =====================================================
-// EXPORT ROUTER
+// EXPORT
 // =====================================================
-
 
 module.exports = router;

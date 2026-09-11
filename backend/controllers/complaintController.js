@@ -4,18 +4,80 @@ const Complaint = require("../models/Complaint");
 
 const Notification = require("../models/Notification");
 
+const cloudinary = require("../config/cloudinary");
 
+
+// =====================================================
+// UPLOAD IMAGE TO CLOUDINARY
+// =====================================================
+
+const uploadToCloudinary = (buffer) => {
+
+    return new Promise((resolve, reject) => {
+
+        const uploadStream =
+            cloudinary.uploader.upload_stream(
+
+                {
+                    folder: "civicconnect/complaints",
+                    resource_type: "image"
+                },
+
+                (error, result) => {
+
+                    if (error) {
+
+                        reject(error);
+
+                    }
+                    else {
+
+                        resolve(result);
+
+                    }
+
+                }
+
+            );
+
+
+        uploadStream.end(buffer);
+
+    });
+
+};
 
 
 // =====================================================
 // CREATE COMPLAINT (CITIZEN)
 // =====================================================
 
+const createComplaint = async (req, res) => {
 
-const createComplaint = async(req,res)=>{
+    try {
 
+        console.log("");
+        console.log("========================================");
+        console.log("CREATE COMPLAINT REQUEST");
+        console.log("========================================");
 
-    try{
+        console.log("BODY:", req.body);
+
+        console.log(
+            "FILE:",
+            req.file
+                ? {
+                    originalname: req.file.originalname,
+                    mimetype: req.file.mimetype,
+                    size: req.file.size
+                }
+                : "NO FILE"
+        );
+
+        console.log(
+            "USER:",
+            req.user
+        );
 
 
         const {
@@ -30,456 +92,478 @@ const createComplaint = async(req,res)=>{
             street,
             pincode
 
-
         } = req.body;
 
 
+        // =================================================
+        // VALIDATE REQUIRED FIELDS
+        // =================================================
 
-
-
-        if(
+        if (
 
             !title ||
             !description ||
             !category ||
-
             !state ||
             !district ||
             !city ||
             !street ||
             !pincode
 
-        ){
+        ) {
+
+            console.log(
+                "VALIDATION FAILED"
+            );
 
 
             return res.status(400).json({
 
                 message:
-                "All fields are required"
+                    "All fields are required"
 
             });
-
 
         }
 
 
+        // =================================================
+        // UPLOAD IMAGE
+        // =================================================
 
+        let imageUrl = null;
 
 
+        if (req.file) {
 
+            console.log(
+                "IMAGE FOUND"
+            );
 
-        const complaint = await Complaint.create({
+            console.log(
+                "Starting Cloudinary upload..."
+            );
 
 
-            title,
+            try {
 
+                const uploadedImage =
+                    await uploadToCloudinary(
+                        req.file.buffer
+                    );
 
-            description,
 
+                console.log(
+                    "CLOUDINARY UPLOAD SUCCESS"
+                );
 
-            category,
 
+                console.log(
+                    "Cloudinary result:",
+                    uploadedImage
+                );
 
 
-            address:{
+                imageUrl =
+                    uploadedImage.secure_url;
 
 
-                state,
-                district,
-                city,
-                street,
-                pincode
+                console.log(
+                    "IMAGE URL:",
+                    imageUrl
+                );
 
+            }
 
-            },
 
+            catch (uploadError) {
 
+                console.log("");
+                console.log(
+                    "========================================"
+                );
+                console.log(
+                    "CLOUDINARY UPLOAD ERROR"
+                );
+                console.log(
+                    "========================================"
+                );
 
-            image:
+                console.log(
+                    uploadError
+                );
 
-            req.file
+                console.log(
+                    "ERROR MESSAGE:",
+                    uploadError.message
+                );
 
-            ?
+                console.log(
+                    "ERROR NAME:",
+                    uploadError.name
+                );
 
-            req.file.filename
+                console.log(
+                    "ERROR HTTP CODE:",
+                    uploadError.http_code
+                );
 
-            :
 
-            null,
+                return res.status(500).json({
 
+                    message:
+                        "Image upload failed",
 
+                    error:
+                        uploadError.message || "Unknown Cloudinary error"
 
-            user:req.user.id,
+                });
 
+            }
 
+        }
+        else {
 
-            status:"Pending",
+            console.log(
+                "NO IMAGE PROVIDED"
+            );
 
+        }
 
 
-            statusHistory:[
-
-
-                {
-
-                    status:"Pending",
-
-                    date:new Date()
-
-                }
-
-
-            ]
-
-
-        });
-
-
-
-
-
-
-
-        // ================================
-        // CREATE NOTIFICATION
-        // ================================
-
-
-        await Notification.create({
-
-
-            user:req.user.id,
-
-
-            complaint:complaint._id,
-
-
-            message:
-
-            `Your complaint "${title}" has been submitted successfully`,
-
-
-            type:"COMPLAINT_CREATED"
-
-
-        });
-
-
-
-
-
-
-
-        res.status(201).json({
-
-
-            message:
-
-            "Complaint created successfully",
-
-
-            complaint
-
-
-        });
-
-
-
-
-
-    }
-
-
-    catch(error){
-
+        // =================================================
+        // CREATE COMPLAINT
+        // =================================================
 
         console.log(
-
-            "CREATE COMPLAINT ERROR:",
-
-            error
-
+            "Creating complaint in MongoDB..."
         );
 
 
+        const complaint =
+            await Complaint.create({
 
-        res.status(500).json({
+                title,
+
+                description,
+
+                category,
+
+                address: {
+
+                    state,
+                    district,
+                    city,
+                    street,
+                    pincode
+
+                },
+
+                image: imageUrl,
+
+                user: req.user.id,
+
+                status: "Pending",
+
+                statusHistory: [
+
+                    {
+
+                        status: "Pending",
+
+                        date: new Date()
+
+                    }
+
+                ]
+
+            });
+
+
+        console.log(
+            "COMPLAINT CREATED:",
+            complaint._id
+        );
+
+
+        // =================================================
+        // CREATE NOTIFICATION
+        // =================================================
+
+        try {
+
+            await Notification.create({
+
+                user: req.user.id,
+
+                complaint: complaint._id,
+
+                message:
+                    `Your complaint "${title}" has been submitted successfully`,
+
+                type:
+                    "COMPLAINT_CREATED"
+
+            });
+
+
+            console.log(
+                "NOTIFICATION CREATED"
+            );
+
+        }
+
+        catch (notificationError) {
+
+            console.log(
+                "NOTIFICATION ERROR:",
+                notificationError
+            );
+
+        }
+
+
+        // =================================================
+        // RESPONSE
+        // =================================================
+
+        console.log(
+            "COMPLAINT CREATION SUCCESS"
+        );
+
+        console.log(
+            "========================================"
+        );
+
+
+        return res.status(201).json({
 
             message:
+                "Complaint created successfully",
 
-            "Complaint creation failed"
+            complaint
 
         });
-
 
     }
 
 
+    catch (error) {
+
+        console.log("");
+        console.log(
+            "========================================"
+        );
+        console.log(
+            "CREATE COMPLAINT ERROR"
+        );
+        console.log(
+            "========================================"
+        );
+
+        console.log(
+            error
+        );
+
+
+        return res.status(500).json({
+
+            message:
+                "Complaint creation failed",
+
+            error:
+                error.message || "Unknown error"
+
+        });
+
+    }
+
 };
-
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // GET MY COMPLAINTS (CITIZEN)
 // =====================================================
 
+const getMyComplaints = async (req, res) => {
 
-const getMyComplaints = async(req,res)=>{
+    try {
 
+        const complaints =
+            await Complaint.find({
 
-    try{
+                user: req.user.id
 
+            })
 
-        const complaints = await Complaint.find({
+                .populate(
 
+                    "user",
 
-            user:req.user.id
+                    "name email mobile"
 
+                )
 
-        })
+                .sort({
 
+                    createdAt: -1
 
-        .populate(
-
-            "user",
-
-            "name email mobile"
-
-        )
-
-
-        .sort({
-
-            createdAt:-1
-
-        });
+    });
 
 
-
-
-
-
-
-        res.status(200).json(
+        return res.status(200).json(
 
             complaints
 
         );
 
-
-
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "GET MY COMPLAINT ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
+        return res.status(500).json({
 
             message:
+                "Unable to fetch complaints",
 
-            "Unable to fetch complaints"
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
-
-
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // GET ALL COMPLAINTS (ADMIN)
 // =====================================================
 
+const getAllComplaints = async (req, res) => {
 
-const getAllComplaints = async(req,res)=>{
+    try {
 
+        const complaints =
+            await Complaint.find()
 
-    try{
+                .populate(
 
+                    "user",
 
-        const complaints = await Complaint.find()
+                    "name email mobile"
 
+                )
 
+                .sort({
 
-        .populate(
+                    createdAt: -1
 
-            "user",
-
-            "name email mobile"
-
-        )
-
-
-
-        .sort({
-
-            createdAt:-1
-
-        });
+    });
 
 
-
-
-
-
-
-        res.status(200).json(
+        return res.status(200).json(
 
             complaints
 
         );
 
-
-
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "GET ALL COMPLAINT ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
+        return res.status(500).json({
 
             message:
+                "Unable to fetch complaints",
 
-            "Unable to fetch complaints"
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
+
 
 // =====================================================
 // GET SINGLE COMPLAINT
 // =====================================================
 
+const getComplaintById = async (req, res) => {
 
-const getComplaintById = async(req,res)=>{
+    try {
 
-
-    try{
-
-
-        const id = req.params.id;
+        const id =
+            req.params.id;
 
 
-
-
-        if(
+        if (
 
             !mongoose.Types.ObjectId.isValid(id)
 
-        ){
-
+        ) {
 
             return res.status(400).json({
 
                 message:
-
-                "Invalid complaint id"
+                    "Invalid complaint id"
 
             });
-
 
         }
 
 
+        const complaint =
+            await Complaint.findById(id)
+
+                .populate(
+
+                    "user",
+
+                    "name email mobile"
+
+                );
 
 
-
-
-
-        const complaint = await Complaint.findById(id)
-
-
-
-        .populate(
-
-            "user",
-
-            "name email mobile"
-
-        );
-
-
-
-
-
-
-
-
-        if(!complaint){
-
+        if (!complaint) {
 
             return res.status(404).json({
 
                 message:
-
-                "Complaint not found"
+                    "Complaint not found"
 
             });
-
 
         }
 
 
-
-
-
-
-
-
-        // ===============================
+        // =================================================
         // CITIZEN SECURITY
-        // ===============================
+        // =================================================
 
+        if (
 
-        if(
-
-            req.user.role==="citizen"
+            req.user.role === "citizen"
 
             &&
 
@@ -489,86 +573,59 @@ const getComplaintById = async(req,res)=>{
 
             req.user.id.toString()
 
-        ){
-
+        ) {
 
             return res.status(403).json({
 
                 message:
-
-                "Access denied"
+                    "Access denied"
 
             });
-
 
         }
 
 
-
-
-
-
-
-        res.status(200).json(
+        return res.status(200).json(
 
             complaint
 
         );
 
-
-
-
-
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "GET COMPLAINT ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
+        return res.status(500).json({
 
             message:
+                "Unable to fetch complaint",
 
-            "Unable to fetch complaint"
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
-
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // UPDATE COMPLAINT STATUS (ADMIN)
 // =====================================================
 
+const updateComplaintStatus = async (req, res) => {
 
-const updateComplaintStatus = async(req,res)=>{
-
-
-    try{
-
+    try {
 
         const {
 
@@ -577,345 +634,209 @@ const updateComplaintStatus = async(req,res)=>{
         } = req.body;
 
 
-
-
-
         const allowedStatus = [
 
-
             "Pending",
-
             "In Progress",
-
             "Resolved"
-
 
         ];
 
 
-
-
-
-
-
-        if(
+        if (
 
             !allowedStatus.includes(status)
 
-        ){
-
+        ) {
 
             return res.status(400).json({
 
                 message:
-
-                "Invalid status"
+                    "Invalid status"
 
             });
-
 
         }
 
 
+        const complaint =
+            await Complaint.findById(
+
+                req.params.id
+
+            );
 
 
-
-
-
-
-        const complaint = await Complaint.findById(
-
-            req.params.id
-
-        );
-
-
-
-
-
-
-
-        if(!complaint){
-
+        if (!complaint) {
 
             return res.status(404).json({
 
                 message:
-
-                "Complaint not found"
+                    "Complaint not found"
 
             });
-
 
         }
 
 
+        const oldStatus =
+            complaint.status;
 
 
-
-
-
-        const oldStatus = complaint.status;
-
-
-
-
-
-
-
-
-        // ===============================
+        // =================================================
         // UPDATE ONLY IF STATUS CHANGED
-        // ===============================
+        // =================================================
 
+        if (oldStatus !== status) {
 
-        if(oldStatus !== status){
-
-
-
-            complaint.status = status;
-
+            complaint.status =
+                status;
 
 
             complaint.statusHistory.push({
 
-
                 status,
 
-
-                date:new Date()
-
+                date: new Date()
 
             });
-
-
-
 
 
             await complaint.save();
 
 
-
-
-
-
-
             const notificationMessage =
 
-            `Your complaint "${complaint.title}" status changed from ${oldStatus} to ${status}`;
+                `Your complaint "${complaint.title}" status changed from ${oldStatus} to ${status}`;
 
 
-
-
-
-
-
-
-
-            // ===============================
+            // =================================================
             // PREVENT DUPLICATE NOTIFICATION
-            // ===============================
+            // =================================================
 
+            const exists =
+                await Notification.findOne({
 
-            const exists = await Notification.findOne({
+                    user: complaint.user,
 
+                    complaint: complaint._id,
 
-                user:complaint.user,
-
-
-                complaint:complaint._id,
-
-
-                message:notificationMessage
-
-
-            });
-
-
-
-
-
-
-
-
-            if(!exists){
-
-
-                await Notification.create({
-
-
-                    user:complaint.user,
-
-
-                    complaint:complaint._id,
-
-
-                    message:notificationMessage,
-
-
-                    type:
-
-
-                    status==="Resolved"
-
-                    ?
-
-                    "COMPLAINT_RESOLVED"
-
-                    :
-
-                    "STATUS_UPDATE"
-
+                    message: notificationMessage
 
                 });
 
 
+            if (!exists) {
+
+                await Notification.create({
+
+                    user: complaint.user,
+
+                    complaint: complaint._id,
+
+                    message: notificationMessage,
+
+                    type:
+
+                        status === "Resolved"
+
+                            ?
+
+                            "COMPLAINT_RESOLVED"
+
+                            :
+
+                            "STATUS_UPDATE"
+
+                });
+
             }
-
-
 
         }
 
 
-
-
-
-
-
-
-
-        res.status(200).json({
-
+        return res.status(200).json({
 
             message:
-
-            "Complaint status updated successfully",
-
+                "Complaint status updated successfully",
 
             complaint
 
-
         });
-
-
-
-
 
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "UPDATE STATUS ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
+        return res.status(500).json({
 
             message:
+                "Unable to update complaint status",
 
-            "Unable to update complaint status"
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
-
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // DELETE COMPLAINT (ADMIN)
 // =====================================================
 
+const deleteComplaint = async (req, res) => {
 
-const deleteComplaint = async(req,res)=>{
+    try {
 
+        const complaint =
+            await Complaint.findById(
 
-    try{
+                req.params.id
 
-
-        const complaint = await Complaint.findById(
-
-            req.params.id
-
-        );
+            );
 
 
-
-
-
-
-
-        if(!complaint){
-
+        if (!complaint) {
 
             return res.status(404).json({
 
                 message:
-
-                "Complaint not found"
+                    "Complaint not found"
 
             });
-
 
         }
 
 
-
-
-
-
-
-        // ===============================
+        // =================================================
         // CREATE NOTIFICATION BEFORE DELETE
-        // ===============================
-
+        // =================================================
 
         await Notification.create({
 
+            user: complaint.user,
 
-            user:complaint.user,
-
-
-            complaint:complaint._id,
-
+            complaint: complaint._id,
 
             message:
-
-            `Your complaint "${complaint.title}" has been deleted by admin`,
-
+                `Your complaint "${complaint.title}" has been deleted by admin`,
 
             type:
-
-            "COMPLAINT_DELETED"
-
+                "COMPLAINT_DELETED"
 
         });
-
-
-
-
-
-
-
 
 
         await Complaint.findByIdAndDelete(
@@ -925,367 +846,238 @@ const deleteComplaint = async(req,res)=>{
         );
 
 
-
-
-
-
-
-
-
-        res.status(200).json({
-
+        return res.status(200).json({
 
             message:
-
-            "Complaint deleted successfully"
-
+                "Complaint deleted successfully"
 
         });
-
-
-
-
 
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "DELETE COMPLAINT ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
+        return res.status(500).json({
 
             message:
+                "Unable to delete complaint",
 
-            "Unable to delete complaint"
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
+
 
 // =====================================================
 // ADMIN DASHBOARD STATISTICS
 // =====================================================
 
+const getComplaintStats = async (req, res) => {
 
-const getComplaintStats = async(req,res)=>{
-
-
-    try{
-
+    try {
 
         const total =
-
-        await Complaint.countDocuments();
-
-
+            await Complaint.countDocuments();
 
 
         const pending =
+            await Complaint.countDocuments({
 
-        await Complaint.countDocuments({
+                status: "Pending"
 
-            status:"Pending"
-
-        });
-
-
+            });
 
 
         const inProgress =
+            await Complaint.countDocuments({
 
-        await Complaint.countDocuments({
+                status: "In Progress"
 
-            status:"In Progress"
-
-        });
-
-
+            });
 
 
         const resolved =
+            await Complaint.countDocuments({
 
-        await Complaint.countDocuments({
+                status: "Resolved"
 
-            status:"Resolved"
-
-        });
-
+            });
 
 
-
-
-
-
-
-
-        // ===============================
+        // =================================================
         // CATEGORY WISE COUNT
-        // ===============================
-
+        // =================================================
 
         const categoryStats =
+            await Complaint.aggregate([
 
-        await Complaint.aggregate([
+                {
 
+                    $group: {
 
-            {
+                        _id: "$category",
 
-                $group:{
+                        count: {
 
+                            $sum: 1
 
-                    _id:"$category",
-
-
-                    count:{
-
-
-                        $sum:1
-
+                        }
 
                     }
 
-
                 }
 
-
-            }
-
-
-        ]);
-
-
-
-
-
+            ]);
 
 
         const categories = {};
 
 
+        categoryStats.forEach(item => {
 
-
-
-        categoryStats.forEach(item=>{
-
-
-            categories[item._id] = item.count;
-
+            categories[item._id] =
+                item.count;
 
         });
 
 
-
-
-
-
-
-
-        res.status(200).json({
-
+        return res.status(200).json({
 
             total,
 
-
             pending,
-
 
             inProgress,
 
-
             resolved,
-
 
             categories
 
-
         });
-
-
-
-
 
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "STATS ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
-
+        return res.status(500).json({
 
             message:
+                "Unable to fetch complaint statistics",
 
-            "Unable to fetch complaint statistics"
-
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
-
-
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // RECENT COMPLAINTS (ADMIN DASHBOARD)
 // =====================================================
 
+const getRecentComplaints = async (req, res) => {
 
-const getRecentComplaints = async(req,res)=>{
+    try {
 
+        const complaints =
+            await Complaint.find()
 
-    try{
+                .populate(
 
+                    "user",
 
-        const complaints = await Complaint.find()
+                    "name email mobile"
 
+                )
 
+                .sort({
 
-        .populate(
+                    createdAt: -1
 
-            "user",
+                })
 
-            "name email mobile"
-
-        )
-
-
-
-        .sort({
-
-            createdAt:-1
-
-        })
+                .limit(5);
 
 
-
-        .limit(5);
-
-
-
-
-
-
-
-
-        res.status(200).json(
+        return res.status(200).json(
 
             complaints
 
         );
 
-
-
-
-
     }
 
 
-    catch(error){
-
+    catch (error) {
 
         console.log(
 
             "RECENT COMPLAINT ERROR:",
-
             error
 
         );
 
 
-
-        res.status(500).json({
-
+        return res.status(500).json({
 
             message:
+                "Unable to fetch recent complaints",
 
-            "Unable to fetch recent complaints"
-
+            error:
+                error.message
 
         });
 
-
     }
 
-
 };
-
-
-
-
-
-
-
-
-
-
 
 
 // =====================================================
 // EXPORT CONTROLLERS
 // =====================================================
 
-
 module.exports = {
-
 
     createComplaint,
 
-
     getMyComplaints,
-
 
     getAllComplaints,
 
-
     getComplaintById,
-
 
     updateComplaintStatus,
 
-
     deleteComplaint,
-
 
     getComplaintStats,
 
-
     getRecentComplaints
-
 
 };

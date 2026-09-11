@@ -31,12 +31,6 @@ function CitizenComplaintDetails() {
     const [error, setError] = useState("");
 
 
-   const BASE_URL =
-    (
-        import.meta.env.VITE_API_URL ||
-        "http://localhost:5000/api"
-    ).replace(/\/api\/?$/, "");
-
 
     // ================= FETCH COMPLAINT =================
 
@@ -538,7 +532,7 @@ function CitizenComplaintDetails() {
                                     <div className="details-image">
 
                                         <img
-                                            src={`${BASE_URL}/uploads/${complaint.image}`}
+                                            src={complaint.image}
                                             alt="Complaint evidence"
                                         />
 

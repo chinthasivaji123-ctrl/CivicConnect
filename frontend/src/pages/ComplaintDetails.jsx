@@ -30,12 +30,6 @@ function ComplaintDetails(){
             localStorage.getItem("user")
         ) || {};
 
-    const BASE_URL =
-    (
-        import.meta.env.VITE_API_URL ||
-        "http://localhost:5000/api"
-    ).replace(/\/api\/?$/, "");
-
 
     // ==============================
     // FETCH COMPLAINT
@@ -454,7 +448,9 @@ function ComplaintDetails(){
                             className={`status-badge ${statusClass}`}
                         >
                             <span className="status-dot"></span>
+
                             {complaint.status || "Pending"}
+
                         </span>
 
                         <span
@@ -500,16 +496,19 @@ function ComplaintDetails(){
                             </p>
 
                             <div className="submitted-line">
+
                                 <span>
                                     🕐
                                 </span>
 
                                 Submitted on{" "}
+
                                 <strong>
                                     {formatDate(
                                         complaint.createdAt
                                     )}
                                 </strong>
+
                             </div>
 
                         </section>
@@ -526,6 +525,7 @@ function ComplaintDetails(){
                                 </div>
 
                                 <div>
+
                                     <span>
                                         CASE INFORMATION
                                     </span>
@@ -533,6 +533,7 @@ function ComplaintDetails(){
                                     <h3>
                                         Complaint Overview
                                     </h3>
+
                                 </div>
 
                             </div>
@@ -547,6 +548,7 @@ function ComplaintDetails(){
                                     </span>
 
                                     <div>
+
                                         <small>
                                             CATEGORY
                                         </small>
@@ -555,6 +557,7 @@ function ComplaintDetails(){
                                             {complaint.category ||
                                             "Not available"}
                                         </strong>
+
                                     </div>
 
                                 </div>
@@ -567,6 +570,7 @@ function ComplaintDetails(){
                                     </span>
 
                                     <div>
+
                                         <small>
                                             PRIORITY
                                         </small>
@@ -574,6 +578,7 @@ function ComplaintDetails(){
                                         <strong>
                                             {priority}
                                         </strong>
+
                                     </div>
 
                                 </div>
@@ -586,6 +591,7 @@ function ComplaintDetails(){
                                     </span>
 
                                     <div>
+
                                         <small>
                                             SUBMITTED
                                         </small>
@@ -595,6 +601,7 @@ function ComplaintDetails(){
                                                 complaint.createdAt
                                             )}
                                         </strong>
+
                                     </div>
 
                                 </div>
@@ -607,6 +614,7 @@ function ComplaintDetails(){
                                     </span>
 
                                     <div>
+
                                         <small>
                                             CURRENT STATUS
                                         </small>
@@ -615,6 +623,7 @@ function ComplaintDetails(){
                                             {complaint.status ||
                                             "Pending"}
                                         </strong>
+
                                     </div>
 
                                 </div>
@@ -635,6 +644,7 @@ function ComplaintDetails(){
                                 </div>
 
                                 <div>
+
                                     <span>
                                         CITIZEN
                                     </span>
@@ -642,6 +652,7 @@ function ComplaintDetails(){
                                     <h3>
                                         Reported By
                                     </h3>
+
                                 </div>
 
                             </div>
@@ -650,10 +661,12 @@ function ComplaintDetails(){
                             <div className="citizen-card">
 
                                 <div className="citizen-avatar">
+
                                     {(complaint.user?.name ||
                                     "C")
                                     .charAt(0)
                                     .toUpperCase()}
+
                                 </div>
 
 
@@ -674,6 +687,7 @@ function ComplaintDetails(){
                                 <div className="citizen-contact">
 
                                     <div>
+
                                         <small>
                                             EMAIL
                                         </small>
@@ -682,9 +696,11 @@ function ComplaintDetails(){
                                             {complaint.user?.email ||
                                             "Not Available"}
                                         </strong>
+
                                     </div>
 
                                     <div>
+
                                         <small>
                                             MOBILE
                                         </small>
@@ -693,6 +709,7 @@ function ComplaintDetails(){
                                             {complaint.user?.mobile ||
                                             "Not Available"}
                                         </strong>
+
                                     </div>
 
                                 </div>
@@ -713,6 +730,7 @@ function ComplaintDetails(){
                                 </div>
 
                                 <div>
+
                                     <span>
                                         LOCATION
                                     </span>
@@ -720,6 +738,7 @@ function ComplaintDetails(){
                                     <h3>
                                         Complaint Location
                                     </h3>
+
                                 </div>
 
                             </div>
@@ -753,6 +772,7 @@ function ComplaintDetails(){
                                 <div className="location-details">
 
                                     <div>
+
                                         <small>
                                             STREET
                                         </small>
@@ -761,9 +781,11 @@ function ComplaintDetails(){
                                             {complaint.address?.street ||
                                             "—"}
                                         </strong>
+
                                     </div>
 
                                     <div>
+
                                         <small>
                                             CITY
                                         </small>
@@ -772,9 +794,11 @@ function ComplaintDetails(){
                                             {complaint.address?.city ||
                                             "—"}
                                         </strong>
+
                                     </div>
 
                                     <div>
+
                                         <small>
                                             DISTRICT
                                         </small>
@@ -783,9 +807,11 @@ function ComplaintDetails(){
                                             {complaint.address?.district ||
                                             "—"}
                                         </strong>
+
                                     </div>
 
                                     <div>
+
                                         <small>
                                             STATE
                                         </small>
@@ -794,17 +820,20 @@ function ComplaintDetails(){
                                             {complaint.address?.state ||
                                             "—"}
                                         </strong>
+
                                     </div>
 
                                     <div>
+
                                         <small>
                                             PINCODE
                                         </small>
 
                                         <strong>
                                             {complaint.address?.pincode ||
-                                            "—"}
+                                        "—"}
                                         </strong>
+
                                     </div>
 
                                 </div>
@@ -825,6 +854,7 @@ function ComplaintDetails(){
                                 </div>
 
                                 <div>
+
                                     <span>
                                         DESCRIPTION
                                     </span>
@@ -832,9 +862,11 @@ function ComplaintDetails(){
                                     <h3>
                                         Issue Details
                                     </h3>
+
                                 </div>
 
                             </div>
+
 
                             <div className="description-box">
 
@@ -862,6 +894,7 @@ function ComplaintDetails(){
                             <div className="side-card-header">
 
                                 <div>
+
                                     <span>
                                         EVIDENCE
                                     </span>
@@ -869,12 +902,15 @@ function ComplaintDetails(){
                                     <h3>
                                         Complaint Image
                                     </h3>
+
                                 </div>
 
                                 <span className="mini-badge">
+
                                     {complaint.image
                                         ? "Uploaded"
                                         : "None"}
+
                                 </span>
 
                             </div>
@@ -886,7 +922,7 @@ function ComplaintDetails(){
                                 <div className="image-wrapper">
 
                                     <img
-                                        src={`${BASE_URL}/uploads/${complaint.image}`}
+                                        src={complaint.image}
                                         className="details-image"
                                         alt="Complaint evidence"
                                     />
@@ -923,6 +959,7 @@ function ComplaintDetails(){
                             <div className="side-card-header">
 
                                 <div>
+
                                     <span>
                                         WORKFLOW
                                     </span>
@@ -930,6 +967,7 @@ function ComplaintDetails(){
                                     <h3>
                                         Complaint Progress
                                     </h3>
+
                                 </div>
 
                                 <span className={`workflow-state ${statusClass}`}>
@@ -952,14 +990,17 @@ function ComplaintDetails(){
                                 >
 
                                     <div className="step-dot">
+
                                         {isPending ||
                                         isInProgress ||
                                         isResolved
                                             ? "✓"
                                             : "1"}
+
                                     </div>
 
                                     <div>
+
                                         <strong>
                                             Pending
                                         </strong>
@@ -967,6 +1008,7 @@ function ComplaintDetails(){
                                         <span>
                                             Complaint received
                                         </span>
+
                                     </div>
 
                                 </div>
@@ -982,13 +1024,16 @@ function ComplaintDetails(){
                                 >
 
                                     <div className="step-dot">
+
                                         {isInProgress ||
                                         isResolved
                                             ? "✓"
                                             : "2"}
+
                                     </div>
 
                                     <div>
+
                                         <strong>
                                             In Progress
                                         </strong>
@@ -1011,12 +1056,15 @@ function ComplaintDetails(){
                                 >
 
                                     <div className="step-dot">
+
                                         {isResolved
                                             ? "✓"
                                             : "3"}
+
                                     </div>
 
                                     <div>
+
                                         <strong>
                                             Resolved
                                         </strong>
@@ -1041,6 +1089,7 @@ function ComplaintDetails(){
                             <div className="side-card-header">
 
                                 <div>
+
                                     <span>
                                         HISTORY
                                     </span>
@@ -1048,6 +1097,7 @@ function ComplaintDetails(){
                                     <h3>
                                         Status Timeline
                                     </h3>
+
                                 </div>
 
                                 <span className="history-count">
@@ -1124,6 +1174,7 @@ function ComplaintDetails(){
                                 <div className="side-card-header">
 
                                     <div>
+
                                         <span>
                                             ADMIN ACTIONS
                                         </span>
@@ -1131,6 +1182,7 @@ function ComplaintDetails(){
                                         <h3>
                                             Manage Complaint
                                         </h3>
+
                                     </div>
 
                                 </div>
@@ -1149,11 +1201,14 @@ function ComplaintDetails(){
                                                 )
                                             }
                                         >
+
                                             <span>🔨</span>
+
                                             {updating
                                                 ? "Updating..."
                                                 : "Start Work"
                                             }
+
                                         </button>
 
                                     )}
@@ -1170,11 +1225,14 @@ function ComplaintDetails(){
                                                 )
                                             }
                                         >
+
                                             <span>✓</span>
+
                                             {updating
                                                 ? "Updating..."
                                                 : "Resolve Complaint"
                                             }
+
                                         </button>
 
                                     )}
@@ -1183,11 +1241,13 @@ function ComplaintDetails(){
                                     {isResolved && (
 
                                         <div className="resolved-message">
+
                                             <span>
                                                 ✓
                                             </span>
 
                                             <div>
+
                                                 <strong>
                                                     Complaint Resolved
                                                 </strong>
@@ -1196,7 +1256,9 @@ function ComplaintDetails(){
                                                     This complaint has been
                                                     marked as completed.
                                                 </small>
+
                                             </div>
+
                                         </div>
 
                                     )}
@@ -1206,8 +1268,11 @@ function ComplaintDetails(){
                                         className="delete-btn"
                                         onClick={deleteComplaint}
                                     >
+
                                         <span>🗑</span>
+
                                         Delete Complaint
+
                                     </button>
 
                                 </div>
