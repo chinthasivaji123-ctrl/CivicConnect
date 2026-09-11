@@ -43,11 +43,8 @@ function Profile() {
     const [saving, setSaving] = useState(false);
 
     const [editForm, setEditForm] = useState({
-
         name: "",
-
         mobile: ""
-
     });
 
 
@@ -64,9 +61,7 @@ function Profile() {
             const response =
                 await API.get("/profile");
 
-
             setProfile(response.data);
-
 
         } catch (error) {
 
@@ -103,7 +98,46 @@ function Profile() {
 
 
     // ======================================================
-    // REFRESH
+    // ESCAPE KEY FOR EDIT MODAL
+    // ======================================================
+
+    useEffect(() => {
+
+        const handleEscape = (event) => {
+
+            if (
+                event.key === "Escape" &&
+                showEdit &&
+                !saving
+            ) {
+
+                setShowEdit(false);
+
+            }
+
+        };
+
+
+        document.addEventListener(
+            "keydown",
+            handleEscape
+        );
+
+
+        return () => {
+
+            document.removeEventListener(
+                "keydown",
+                handleEscape
+            );
+
+        };
+
+    }, [showEdit, saving]);
+
+
+    // ======================================================
+    // REFRESH PROFILE
     // ======================================================
 
     const refreshProfile = () => {
@@ -123,9 +157,11 @@ function Profile() {
 
         setEditForm({
 
-            name: profile?.name || "",
+            name:
+                profile?.name || "",
 
-            mobile: profile?.mobile || ""
+            mobile:
+                profile?.mobile || ""
 
         });
 
@@ -141,7 +177,9 @@ function Profile() {
     const closeEditProfile = () => {
 
         if (saving) {
+
             return;
+
         }
 
         setShowEdit(false);
@@ -160,6 +198,41 @@ function Profile() {
             value
         } = event.target;
 
+
+        // ==================================================
+        // MOBILE
+        // ==================================================
+
+        if (name === "mobile") {
+
+            const numbersOnly =
+                value.replace(
+                    /[^0-9]/g,
+                    ""
+                );
+
+
+            setEditForm(prev => ({
+
+                ...prev,
+
+                mobile:
+                    numbersOnly.slice(
+                        0,
+                        10
+                    )
+
+            }));
+
+
+            return;
+
+        }
+
+
+        // ==================================================
+        // OTHER INPUTS
+        // ==================================================
 
         setEditForm(prev => ({
 
@@ -182,13 +255,40 @@ function Profile() {
 
 
         // ==================================================
+        // CLEAN VALUES
+        // ==================================================
+
+        const name =
+            editForm.name.trim();
+
+
+        const mobile =
+            editForm.mobile.trim();
+
+
+        // ==================================================
         // NAME VALIDATION
         // ==================================================
 
-        if (!editForm.name.trim()) {
+        if (!name) {
 
             toast.error(
                 "Name cannot be empty"
+            );
+
+            return;
+
+        }
+
+
+        // ==================================================
+        // NAME LENGTH
+        // ==================================================
+
+        if (name.length < 2) {
+
+            toast.error(
+                "Name must contain at least 2 characters"
             );
 
             return;
@@ -201,10 +301,8 @@ function Profile() {
         // ==================================================
 
         if (
-            editForm.mobile &&
-            !/^[0-9]{10}$/.test(
-                editForm.mobile.trim()
-            )
+            mobile &&
+            !/^[0-9]{10}$/.test(mobile)
         ) {
 
             toast.error(
@@ -221,23 +319,22 @@ function Profile() {
             setSaving(true);
 
 
+            // ==================================================
+            // API REQUEST
+            // ==================================================
+
             const response =
                 await API.put(
                     "/profile",
                     {
-
-                        name:
-                            editForm.name.trim(),
-
-                        mobile:
-                            editForm.mobile.trim()
-
+                        name: name,
+                        mobile: mobile
                     }
                 );
 
 
             // ==================================================
-            // UPDATED USER
+            // GET UPDATED USER
             // ==================================================
 
             const updatedUser =
@@ -245,7 +342,7 @@ function Profile() {
 
 
             // ==================================================
-            // UPDATE PROFILE SCREEN
+            // UPDATE PROFILE STATE
             // ==================================================
 
             setProfile(prev => ({
@@ -258,11 +355,13 @@ function Profile() {
 
 
             // ==================================================
-            // UPDATE LOCAL STORAGE USER
+            // UPDATE LOCAL STORAGE
             // ==================================================
 
             const savedUser =
-                localStorage.getItem("user");
+                localStorage.getItem(
+                    "user"
+                );
 
 
             if (savedUser) {
@@ -270,23 +369,31 @@ function Profile() {
                 try {
 
                     const user =
-                        JSON.parse(savedUser);
+                        JSON.parse(
+                            savedUser
+                        );
+
+
+                    const updatedLocalUser = {
+
+                        ...user,
+
+                        name:
+                            updatedUser.name,
+
+                        mobile:
+                            updatedUser.mobile
+
+                    };
 
 
                     localStorage.setItem(
                         "user",
-                        JSON.stringify({
-
-                            ...user,
-
-                            name:
-                                updatedUser.name,
-
-                            mobile:
-                                updatedUser.mobile
-
-                        })
+                        JSON.stringify(
+                            updatedLocalUser
+                        )
                     );
+
 
                 } catch (storageError) {
 
@@ -306,6 +413,10 @@ function Profile() {
 
             setShowEdit(false);
 
+
+            // ==================================================
+            // SUCCESS MESSAGE
+            // ==================================================
 
             toast.success(
                 "Profile updated successfully!"
@@ -340,9 +451,13 @@ function Profile() {
 
     const logout = () => {
 
-        localStorage.removeItem("user");
+        localStorage.removeItem(
+            "user"
+        );
 
-        localStorage.removeItem("token");
+        localStorage.removeItem(
+            "token"
+        );
 
         navigate("/login");
 
@@ -422,8 +537,14 @@ function Profile() {
     }
 
 
+    // ======================================================
+    // PROFILE CHECK
+    // ======================================================
+
     if (!profile) {
+
         return null;
+
     }
 
 
@@ -487,7 +608,9 @@ function Profile() {
 
                 <div
                     className="profile-brand"
-                    onClick={() => navigate("/")}
+                    onClick={() =>
+                        navigate("/")
+                    }
                 >
 
                     <div className="profile-brand-icon">
@@ -519,11 +642,12 @@ function Profile() {
                         )
                     }
                 >
+
                     📊 Dashboard
+
                 </button>
 
             </div>
-
 
 
             {/* ==================================================
@@ -585,7 +709,6 @@ function Profile() {
             </section>
 
 
-
             {/* ==================================================
                 PERSONAL INFORMATION
             ================================================== */}
@@ -631,13 +754,13 @@ function Profile() {
                             </span>
 
                             <strong>
-                                {profile.name || "Not available"}
+                                {profile.name ||
+                                    "Not available"}
                             </strong>
 
                         </div>
 
                     </div>
-
 
 
                     {/* EMAIL */}
@@ -655,13 +778,13 @@ function Profile() {
                             </span>
 
                             <strong>
-                                {profile.email || "Not available"}
+                                {profile.email ||
+                                    "Not available"}
                             </strong>
 
                         </div>
 
                     </div>
-
 
 
                     {/* MOBILE */}
@@ -679,13 +802,13 @@ function Profile() {
                             </span>
 
                             <strong>
-                                {profile.mobile || "Not added"}
+                                {profile.mobile ||
+                                    "Not added"}
                             </strong>
 
                         </div>
 
                     </div>
-
 
 
                     {/* ROLE */}
@@ -713,7 +836,6 @@ function Profile() {
                     </div>
 
 
-
                     {/* JOINED */}
 
                     <div className="profile-info-card">
@@ -739,7 +861,6 @@ function Profile() {
                 </div>
 
             </section>
-
 
 
             {/* ==================================================
@@ -772,6 +893,8 @@ function Profile() {
                 <div className="profile-stats-grid">
 
 
+                    {/* TOTAL */}
+
                     <div className="profile-stat-card total">
 
                         <div className="profile-stat-icon">
@@ -792,6 +915,8 @@ function Profile() {
 
                     </div>
 
+
+                    {/* PENDING */}
 
                     <div className="profile-stat-card pending">
 
@@ -814,6 +939,8 @@ function Profile() {
                     </div>
 
 
+                    {/* IN PROGRESS */}
+
                     <div className="profile-stat-card progress">
 
                         <div className="profile-stat-icon">
@@ -834,6 +961,8 @@ function Profile() {
 
                     </div>
 
+
+                    {/* RESOLVED */}
 
                     <div className="profile-stat-card resolved">
 
@@ -858,8 +987,9 @@ function Profile() {
                 </div>
 
 
-
-                {/* RESOLUTION RATE */}
+                {/* ==================================================
+                    RESOLUTION RATE
+                ================================================== */}
 
                 <div className="profile-resolution-card">
 
@@ -907,7 +1037,6 @@ function Profile() {
             </section>
 
 
-
             {/* ==================================================
                 QUICK ACTIONS
             ================================================== */}
@@ -933,6 +1062,8 @@ function Profile() {
 
                 <div className="profile-actions">
 
+
+                    {/* DASHBOARD */}
 
                     <button
                         className="profile-action-btn dashboard"
@@ -964,6 +1095,7 @@ function Profile() {
                     </button>
 
 
+                    {/* EDIT PROFILE */}
 
                     <button
                         className="profile-action-btn edit"
@@ -989,6 +1121,7 @@ function Profile() {
                     </button>
 
 
+                    {/* LOGOUT */}
 
                     <button
                         className="profile-action-btn logout"
@@ -1018,7 +1151,6 @@ function Profile() {
             </section>
 
 
-
             {/* ==================================================
                 FOOTER
             ================================================== */}
@@ -1034,7 +1166,6 @@ function Profile() {
                 </span>
 
             </footer>
-
 
 
             {/* ==================================================
@@ -1056,7 +1187,9 @@ function Profile() {
                     >
 
 
-                        {/* HEADER */}
+                        {/* ==================================================
+                            HEADER
+                        ================================================== */}
 
                         <div className="edit-profile-header">
 
@@ -1082,6 +1215,7 @@ function Profile() {
                                 className="edit-profile-close"
                                 onClick={closeEditProfile}
                                 disabled={saving}
+                                aria-label="Close edit profile"
                             >
                                 ×
                             </button>
@@ -1089,8 +1223,9 @@ function Profile() {
                         </div>
 
 
-
-                        {/* FORM */}
+                        {/* ==================================================
+                            FORM
+                        ================================================== */}
 
                         <form
                             className="edit-profile-form"
@@ -1098,11 +1233,13 @@ function Profile() {
                         >
 
 
-                            {/* NAME */}
+                            {/* ==================================================
+                                NAME
+                            ================================================== */}
 
                             <div className="edit-form-group">
 
-                                <label>
+                                <label htmlFor="edit-name">
                                     Full Name
                                 </label>
 
@@ -1113,12 +1250,18 @@ function Profile() {
                                     </span>
 
                                     <input
+                                        id="edit-name"
                                         type="text"
                                         name="name"
-                                        value={editForm.name}
-                                        onChange={handleEditChange}
+                                        value={
+                                            editForm.name
+                                        }
+                                        onChange={
+                                            handleEditChange
+                                        }
                                         placeholder="Enter your full name"
                                         maxLength="80"
+                                        autoComplete="name"
                                         disabled={saving}
                                     />
 
@@ -1127,12 +1270,13 @@ function Profile() {
                             </div>
 
 
-
-                            {/* MOBILE */}
+                            {/* ==================================================
+                                MOBILE
+                            ================================================== */}
 
                             <div className="edit-form-group">
 
-                                <label>
+                                <label htmlFor="edit-mobile">
                                     Mobile Number
                                 </label>
 
@@ -1143,13 +1287,19 @@ function Profile() {
                                     </span>
 
                                     <input
+                                        id="edit-mobile"
                                         type="tel"
                                         name="mobile"
-                                        value={editForm.mobile}
-                                        onChange={handleEditChange}
+                                        value={
+                                            editForm.mobile
+                                        }
+                                        onChange={
+                                            handleEditChange
+                                        }
                                         placeholder="Enter 10-digit mobile number"
                                         maxLength="10"
                                         inputMode="numeric"
+                                        autoComplete="tel"
                                         disabled={saving}
                                     />
 
@@ -1158,12 +1308,13 @@ function Profile() {
                             </div>
 
 
-
-                            {/* EMAIL */}
+                            {/* ==================================================
+                                EMAIL
+                            ================================================== */}
 
                             <div className="edit-form-group">
 
-                                <label>
+                                <label htmlFor="edit-email">
                                     Email Address
                                 </label>
 
@@ -1174,8 +1325,12 @@ function Profile() {
                                     </span>
 
                                     <input
+                                        id="edit-email"
                                         type="email"
-                                        value={profile.email || ""}
+                                        value={
+                                            profile.email ||
+                                            ""
+                                        }
                                         disabled
                                     />
 
@@ -1188,12 +1343,13 @@ function Profile() {
                             </div>
 
 
-
-                            {/* ROLE */}
+                            {/* ==================================================
+                                ROLE
+                            ================================================== */}
 
                             <div className="edit-form-group">
 
-                                <label>
+                                <label htmlFor="edit-role">
                                     Account Type
                                 </label>
 
@@ -1204,6 +1360,7 @@ function Profile() {
                                     </span>
 
                                     <input
+                                        id="edit-role"
                                         type="text"
                                         value={
                                             isAdmin
@@ -1222,15 +1379,18 @@ function Profile() {
                             </div>
 
 
-
-                            {/* BUTTONS */}
+                            {/* ==================================================
+                                BUTTONS
+                            ================================================== */}
 
                             <div className="edit-profile-buttons">
 
                                 <button
                                     type="button"
                                     className="edit-cancel-btn"
-                                    onClick={closeEditProfile}
+                                    onClick={
+                                        closeEditProfile
+                                    }
                                     disabled={saving}
                                 >
                                     Cancel
@@ -1244,16 +1404,22 @@ function Profile() {
                                 >
 
                                     {saving ? (
+
                                         <>
+
                                             <span className="edit-save-spinner">
                                             </span>
 
                                             Saving...
+
                                         </>
+
                                     ) : (
+
                                         <>
                                             ✓ Save Changes
                                         </>
+
                                     )}
 
                                 </button>

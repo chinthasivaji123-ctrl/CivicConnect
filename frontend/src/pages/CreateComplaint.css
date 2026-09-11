@@ -2433,3 +2433,259 @@ textarea:focus-visible{
     width: 0;
     height: 0;
 }
+
+
+/* =====================================================
+   FINAL MOBILE PORTRAIT FIX
+===================================================== */
+
+@media (max-width: 700px) {
+
+    html,
+    body,
+    #root {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden !important;
+    }
+
+    .create-page {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+    }
+
+    .create-wrapper {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0 auto;
+        overflow-x: hidden !important;
+    }
+
+    .create-topbar {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .complaint-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .form-header {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .form-header > div {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .complaint-container h1,
+    .subtitle {
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-break: normal;
+    }
+
+    /* =========================
+       PROGRESS BAR
+    ========================= */
+
+    .form-progress {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .progress-item {
+        min-width: 0;
+    }
+
+    .progress-line {
+        min-width: 8px;
+        flex: 1 1 auto;
+    }
+
+    /* =========================
+       FORM SECTIONS
+    ========================= */
+
+    .form-section {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .section-heading {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .section-heading > div:last-child {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .section-heading h2,
+    .section-heading p {
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
+
+    /* =========================
+       INPUTS
+    ========================= */
+
+    .field-group {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .complaint-input,
+    .complaint-textarea,
+    .select-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .complaint-input,
+    .complaint-textarea {
+        box-sizing: border-box !important;
+    }
+
+    /* =========================
+       PINCODE
+    ========================= */
+
+    .pincode-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .pincode-card-content {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .pincode-card-content span {
+        overflow-wrap: break-word;
+    }
+
+    .pincode-box {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .pincode-box .complaint-input {
+        min-width: 0 !important;
+        width: 100% !important;
+        flex: 1 1 auto;
+    }
+
+    .pin-btn {
+        flex-shrink: 0;
+    }
+
+    /* =========================
+       IMAGE
+    ========================= */
+
+    .upload-area,
+    .upload-content,
+    .image-preview {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .image-preview img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* =========================
+       SUBMIT
+    ========================= */
+
+    .submit-area {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .complaint-button {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+}
+
+
+/* =====================================================
+   VERY SMALL PHONES
+===================================================== */
+
+@media (max-width: 400px) {
+
+    .create-page {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    .complaint-container {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
+
+    .form-section {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .form-header {
+        gap: 7px;
+    }
+
+    .complaint-container h1 {
+        font-size: 21px;
+    }
+
+    .pincode-box {
+        gap: 6px;
+    }
+
+    .pin-btn {
+        min-width: 68px;
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+}
