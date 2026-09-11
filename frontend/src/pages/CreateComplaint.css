@@ -2406,3 +2406,30 @@ textarea:focus-visible{
     }
 
 }
+
+/* =====================================================
+   HIDE MOBILE INNER SCROLLBAR
+   Keeps scrolling working but removes the visible bar
+===================================================== */
+
+.create-page {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.create-page::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.create-page * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.create-page *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
