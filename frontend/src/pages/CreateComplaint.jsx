@@ -20,6 +20,47 @@ function CreateComplaint() {
     const navigate = useNavigate();
 
 
+    // Prevent the mobile page from opening or retaining a horizontal
+    // scroll position. This keeps the complaint form anchored to the
+    // left edge of the viewport on phones.
+    useEffect(() => {
+
+        const html = document.documentElement;
+        const body = document.body;
+        const root = document.getElementById("root");
+
+        const previousHtmlOverflowX = html.style.overflowX;
+        const previousBodyOverflowX = body.style.overflowX;
+        const previousRootOverflowX = root
+            ? root.style.overflowX
+            : "";
+
+        html.style.overflowX = "hidden";
+        body.style.overflowX = "hidden";
+
+        if (root) {
+            root.style.overflowX = "hidden";
+        }
+
+        window.scrollTo({
+            left: 0,
+            top: window.scrollY
+        });
+
+        return () => {
+
+            html.style.overflowX = previousHtmlOverflowX;
+            body.style.overflowX = previousBodyOverflowX;
+
+            if (root) {
+                root.style.overflowX = previousRootOverflowX;
+            }
+
+        };
+
+    }, []);
+
+
     const initialForm = {
 
         title: "",
@@ -51,6 +92,10 @@ function CreateComplaint() {
 
 
     const [selectedState, setSelectedState] = useState(null);
+
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+    const [selectedCity, setSelectedCity] = useState(null);
 
 
     const [loading, setLoading] = useState(false);
@@ -210,7 +255,7 @@ function CreateComplaint() {
 
 
 
-    // ================= DISTRICTS =================
+    // ================= DISTRICT =================
 
     const getDistricts = async (state) => {
 
@@ -248,13 +293,11 @@ function CreateComplaint() {
 
 
 
-    // ================= CITY SEARCH =================
+    // ================= CITY =================
 
     const searchCity = async (value) => {
 
         if (!value || value.length < 2) {
-
-            setCityOptions([]);
 
             return;
 
@@ -343,14 +386,42 @@ function CreateComplaint() {
             };
 
 
+            const districtOption = {
+
+                value: data.district,
+                label: data.district
+
+            };
+
+
+            const cityOption = {
+
+                value: data.city,
+                label: data.city
+
+            };
+
+
             setSelectedState(
                 stateOption
             );
 
 
+            setSelectedDistrict(
+                districtOption
+            );
+
+
+            setSelectedCity(
+                cityOption
+            );
+
+
             /*
-             * Load the full district list for the selected state.
-             * The citizen can still manually change the district.
+             * IMPORTANT:
+             * Load the COMPLETE district list for the state.
+             * This allows the citizen to correct a wrong district
+             * returned by the pincode lookup.
              */
 
             await getDistricts(
@@ -359,9 +430,14 @@ function CreateComplaint() {
 
 
             /*
-             * Store the pincode result as a suggestion.
-             * These values remain editable.
+             * Keep the pincode city as a suggestion.
+             * The citizen can search and select another city.
              */
+
+            setCityOptions([
+                cityOption
+            ]);
+
 
             setFormData(prev => ({
 
@@ -375,7 +451,7 @@ function CreateComplaint() {
 
 
             alert(
-                "Address suggestion found. Please verify and correct the address before submitting."
+                "Address suggestion found. Please verify the State, District and City before submitting."
             );
 
         }
@@ -425,10 +501,7 @@ function CreateComplaint() {
         }
 
 
-        if (
-            !formData.pincode ||
-            formData.pincode.length !== 6
-        ) {
+        if (!formData.pincode || formData.pincode.length !== 6) {
 
             alert(
                 "Enter a valid 6-digit pincode"
@@ -450,10 +523,10 @@ function CreateComplaint() {
         }
 
 
-        if (!formData.district.trim()) {
+        if (!formData.district) {
 
             alert(
-                "Enter district"
+                "Select district"
             );
 
             return;
@@ -461,10 +534,10 @@ function CreateComplaint() {
         }
 
 
-        if (!formData.city.trim()) {
+        if (!formData.city) {
 
             alert(
-                "Enter city / town"
+                "Select city"
             );
 
             return;
@@ -526,7 +599,6 @@ function CreateComplaint() {
                             "multipart/form-data"
 
                     }
-
                 }
 
             );
@@ -643,7 +715,15 @@ function CreateComplaint() {
             boxShadow:
                 "0 15px 40px rgba(15,23,42,.15)",
 
-            zIndex: 20
+            zIndex: 9999
+
+        }),
+
+        menuPortal: (base) => ({
+
+            ...base,
+
+            zIndex: 9999
 
         }),
 
@@ -1011,6 +1091,10 @@ function CreateComplaint() {
 
                                     styles={selectStyles}
 
+                                    menuPortalTarget={document.body}
+
+                                    menuPosition="fixed"
+
                                     isSearchable={false}
 
                                 />
@@ -1133,8 +1217,8 @@ function CreateComplaint() {
 
                             <div className="field-hint">
 
-                                ✏️ Pincode lookup is optional. You can enter
-                                and correct your address manually.
+                                ✏️ You can manually select or correct the address
+                                fields below, even after using the pincode finder.
 
                             </div>
 
@@ -1169,6 +1253,10 @@ function CreateComplaint() {
 
                                         setSelectedState(selected);
 
+                                        setSelectedDistrict(null);
+
+                                        setSelectedCity(null);
+
                                         setDistrictOptions([]);
 
                                         setCityOptions([]);
@@ -1199,6 +1287,10 @@ function CreateComplaint() {
 
                                     styles={selectStyles}
 
+                                    menuPortalTarget={document.body}
+
+                                    menuPosition="fixed"
+
                                     isSearchable
 
                                 />
@@ -1212,11 +1304,9 @@ function CreateComplaint() {
                             <div className="location-grid">
 
 
-                                {/* DISTRICT */}
-
                                 <div className="field-group">
 
-                                    <label htmlFor="district">
+                                    <label>
 
                                         District
 
@@ -1227,43 +1317,54 @@ function CreateComplaint() {
                                     </label>
 
 
-                                    <input
+                                    <Select
 
-                                        id="district"
+                                        className="select-box"
 
-                                        className="complaint-input"
+                                        options={districtOptions}
 
-                                        name="district"
+                                        placeholder={
+                                            selectedState
+                                                ? "Select or correct district"
+                                                : "Select state first"
+                                        }
 
-                                        placeholder="Enter district name"
+                                        value={selectedDistrict}
 
-                                        value={formData.district}
+                                        onChange={(selected) => {
 
-                                        onChange={handleChange}
+                                            setSelectedDistrict(selected);
 
-                                        autoComplete="address-level2"
+                                            setFormData(prev => ({
 
-                                        required
+                                                ...prev,
+
+                                                district:
+                                                    selected?.value || ""
+
+                                            }));
+
+                                        }}
+
+                                        styles={selectStyles}
+
+                                        menuPortalTarget={document.body}
+
+                                        menuPosition="fixed"
+
+                                        isDisabled={!selectedState}
+
+                                        isSearchable
 
                                     />
-
-
-                                    <div className="field-hint">
-
-                                        Type your district manually. You can correct
-                                        the pincode suggestion if needed.
-
-                                    </div>
 
                                 </div>
 
 
 
-                                {/* CITY */}
-
                                 <div className="field-group">
 
-                                    <label htmlFor="city">
+                                    <label>
 
                                         City / Town
 
@@ -1274,32 +1375,44 @@ function CreateComplaint() {
                                     </label>
 
 
-                                    <input
+                                    <Select
 
-                                        id="city"
+                                        className="select-box"
 
-                                        className="complaint-input"
+                                        options={cityOptions}
 
-                                        name="city"
+                                        placeholder="Search or correct city"
 
-                                        placeholder="Enter city or town name"
+                                        isSearchable
 
-                                        value={formData.city}
+                                        value={selectedCity}
 
-                                        onChange={handleChange}
+                                        onInputChange={
+                                            searchCity
+                                        }
 
-                                        autoComplete="address-level2"
+                                        onChange={(selected) => {
 
-                                        required
+                                            setSelectedCity(selected);
+
+                                            setFormData(prev => ({
+
+                                                ...prev,
+
+                                                city:
+                                                    selected?.value || ""
+
+                                            }));
+
+                                        }}
+
+                                        styles={selectStyles}
+
+                                        menuPortalTarget={document.body}
+
+                                        menuPosition="fixed"
 
                                     />
-
-
-                                    <div className="field-hint">
-
-                                        Type your city or town manually.
-
-                                    </div>
 
                                 </div>
 
@@ -1336,8 +1449,6 @@ function CreateComplaint() {
                                     value={formData.street}
 
                                     onChange={handleChange}
-
-                                    autoComplete="street-address"
 
                                     required
 
