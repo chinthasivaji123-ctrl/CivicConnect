@@ -1149,9 +1149,15 @@ function CreateComplaint() {
 
     /* =====================================================
        SELECT STYLES
+       CURSOR FIX
     ===================================================== */
 
     const selectStyles = {
+
+        /* =================================================
+           CONTROL
+           POINTER WHEN HOVERING DROPDOWN
+        ================================================= */
 
         control: (
             base,
@@ -1179,8 +1185,9 @@ function CreateComplaint() {
             backgroundColor:
                 "#ffffff",
 
+            /* FIXED */
             cursor:
-                "text",
+                "pointer",
 
             "&:hover": {
 
@@ -1192,6 +1199,10 @@ function CreateComplaint() {
         }),
 
 
+        /* =================================================
+           VALUE CONTAINER
+        ================================================= */
+
         valueContainer:
             (base) => ({
 
@@ -1200,10 +1211,17 @@ function CreateComplaint() {
                 minWidth: 0,
 
                 padding:
-                    "4px 15px"
+                    "4px 15px",
+
+                cursor:
+                    "pointer"
 
             }),
 
+
+        /* =================================================
+           PLACEHOLDER
+        ================================================= */
 
         placeholder:
             (base) => ({
@@ -1214,10 +1232,17 @@ function CreateComplaint() {
                     "#94a3b8",
 
                 fontSize:
-                    "15px"
+                    "15px",
+
+                cursor:
+                    "pointer"
 
             }),
 
+
+        /* =================================================
+           SELECTED VALUE
+        ================================================= */
 
         singleValue:
             (base) => ({
@@ -1243,10 +1268,18 @@ function CreateComplaint() {
                     "15px",
 
                 fontWeight:
-                    "600"
+                    "600",
+
+                cursor:
+                    "pointer"
 
             }),
 
+
+        /* =================================================
+           ACTUAL TEXT INPUT
+           TEXT CURSOR
+        ================================================= */
 
         input:
             (base) => ({
@@ -1257,14 +1290,16 @@ function CreateComplaint() {
                     "#1e293b",
 
                 minWidth:
-                    "0"
+                    "0",
+
+                cursor:
+                    "text"
 
             }),
 
 
         /* =================================================
            CLEAR X BUTTON
-           FIXED CURSOR
         ================================================= */
 
         clearIndicator:
@@ -1319,6 +1354,10 @@ function CreateComplaint() {
             }),
 
 
+        /* =================================================
+           SEPARATOR
+        ================================================= */
+
         indicatorSeparator:
             (base) => ({
 
@@ -1329,6 +1368,10 @@ function CreateComplaint() {
 
             }),
 
+
+        /* =================================================
+           MENU
+        ================================================= */
 
         menu:
             (base) => ({
@@ -1356,6 +1399,10 @@ function CreateComplaint() {
             }),
 
 
+        /* =================================================
+           MENU PORTAL
+        ================================================= */
+
         menuPortal:
             (base) => ({
 
@@ -1366,6 +1413,10 @@ function CreateComplaint() {
 
             }),
 
+
+        /* =================================================
+           MENU LIST
+        ================================================= */
 
         menuList:
             (base) => ({
@@ -1383,6 +1434,10 @@ function CreateComplaint() {
 
             }),
 
+
+        /* =================================================
+           OPTIONS
+        ================================================= */
 
         option:
             (base, state) => ({

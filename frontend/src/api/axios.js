@@ -1,219 +1,102 @@
 import axios from "axios";
 
-
-
-// =====================================================
-// AXIOS INSTANCE
-// =====================================================
-
-
 const API = axios.create({
-
     baseURL:
         import.meta.env.VITE_API_URL ||
         "http://localhost:5000/api",
 
-
-    headers: {
-
-        "Content-Type":
-            "application/json"
-
-    },
-
-
-    timeout:10000
-
+    timeout: 10000
 });
 
-
-
-
-
-
-
-// =====================================================
-// REQUEST INTERCEPTOR
-// ADD JWT TOKEN AUTOMATICALLY
-// =====================================================
-
-
 API.interceptors.request.use(
-
-
-    (config)=>{
-
+    (config) => {
 
         const token =
-            localStorage.getItem(
-                "token"
-            );
+            localStorage.getItem("token");
 
-
-
-        if(token){
-
+        if (token) {
 
             config.headers.Authorization =
                 `Bearer ${token}`;
 
-
         }
 
-
+        /*
+         * IMPORTANT
+         *
+         * Do NOT set:
+         *
+         * Content-Type: application/json
+         *
+         * here.
+         *
+         * When FormData is sent, the browser/Axios
+         * will automatically create:
+         *
+         * multipart/form-data; boundary=...
+         */
 
         return config;
 
-
     },
 
-
-    (error)=>{
-
-
+    (error) => {
         return Promise.reject(error);
-
-
     }
-
-
 );
-
-
-
-
-
-
-
-
-
-// =====================================================
-// RESPONSE INTERCEPTOR
-// GLOBAL ERROR HANDLING
-// =====================================================
-
 
 API.interceptors.response.use(
 
-
-
-    (response)=>{
-
-
+    (response) => {
         return response;
-
-
     },
 
+    (error) => {
 
-
-
-    (error)=>{
-
-
-
-        if(error.response){
-
-
+        if (error.response) {
 
             console.log(
-
                 "API ERROR:",
-
                 error.response.status,
-
                 error.response.data
-
             );
 
-
-
-
-
-            // =====================================
-            // TOKEN EXPIRED OR INVALID
-            // =====================================
-
-
-            if(
+            if (
                 error.response.status === 401
-            ){
-
-
+            ) {
 
                 console.log(
                     "Session expired. Logging out..."
                 );
 
-
-
-                localStorage.removeItem(
-                    "token"
-                );
-
-
-                localStorage.removeItem(
-                    "user"
-                );
-
-
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
 
                 window.location.href =
                     "/login";
-
-
             }
 
-
-
-
-
         }
 
-        else if(error.request){
-
-
+        else if (error.request) {
 
             console.log(
-
                 "SERVER NOT REACHABLE"
-
             );
-
-
 
         }
 
-
-        else{
-
+        else {
 
             console.log(
-
                 "REQUEST ERROR:",
-
                 error.message
-
             );
 
-
         }
-
-
 
         return Promise.reject(error);
-
-
-
     }
-
-
-
 );
-
-
-
-
-
 
 export default API;
