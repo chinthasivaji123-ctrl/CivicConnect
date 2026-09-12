@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import "./ComplaintCard.css";
 
 
+
 function ComplaintCard({ complaint }) {
 
     const [imageError, setImageError] = useState(false);
+
 
 
     /* =====================================================
@@ -28,6 +30,7 @@ function ComplaintCard({ complaint }) {
     };
 
 
+
     /* =====================================================
        CATEGORY DISPLAY NAMES
     ===================================================== */
@@ -47,6 +50,7 @@ function ComplaintCard({ complaint }) {
     };
 
 
+
     /* =====================================================
        DATA
     ===================================================== */
@@ -55,12 +59,15 @@ function ComplaintCard({ complaint }) {
         complaint?.category || "Other";
 
 
+
     const status =
         complaint?.status || "Pending";
 
 
+
     const priority =
         complaint?.priority || "Medium";
+
 
 
     const statusClass =
@@ -69,16 +76,20 @@ function ComplaintCard({ complaint }) {
             .replace(/\s+/g, "-");
 
 
+
     const priorityClass =
         priority.toLowerCase();
+
 
 
     const displayCategory =
         categoryNames[category] || category;
 
 
+
     const categoryIcon =
         categoryIcons[category] || "📌";
+
 
 
     /* =====================================================
@@ -92,6 +103,7 @@ function ComplaintCard({ complaint }) {
             complaint?.location;
 
 
+
         if (!location) {
 
             return "Location not provided";
@@ -99,11 +111,13 @@ function ComplaintCard({ complaint }) {
         }
 
 
+
         if (typeof location === "string") {
 
             return location;
 
         }
+
 
 
         if (typeof location === "object") {
@@ -119,6 +133,7 @@ function ComplaintCard({ complaint }) {
             ].filter(Boolean);
 
 
+
             return parts.length
                 ? parts.join(", ")
                 : "Location not provided";
@@ -126,9 +141,11 @@ function ComplaintCard({ complaint }) {
         }
 
 
+
         return "Location not provided";
 
     };
+
 
 
     /* =====================================================
@@ -142,6 +159,7 @@ function ComplaintCard({ complaint }) {
             complaint?.date;
 
 
+
         if (!dateValue) {
 
             return "Date not available";
@@ -149,8 +167,10 @@ function ComplaintCard({ complaint }) {
         }
 
 
+
         const date =
             new Date(dateValue);
+
 
 
         if (Number.isNaN(date.getTime())) {
@@ -158,6 +178,7 @@ function ComplaintCard({ complaint }) {
             return "Date not available";
 
         }
+
 
 
         return date.toLocaleDateString(
@@ -177,18 +198,24 @@ function ComplaintCard({ complaint }) {
     };
 
 
+
     /* =====================================================
        IMAGE URL
        
-       OLD COMPLAINTS:
-       filename only
-       Example:
-       1785686058509-road-damage.png
-
        NEW COMPLAINTS:
        Cloudinary URL
+       
        Example:
        https://res.cloudinary.com/...
+       
+       
+       OLD COMPLAINTS:
+       filename only
+       
+       Example:
+       1785686058509-road-damage.png
+       
+       Old files are loaded from the deployed backend.
     ===================================================== */
 
     const getImageUrl = (image) => {
@@ -200,23 +227,70 @@ function ComplaintCard({ complaint }) {
         }
 
 
-        if (
-            image.startsWith("http://") ||
-            image.startsWith("https://")
-        ) {
 
-            return image;
+        const imageValue =
+            String(image).trim();
+
+
+
+        if (!imageValue) {
+
+            return null;
 
         }
 
 
-        return `http://localhost:5000/uploads/${image}`;
+
+        /* =================================================
+           CLOUDINARY / HTTPS IMAGE
+        ================================================= */
+
+        if (
+            imageValue.startsWith("https://")
+        ) {
+
+            return imageValue;
+
+        }
+
+
+
+        /* =================================================
+           HTTP IMAGE
+           
+           Convert HTTP backend URL to HTTPS
+           to avoid Mixed Content.
+        ================================================= */
+
+        if (
+            imageValue.startsWith("http://")
+        ) {
+
+            return imageValue.replace(
+                "http://",
+                "https://"
+            );
+
+        }
+
+
+
+        /* =================================================
+           OLD LOCAL FILENAME
+           
+           Use deployed Render backend instead
+           of localhost.
+        ================================================= */
+
+        return `https://civicconnect-backend-5fbb.onrender.com/uploads/${imageValue}`;
 
     };
 
 
+
     const imageUrl =
         getImageUrl(complaint?.image);
+
 
 
     /* =====================================================
@@ -229,10 +303,12 @@ function ComplaintCard({ complaint }) {
             : "N/A";
 
 
+
     const shortComplaintId =
         complaintId !== "N/A"
             ? `#${complaintId.slice(-8).toUpperCase()}`
             : "#N/A";
+
 
 
     /* =====================================================
@@ -248,6 +324,7 @@ function ComplaintCard({ complaint }) {
         }
 
 
+
         if (status === "In Progress") {
 
             return "◔";
@@ -255,9 +332,11 @@ function ComplaintCard({ complaint }) {
         }
 
 
+
         return "⌛";
 
     };
+
 
 
     /* =====================================================
@@ -271,11 +350,13 @@ function ComplaintCard({ complaint }) {
         >
 
 
+
             {/* =================================================
                TOP HEADER
             ================================================= */}
 
             <div className="cc-header">
+
 
 
                 {/* CATEGORY */}
@@ -289,6 +370,7 @@ function ComplaintCard({ complaint }) {
                     </span>
 
 
+
                     <span className="cc-category-text">
 
                         {displayCategory}
@@ -296,6 +378,7 @@ function ComplaintCard({ complaint }) {
                     </span>
 
                 </div>
+
 
 
                 {/* STATUS */}
@@ -311,6 +394,7 @@ function ComplaintCard({ complaint }) {
                     </span>
 
 
+
                     <span className="cc-status-text">
 
                         {status}
@@ -322,6 +406,7 @@ function ComplaintCard({ complaint }) {
             </div>
 
 
+
             {/* =================================================
                MAIN CONTENT
             ================================================= */}
@@ -329,11 +414,13 @@ function ComplaintCard({ complaint }) {
             <div className="cc-main">
 
 
+
                 {/* =================================================
                    INFORMATION
                 ================================================= */}
 
                 <div className="cc-info">
+
 
 
                     {/* TITLE */}
@@ -344,6 +431,7 @@ function ComplaintCard({ complaint }) {
                             "Untitled Complaint"}
 
                     </h3>
+
 
 
                     {/* LOCATION */}
@@ -357,6 +445,7 @@ function ComplaintCard({ complaint }) {
                         </span>
 
 
+
                         <span className="cc-location-text">
 
                             {getLocation()}
@@ -364,6 +453,7 @@ function ComplaintCard({ complaint }) {
                         </span>
 
                     </div>
+
 
 
                     {/* DESCRIPTION */}
@@ -376,6 +466,7 @@ function ComplaintCard({ complaint }) {
                     </p>
 
 
+
                     {/* PRIORITY */}
 
                     <div
@@ -383,6 +474,7 @@ function ComplaintCard({ complaint }) {
                     >
 
                         <span className="cc-priority-dot"></span>
+
 
 
                         <span>
@@ -394,6 +486,7 @@ function ComplaintCard({ complaint }) {
                     </div>
 
                 </div>
+
 
 
                 {/* =================================================
@@ -427,6 +520,7 @@ function ComplaintCard({ complaint }) {
                             </div>
 
 
+
                             <span className="cc-no-image-text">
 
                                 No image
@@ -442,11 +536,13 @@ function ComplaintCard({ complaint }) {
             </div>
 
 
+
             {/* =================================================
                FOOTER
             ================================================= */}
 
             <div className="cc-footer">
+
 
 
                 {/* DATE */}
@@ -460,6 +556,7 @@ function ComplaintCard({ complaint }) {
                     </span>
 
 
+
                     <span>
 
                         {getFormattedDate()}
@@ -469,6 +566,7 @@ function ComplaintCard({ complaint }) {
                 </div>
 
 
+
                 {/* COMPLAINT ID */}
 
                 <div className="cc-id">
@@ -476,6 +574,7 @@ function ComplaintCard({ complaint }) {
                     {shortComplaintId}
 
                 </div>
+
 
 
                 {/* DETAILS */}
@@ -490,6 +589,7 @@ function ComplaintCard({ complaint }) {
                         View Details
 
                     </span>
+
 
 
                     <span className="cc-details-arrow">
@@ -507,6 +607,7 @@ function ComplaintCard({ complaint }) {
     );
 
 }
+
 
 
 export default ComplaintCard;
