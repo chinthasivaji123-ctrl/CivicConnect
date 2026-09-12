@@ -452,8 +452,8 @@ function CreateComplaint() {
 
             /*
              * Do not block manual entry.
-             * The citizen can still create
-             * a district manually.
+             * Citizen can still create
+             * district manually.
              */
 
             setDistrictOptions([]);
@@ -465,23 +465,15 @@ function CreateComplaint() {
 
     /* =====================================================
        SEARCH CITY
+       IMPORTANT:
+       This function performs the API request,
+       but it does NOT get directly passed to
+       React Select's onInputChange.
     ===================================================== */
 
     const searchCity = async (
-        value,
-        actionMeta
+        value
     ) => {
-
-        if (
-            actionMeta &&
-            actionMeta.action !==
-                "input-change"
-        ) {
-
-            return;
-
-        }
-
 
         const searchValue =
             String(value || "")
@@ -515,8 +507,7 @@ function CreateComplaint() {
                     : [];
 
 
-            setCityOptions(
-
+            const options =
                 cityData.map(
                     item => ({
 
@@ -529,8 +520,11 @@ function CreateComplaint() {
                                 : item.name
 
                     })
-                )
+                );
 
+
+            setCityOptions(
+                options
             );
 
         }
@@ -542,7 +536,55 @@ function CreateComplaint() {
                 err
             );
 
+            /*
+             * Keep the options empty.
+             * Manual city creation still works.
+             */
+
+            setCityOptions([]);
+
         }
+
+    };
+
+
+    /* =====================================================
+       CITY INPUT CHANGE
+       IMPORTANT FIX FOR [object Promise]
+    ===================================================== */
+
+    const handleCityInputChange = (
+        value,
+        actionMeta
+    ) => {
+
+        /*
+         * Only search when the user
+         * is actually typing.
+         */
+
+        if (
+            actionMeta?.action ===
+            "input-change"
+        ) {
+
+            searchCity(value);
+
+        }
+
+
+        /*
+         * VERY IMPORTANT:
+         * React Select expects the actual
+         * input value to be returned.
+         *
+         * Returning an async function /
+         * Promise here causes:
+         *
+         * [object Promise]
+         */
+
+        return value;
 
     };
 
@@ -598,27 +640,33 @@ function CreateComplaint() {
 
             const stateOption = {
 
-                value: data.state,
+                value:
+                    data.state,
 
-                label: data.state
+                label:
+                    data.state
 
             };
 
 
             const districtOption = {
 
-                value: data.district,
+                value:
+                    data.district,
 
-                label: data.district
+                label:
+                    data.district
 
             };
 
 
             const cityOption = {
 
-                value: data.city,
+                value:
+                    data.city,
 
-                label: data.city
+                label:
+                    data.city
 
             };
 
@@ -757,11 +805,14 @@ function CreateComplaint() {
 
             ...prev,
 
-            state: value,
+            state:
+                value,
 
-            district: "",
+            district:
+                "",
 
-            city: ""
+            city:
+                ""
 
         }));
 
@@ -769,12 +820,11 @@ function CreateComplaint() {
         /*
          * Try to load districts
          * for manually entered state.
-         * If API does not find them,
-         * manual district creation
-         * remains available.
          */
 
-        getDistricts(value);
+        getDistricts(
+            value
+        );
 
     };
 
@@ -816,7 +866,8 @@ function CreateComplaint() {
 
             ...prev,
 
-            district: value
+            district:
+                value
 
         }));
 
@@ -856,11 +907,49 @@ function CreateComplaint() {
         );
 
 
+        /*
+         * Keep manually created city
+         * available in the options.
+         */
+
+        setCityOptions(
+            previous => {
+
+                const exists =
+                    previous.some(
+                        item =>
+                            String(
+                                item.value
+                            ).toLowerCase() ===
+                            value.toLowerCase()
+                    );
+
+
+                if (exists) {
+
+                    return previous;
+
+                }
+
+
+                return [
+
+                    ...previous,
+
+                    option
+
+                ];
+
+            }
+        );
+
+
         setFormData(prev => ({
 
             ...prev,
 
-            city: value
+            city:
+                value
 
         }));
 
@@ -1006,7 +1095,6 @@ function CreateComplaint() {
             /*
              * Do not manually set the
              * multipart boundary.
-             * Axios/browser handles it.
              */
 
             await API.post(
@@ -1170,6 +1258,74 @@ function CreateComplaint() {
 
                 minWidth:
                     "0"
+
+            }),
+
+
+        /* =================================================
+           CLEAR X BUTTON
+           FIXED CURSOR
+        ================================================= */
+
+        clearIndicator:
+            (base) => ({
+
+                ...base,
+
+                cursor:
+                    "pointer",
+
+                padding:
+                    "8px",
+
+                color:
+                    "#cbd5e1",
+
+                "&:hover": {
+
+                    color:
+                        "#ef4444"
+
+                }
+
+            }),
+
+
+        /* =================================================
+           DROPDOWN ARROW
+        ================================================= */
+
+        dropdownIndicator:
+            (base) => ({
+
+                ...base,
+
+                cursor:
+                    "pointer",
+
+                padding:
+                    "8px",
+
+                color:
+                    "#94a3b8",
+
+                "&:hover": {
+
+                    color:
+                        "#2563eb"
+
+                }
+
+            }),
+
+
+        indicatorSeparator:
+            (base) => ({
+
+                ...base,
+
+                backgroundColor:
+                    "#e2e8f0"
 
             }),
 
@@ -1629,6 +1785,8 @@ function CreateComplaint() {
 
                                     className="select-box"
 
+                                    classNamePrefix="civic-select"
+
                                     options={categories}
 
                                     placeholder="Choose the type of civic issue"
@@ -2087,8 +2245,17 @@ function CreateComplaint() {
                                             selectedCity
                                         }
 
+                                        /*
+                                         * IMPORTANT FIX:
+                                         * Do NOT use:
+                                         *
+                                         * onInputChange={searchCity}
+                                         *
+                                         * because searchCity is async.
+                                         */
+
                                         onInputChange={
-                                            searchCity
+                                            handleCityInputChange
                                         }
 
                                         onChange={
@@ -2365,6 +2532,7 @@ function CreateComplaint() {
                                     <strong>
                                         Complaint Submitted!
                                     </strong>
+
 
                                     <span>
                                         Redirecting you to your dashboard...
