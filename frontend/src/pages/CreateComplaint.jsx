@@ -16,49 +16,7 @@ import "./CreateComplaint.css";
 
 function CreateComplaint() {
 
-
     const navigate = useNavigate();
-
-
-    // Prevent the mobile page from opening or retaining a horizontal
-    // scroll position. This keeps the complaint form anchored to the
-    // left edge of the viewport on phones.
-    useEffect(() => {
-
-        const html = document.documentElement;
-        const body = document.body;
-        const root = document.getElementById("root");
-
-        const previousHtmlOverflowX = html.style.overflowX;
-        const previousBodyOverflowX = body.style.overflowX;
-        const previousRootOverflowX = root
-            ? root.style.overflowX
-            : "";
-
-        html.style.overflowX = "hidden";
-        body.style.overflowX = "hidden";
-
-        if (root) {
-            root.style.overflowX = "hidden";
-        }
-
-        window.scrollTo({
-            left: 0,
-            top: window.scrollY
-        });
-
-        return () => {
-
-            html.style.overflowX = previousHtmlOverflowX;
-            body.style.overflowX = previousBodyOverflowX;
-
-            if (root) {
-                root.style.overflowX = previousRootOverflowX;
-            }
-
-        };
-
-    }, []);
 
 
     const initialForm = {
@@ -78,11 +36,9 @@ function CreateComplaint() {
 
     const [formData, setFormData] = useState(initialForm);
 
-
     const [image, setImage] = useState(null);
 
     const [preview, setPreview] = useState(null);
-
 
     const [states, setStates] = useState([]);
 
@@ -90,18 +46,29 @@ function CreateComplaint() {
 
     const [cityOptions, setCityOptions] = useState([]);
 
-
     const [selectedState, setSelectedState] = useState(null);
 
     const [selectedDistrict, setSelectedDistrict] = useState(null);
 
     const [selectedCity, setSelectedCity] = useState(null);
 
-
     const [loading, setLoading] = useState(false);
 
     const [message, setMessage] = useState("");
 
+
+    /*
+     * Keep the page at the top when opening Create Complaint.
+     * We do NOT modify body/html overflow here.
+     */
+    useEffect(() => {
+
+        window.scrollTo({
+            top: 0,
+            left: 0
+        });
+
+    }, []);
 
 
     // ================= CATEGORY =================
@@ -146,7 +113,6 @@ function CreateComplaint() {
     ];
 
 
-
     // ================= LOAD STATES =================
 
     useEffect(() => {
@@ -184,7 +150,6 @@ function CreateComplaint() {
     }, []);
 
 
-
     // ================= INPUT =================
 
     const handleChange = (e) => {
@@ -206,7 +171,6 @@ function CreateComplaint() {
     };
 
 
-
     // ================= IMAGE =================
 
     const handleImage = (e) => {
@@ -215,9 +179,7 @@ function CreateComplaint() {
 
 
         if (!file) {
-
             return;
-
         }
 
 
@@ -236,13 +198,11 @@ function CreateComplaint() {
 
         setImage(file);
 
-
         setPreview(
             URL.createObjectURL(file)
         );
 
     };
-
 
 
     const removeImage = () => {
@@ -252,7 +212,6 @@ function CreateComplaint() {
         setPreview(null);
 
     };
-
 
 
     // ================= DISTRICT =================
@@ -292,7 +251,6 @@ function CreateComplaint() {
     };
 
 
-
     // ================= CITY =================
 
     const searchCity = async (value) => {
@@ -317,7 +275,8 @@ function CreateComplaint() {
 
                     value: item.name,
 
-                    label: `${item.name} (${item.district})`
+                    label:
+                        `${item.name} (${item.district})`
 
                 }))
 
@@ -334,7 +293,6 @@ function CreateComplaint() {
         }
 
     };
-
 
 
     // ================= PINCODE =================
@@ -406,33 +364,19 @@ function CreateComplaint() {
                 stateOption
             );
 
-
             setSelectedDistrict(
                 districtOption
             );
-
 
             setSelectedCity(
                 cityOption
             );
 
 
-            /*
-             * IMPORTANT:
-             * Load the COMPLETE district list for the state.
-             * This allows the citizen to correct a wrong district
-             * returned by the pincode lookup.
-             */
-
             await getDistricts(
                 data.state
             );
 
-
-            /*
-             * Keep the pincode city as a suggestion.
-             * The citizen can search and select another city.
-             */
 
             setCityOptions([
                 cityOption
@@ -444,7 +388,9 @@ function CreateComplaint() {
                 ...prev,
 
                 state: data.state,
+
                 district: data.district,
+
                 city: data.city
 
             }));
@@ -469,7 +415,6 @@ function CreateComplaint() {
         }
 
     };
-
 
 
     // ================= SUBMIT =================
@@ -501,7 +446,10 @@ function CreateComplaint() {
         }
 
 
-        if (!formData.pincode || formData.pincode.length !== 6) {
+        if (
+            !formData.pincode ||
+            formData.pincode.length !== 6
+        ) {
 
             alert(
                 "Enter a valid 6-digit pincode"
@@ -617,7 +565,6 @@ function CreateComplaint() {
 
             }, 1500);
 
-
         }
         catch (err) {
 
@@ -641,7 +588,6 @@ function CreateComplaint() {
     };
 
 
-
     // ================= SELECT STYLES =================
 
     const selectStyles = {
@@ -654,13 +600,15 @@ function CreateComplaint() {
 
             borderRadius: "15px",
 
-            borderColor: state.isFocused
-                ? "#2563eb"
-                : "#dbe3ef",
+            borderColor:
+                state.isFocused
+                    ? "#2563eb"
+                    : "#dbe3ef",
 
-            boxShadow: state.isFocused
-                ? "0 0 0 4px rgba(37,99,235,.10)"
-                : "none",
+            boxShadow:
+                state.isFocused
+                    ? "0 0 0 4px rgba(37,99,235,.10)"
+                    : "none",
 
             backgroundColor: "#ffffff",
 
@@ -674,6 +622,7 @@ function CreateComplaint() {
 
         }),
 
+
         valueContainer: (base) => ({
 
             ...base,
@@ -681,6 +630,7 @@ function CreateComplaint() {
             padding: "4px 15px"
 
         }),
+
 
         placeholder: (base) => ({
 
@@ -691,6 +641,7 @@ function CreateComplaint() {
             fontSize: "15px"
 
         }),
+
 
         singleValue: (base) => ({
 
@@ -703,6 +654,7 @@ function CreateComplaint() {
             fontWeight: "600"
 
         }),
+
 
         menu: (base) => ({
 
@@ -719,6 +671,7 @@ function CreateComplaint() {
 
         }),
 
+
         menuPortal: (base) => ({
 
             ...base,
@@ -727,15 +680,17 @@ function CreateComplaint() {
 
         }),
 
+
         option: (base, state) => ({
 
             ...base,
 
             padding: "12px 15px",
 
-            backgroundColor: state.isFocused
-                ? "#eff6ff"
-                : "#ffffff",
+            backgroundColor:
+                state.isFocused
+                    ? "#eff6ff"
+                    : "#ffffff",
 
             color: "#1e293b",
 
@@ -746,24 +701,25 @@ function CreateComplaint() {
     };
 
 
-
     return (
 
         <div className="create-page">
 
-
-            {/* ================= TOP HEADER ================= */}
-
             <div className="create-wrapper">
 
 
+                {/* ================= TOP BAR ================= */}
+
                 <div className="create-topbar">
+
 
                     <button
                         type="button"
                         className="back-dashboard-btn"
                         onClick={() =>
-                            navigate("/citizen-dashboard")
+                            navigate(
+                                "/citizen-dashboard"
+                            )
                         }
                     >
 
@@ -787,7 +743,6 @@ function CreateComplaint() {
                 </div>
 
 
-
                 {/* ================= MAIN CARD ================= */}
 
                 <div className="complaint-container">
@@ -798,33 +753,25 @@ function CreateComplaint() {
                     <div className="form-header">
 
                         <div className="form-header-icon">
-
                             🚨
-
                         </div>
 
 
                         <div>
 
                             <div className="form-eyebrow">
-
                                 CITIZEN SERVICE
-
                             </div>
 
 
                             <h1>
-
                                 Report a Civic Issue
-
                             </h1>
 
 
                             <p className="subtitle">
-
                                 Help make your city smarter,
                                 cleaner and better.
-
                             </p>
 
                         </div>
@@ -832,12 +779,16 @@ function CreateComplaint() {
                     </div>
 
 
+                    {/* =================================================
+                        PROGRESS
+                        IMPORTANT:
+                        Classes renamed to avoid global CSS collision.
+                    ================================================= */}
 
-                    {/* ================= PROGRESS ================= */}
+                    <div className="create-progress">
 
-                    <div className="form-progress">
 
-                        <div className="progress-item active">
+                        <div className="create-progress-item active">
 
                             <span>
                                 1
@@ -858,10 +809,10 @@ function CreateComplaint() {
                         </div>
 
 
-                        <div className="progress-line"></div>
+                        <div className="create-progress-line"></div>
 
 
-                        <div className="progress-item active">
+                        <div className="create-progress-item active">
 
                             <span>
                                 2
@@ -882,10 +833,10 @@ function CreateComplaint() {
                         </div>
 
 
-                        <div className="progress-line"></div>
+                        <div className="create-progress-line"></div>
 
 
-                        <div className="progress-item active">
+                        <div className="create-progress-item active">
 
                             <span>
                                 3
@@ -908,7 +859,6 @@ function CreateComplaint() {
                     </div>
 
 
-
                     <form onSubmit={handleSubmit}>
 
 
@@ -923,6 +873,7 @@ function CreateComplaint() {
                                     📝
                                 </div>
 
+
                                 <div>
 
                                     <h2>
@@ -936,7 +887,6 @@ function CreateComplaint() {
                                 </div>
 
                             </div>
-
 
 
                             {/* TITLE */}
@@ -975,7 +925,6 @@ function CreateComplaint() {
                             </div>
 
 
-
                             {/* DESCRIPTION */}
 
                             <div className="field-group">
@@ -993,11 +942,13 @@ function CreateComplaint() {
                                     </label>
 
 
-                                    <span className={
-                                        formData.description.length < 20
-                                            ? "character-count warning"
-                                            : "character-count"
-                                    }>
+                                    <span
+                                        className={
+                                            formData.description.length < 20
+                                                ? "character-count warning"
+                                                : "character-count"
+                                        }
+                                    >
 
                                         {formData.description.length}
                                         /500
@@ -1017,7 +968,9 @@ function CreateComplaint() {
 
                                     placeholder="Describe the problem clearly. Include important details such as what happened, how serious it is, and any nearby landmarks."
 
-                                    value={formData.description}
+                                    value={
+                                        formData.description
+                                    }
 
                                     onChange={(e) => {
 
@@ -1037,6 +990,7 @@ function CreateComplaint() {
 
                                 />
 
+
                                 <div className="field-hint">
 
                                     💡 Minimum 20 characters required
@@ -1044,7 +998,6 @@ function CreateComplaint() {
                                 </div>
 
                             </div>
-
 
 
                             {/* CATEGORY */}
@@ -1091,7 +1044,9 @@ function CreateComplaint() {
 
                                     styles={selectStyles}
 
-                                    menuPortalTarget={document.body}
+                                    menuPortalTarget={
+                                        document.body
+                                    }
 
                                     menuPosition="fixed"
 
@@ -1101,9 +1056,7 @@ function CreateComplaint() {
 
                             </div>
 
-
                         </div>
-
 
 
                         {/* ================= LOCATION ================= */}
@@ -1116,6 +1069,7 @@ function CreateComplaint() {
                                 <div className="section-icon location-icon">
                                     📍
                                 </div>
+
 
                                 <div>
 
@@ -1132,10 +1086,10 @@ function CreateComplaint() {
                             </div>
 
 
-
-                            {/* PINCODE QUICK FIND */}
+                            {/* PINCODE */}
 
                             <div className="pincode-card">
+
 
                                 <div className="pincode-card-icon">
                                     🔎
@@ -1158,6 +1112,7 @@ function CreateComplaint() {
 
                                 <div className="pincode-box">
 
+
                                     <input
 
                                         className="complaint-input"
@@ -1166,7 +1121,9 @@ function CreateComplaint() {
 
                                         placeholder="6-digit Pincode"
 
-                                        value={formData.pincode}
+                                        value={
+                                            formData.pincode
+                                        }
 
                                         onChange={(e) => {
 
@@ -1174,6 +1131,7 @@ function CreateComplaint() {
                                                 e.target.value
                                                     .replace(/\D/g, "")
                                                     .slice(0, 6);
+
 
                                             setFormData(prev => ({
 
@@ -1196,7 +1154,9 @@ function CreateComplaint() {
 
                                         type="button"
 
-                                        onClick={searchPincode}
+                                        onClick={
+                                            searchPincode
+                                        }
 
                                         className="pin-btn"
 
@@ -1208,12 +1168,8 @@ function CreateComplaint() {
 
                                 </div>
 
-
                             </div>
 
-
-
-                            {/* MANUAL ADDRESS */}
 
                             <div className="field-hint">
 
@@ -1221,7 +1177,6 @@ function CreateComplaint() {
                                 fields below, even after using the pincode finder.
 
                             </div>
-
 
 
                             {/* STATE */}
@@ -1247,15 +1202,23 @@ function CreateComplaint() {
 
                                     placeholder="Select your state"
 
-                                    value={selectedState}
+                                    value={
+                                        selectedState
+                                    }
 
                                     onChange={(selected) => {
 
-                                        setSelectedState(selected);
+                                        setSelectedState(
+                                            selected
+                                        );
 
-                                        setSelectedDistrict(null);
+                                        setSelectedDistrict(
+                                            null
+                                        );
 
-                                        setSelectedCity(null);
+                                        setSelectedCity(
+                                            null
+                                        );
 
                                         setDistrictOptions([]);
 
@@ -1270,12 +1233,15 @@ function CreateComplaint() {
                                                 selected?.value || "",
 
                                             district: "",
+
                                             city: ""
 
                                         }));
 
 
-                                        if (selected?.value) {
+                                        if (
+                                            selected?.value
+                                        ) {
 
                                             getDistricts(
                                                 selected.value
@@ -1285,9 +1251,13 @@ function CreateComplaint() {
 
                                     }}
 
-                                    styles={selectStyles}
+                                    styles={
+                                        selectStyles
+                                    }
 
-                                    menuPortalTarget={document.body}
+                                    menuPortalTarget={
+                                        document.body
+                                    }
 
                                     menuPosition="fixed"
 
@@ -1296,7 +1266,6 @@ function CreateComplaint() {
                                 />
 
                             </div>
-
 
 
                             {/* DISTRICT + CITY */}
@@ -1321,7 +1290,9 @@ function CreateComplaint() {
 
                                         className="select-box"
 
-                                        options={districtOptions}
+                                        options={
+                                            districtOptions
+                                        }
 
                                         placeholder={
                                             selectedState
@@ -1329,11 +1300,15 @@ function CreateComplaint() {
                                                 : "Select state first"
                                         }
 
-                                        value={selectedDistrict}
+                                        value={
+                                            selectedDistrict
+                                        }
 
                                         onChange={(selected) => {
 
-                                            setSelectedDistrict(selected);
+                                            setSelectedDistrict(
+                                                selected
+                                            );
 
                                             setFormData(prev => ({
 
@@ -1346,20 +1321,25 @@ function CreateComplaint() {
 
                                         }}
 
-                                        styles={selectStyles}
+                                        styles={
+                                            selectStyles
+                                        }
 
-                                        menuPortalTarget={document.body}
+                                        menuPortalTarget={
+                                            document.body
+                                        }
 
                                         menuPosition="fixed"
 
-                                        isDisabled={!selectedState}
+                                        isDisabled={
+                                            !selectedState
+                                        }
 
                                         isSearchable
 
                                     />
 
                                 </div>
-
 
 
                                 <div className="field-group">
@@ -1379,13 +1359,17 @@ function CreateComplaint() {
 
                                         className="select-box"
 
-                                        options={cityOptions}
+                                        options={
+                                            cityOptions
+                                        }
 
                                         placeholder="Search or correct city"
 
                                         isSearchable
 
-                                        value={selectedCity}
+                                        value={
+                                            selectedCity
+                                        }
 
                                         onInputChange={
                                             searchCity
@@ -1393,7 +1377,9 @@ function CreateComplaint() {
 
                                         onChange={(selected) => {
 
-                                            setSelectedCity(selected);
+                                            setSelectedCity(
+                                                selected
+                                            );
 
                                             setFormData(prev => ({
 
@@ -1406,9 +1392,13 @@ function CreateComplaint() {
 
                                         }}
 
-                                        styles={selectStyles}
+                                        styles={
+                                            selectStyles
+                                        }
 
-                                        menuPortalTarget={document.body}
+                                        menuPortalTarget={
+                                            document.body
+                                        }
 
                                         menuPosition="fixed"
 
@@ -1416,9 +1406,7 @@ function CreateComplaint() {
 
                                 </div>
 
-
                             </div>
-
 
 
                             {/* STREET */}
@@ -1446,13 +1434,18 @@ function CreateComplaint() {
 
                                     placeholder="Example: Near RTC Complex, Main Road"
 
-                                    value={formData.street}
+                                    value={
+                                        formData.street
+                                    }
 
-                                    onChange={handleChange}
+                                    onChange={
+                                        handleChange
+                                    }
 
                                     required
 
                                 />
+
 
                                 <div className="field-hint">
 
@@ -1463,9 +1456,7 @@ function CreateComplaint() {
 
                             </div>
 
-
                         </div>
-
 
 
                         {/* ================= IMAGE ================= */}
@@ -1478,6 +1469,7 @@ function CreateComplaint() {
                                 <div className="section-icon image-icon">
                                     📷
                                 </div>
+
 
                                 <div>
 
@@ -1497,13 +1489,16 @@ function CreateComplaint() {
 
                             <label className="upload-area">
 
+
                                 <input
 
                                     type="file"
 
                                     accept="image/*"
 
-                                    onChange={handleImage}
+                                    onChange={
+                                        handleImage
+                                    }
 
                                 />
 
@@ -1534,14 +1529,15 @@ function CreateComplaint() {
                             </label>
 
 
-
                             {/* IMAGE PREVIEW */}
 
                             {preview && (
 
                                 <div className="image-preview">
 
+
                                     <div className="preview-header">
+
 
                                         <div>
 
@@ -1560,7 +1556,9 @@ function CreateComplaint() {
 
                                             type="button"
 
-                                            onClick={removeImage}
+                                            onClick={
+                                                removeImage
+                                            }
 
                                             className="remove-image-btn"
 
@@ -1585,9 +1583,7 @@ function CreateComplaint() {
 
                             )}
 
-
                         </div>
-
 
 
                         {/* ================= SUCCESS ================= */}
@@ -1596,9 +1592,11 @@ function CreateComplaint() {
 
                             <div className="success-message">
 
+
                                 <div className="success-icon">
                                     ✓
                                 </div>
+
 
                                 <div>
 
@@ -1615,7 +1613,6 @@ function CreateComplaint() {
                             </div>
 
                         )}
-
 
 
                         {/* ================= SUBMIT ================= */}
@@ -1673,24 +1670,20 @@ function CreateComplaint() {
 
                             </button>
 
-
                         </div>
-
 
                     </form>
 
                 </div>
 
 
-
-                {/* ================= FOOTER NOTE ================= */}
+                {/* ================= FOOTER ================= */}
 
                 <p className="create-footer">
 
                     CivicConnect • Building smarter communities together 🏙️
 
                 </p>
-
 
             </div>
 

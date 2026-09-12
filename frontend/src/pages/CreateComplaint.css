@@ -1,6 +1,11 @@
 /* =====================================================
    CIVICCONNECT CREATE COMPLAINT
-   FINAL RESPONSIVE VERSION
+   MOBILE OVERFLOW + OVERLAY FIX
+===================================================== */
+
+
+/* =====================================================
+   BASIC BOX SIZING
 ===================================================== */
 
 .create-page,
@@ -16,10 +21,15 @@
 ===================================================== */
 
 .create-page {
+    position: relative;
+
     width: 100%;
     max-width: 100%;
+
     min-height: 100vh;
+
     margin: 0;
+
     padding: 30px 20px 50px;
 
     background:
@@ -47,13 +57,12 @@
     font-family:
         "Segoe UI",
         Arial,
+        Helvetica,
         sans-serif;
 
     color: #1e293b;
 
-    /* IMPORTANT */
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow-x: hidden;
 }
 
 
@@ -62,11 +71,14 @@
 ===================================================== */
 
 .create-wrapper {
+    position: relative;
+
     width: 100%;
     max-width: 1000px;
-    margin: 0 auto;
 
-    overflow: visible;
+    min-width: 0;
+
+    margin: 0 auto;
 }
 
 
@@ -75,18 +87,22 @@
 ===================================================== */
 
 .create-topbar {
+    position: relative;
+
     width: 100%;
     max-width: 100%;
 
+    min-width: 0;
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 15px;
 
     margin-bottom: 22px;
-
-    overflow: visible;
 }
 
 
@@ -96,6 +112,7 @@
 
 .back-dashboard-btn {
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -104,6 +121,7 @@
     padding: 11px 18px;
 
     border: 1px solid #dbe3ef;
+
     border-radius: 12px;
 
     background: rgba(255,255,255,.90);
@@ -111,20 +129,29 @@
     color: #334155;
 
     font-size: 14px;
+
     font-weight: 700;
 
     cursor: pointer;
 
-    transition: .25s ease;
+    transition:
+        background .25s ease,
+        color .25s ease,
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
 
     white-space: nowrap;
 
     flex-shrink: 0;
 }
 
+
 .back-dashboard-btn:hover {
     background: #ffffff;
+
     color: #2563eb;
+
     border-color: #93c5fd;
 
     transform: translateX(-3px);
@@ -140,13 +167,17 @@
 
 .create-brand {
     display: flex;
+
     align-items: center;
 
     gap: 9px;
 
+    min-width: 0;
+
     color: #1e3a8a;
 
     font-size: 21px;
+
     font-weight: 900;
 
     letter-spacing: -.5px;
@@ -156,7 +187,13 @@
     flex-shrink: 0;
 }
 
-.create-brand span:last-child span {
+
+.create-brand > span:last-child {
+    min-width: 0;
+}
+
+
+.create-brand > span:last-child > span {
     color: #0f766e;
 }
 
@@ -168,6 +205,7 @@
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -192,17 +230,21 @@
 ===================================================== */
 
 .complaint-container {
+    position: relative;
+
     width: 100%;
     max-width: 100%;
 
+    min-width: 0;
+
     margin: 0;
+
+    padding: 42px;
 
     background: rgba(255,255,255,.94);
 
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-
-    padding: 42px;
 
     border: 1px solid rgba(255,255,255,.8);
 
@@ -214,21 +256,26 @@
     animation:
         complaintFade .5s ease;
 
-    /* IMPORTANT */
     overflow: visible;
 }
 
 
 @keyframes complaintFade {
+
     from {
         opacity: 0;
-        transform: translateY(25px);
+
+        transform:
+            translateY(25px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
     }
+
 }
 
 
@@ -237,17 +284,19 @@
 ===================================================== */
 
 .form-header {
+    position: relative;
+
     display: flex;
+
     align-items: center;
 
     gap: 18px;
 
     width: 100%;
-    max-width: 100%;
+
+    min-width: 0;
 
     padding-bottom: 28px;
-
-    overflow: visible;
 }
 
 
@@ -258,6 +307,7 @@
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -285,6 +335,7 @@
     color: #2563eb;
 
     font-size: 11px;
+
     font-weight: 900;
 
     letter-spacing: 1.7px;
@@ -295,6 +346,7 @@
     margin: 0;
 
     font-size: 34px;
+
     line-height: 1.15;
 
     font-weight: 900;
@@ -309,6 +361,7 @@
         );
 
     -webkit-background-clip: text;
+
     background-clip: text;
 
     color: transparent;
@@ -321,26 +374,34 @@
     color: #64748b;
 
     font-size: 15px;
+
     line-height: 1.5;
 }
 
 
 /* =====================================================
-   PROGRESS
+   CREATE PROGRESS
+   UNIQUE CLASS NAMES TO PREVENT CSS COLLISIONS
 ===================================================== */
 
-.form-progress {
+.create-progress {
+    position: relative;
+
     display: flex;
+
     align-items: center;
 
     width: 100%;
     max-width: 100%;
+
+    min-width: 0;
 
     margin-bottom: 35px;
 
     padding: 18px;
 
     border: 1px solid #e2e8f0;
+
     border-radius: 18px;
 
     background:
@@ -354,8 +415,11 @@
 }
 
 
-.progress-item {
+.create-progress-item {
+    position: relative;
+
     display: flex;
+
     align-items: center;
 
     gap: 9px;
@@ -363,16 +427,21 @@
     flex-shrink: 0;
 
     min-width: 0;
+
+    z-index: 1;
 }
 
 
-.progress-item > span {
+.create-progress-item > span {
+    position: relative;
+
     width: 32px;
     height: 32px;
 
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -383,11 +452,14 @@
     color: #64748b;
 
     font-size: 13px;
+
     font-weight: 900;
+
+    z-index: 2;
 }
 
 
-.progress-item.active > span {
+.create-progress-item.active > span {
     background:
         linear-gradient(
             135deg,
@@ -402,17 +474,18 @@
 }
 
 
-.progress-item strong {
+.create-progress-item strong {
     display: block;
 
     color: #334155;
 
     font-size: 12px;
+
     font-weight: 800;
 }
 
 
-.progress-item small {
+.create-progress-item small {
     display: block;
 
     margin-top: 2px;
@@ -423,8 +496,19 @@
 }
 
 
-.progress-line {
+/* IMPORTANT:
+   This is explicitly a horizontal line.
+   It cannot become a vertical fixed element.
+*/
+
+.create-progress-line {
+    position: relative;
+
+    display: block;
+
     flex: 1 1 auto;
+
+    width: auto;
 
     height: 2px;
 
@@ -438,16 +522,34 @@
             #93c5fd,
             #c4b5fd
         );
+
+    z-index: 0;
 }
 
 
 /* =====================================================
-   FORM SECTIONS
+   FORM
+===================================================== */
+
+.create-page form {
+    width: 100%;
+    max-width: 100%;
+
+    min-width: 0;
+}
+
+
+/* =====================================================
+   FORM SECTION
 ===================================================== */
 
 .form-section {
+    position: relative;
+
     width: 100%;
     max-width: 100%;
+
+    min-width: 0;
 
     margin-bottom: 32px;
 
@@ -469,11 +571,14 @@
 
 .section-heading {
     display: flex;
+
     align-items: center;
 
     gap: 13px;
 
     width: 100%;
+
+    min-width: 0;
 
     margin-bottom: 25px;
 }
@@ -486,6 +591,7 @@
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -501,13 +607,20 @@
 
 .location-icon {
     background: #ecfdf5;
+
     border-color: #d1fae5;
 }
 
 
 .image-icon {
     background: #f5f3ff;
+
     border-color: #ede9fe;
+}
+
+
+.section-heading > div:last-child {
+    min-width: 0;
 }
 
 
@@ -517,6 +630,7 @@
     color: #0f172a;
 
     font-size: 19px;
+
     font-weight: 900;
 }
 
@@ -538,9 +652,9 @@
     width: 100%;
     max-width: 100%;
 
-    margin-bottom: 21px;
-
     min-width: 0;
+
+    margin-bottom: 21px;
 }
 
 
@@ -557,6 +671,7 @@
     color: #334155;
 
     font-size: 13px;
+
     font-weight: 800;
 }
 
@@ -570,7 +685,9 @@
 
 .label-row {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 10px;
@@ -580,6 +697,8 @@
 
 
 .label-row label {
+    min-width: 0;
+
     margin-bottom: 8px;
 }
 
@@ -592,6 +711,7 @@
     color: #64748b;
 
     font-size: 11px;
+
     font-weight: 700;
 }
 
@@ -611,6 +731,7 @@
 
     width: 100%;
     max-width: 100%;
+
     min-width: 0;
 
     padding: 15px 17px;
@@ -628,6 +749,7 @@
     font-family:
         "Segoe UI",
         Arial,
+        Helvetica,
         sans-serif;
 
     font-size: 15px;
@@ -683,12 +805,14 @@
 
 
 /* =====================================================
-   REACT SELECT
+   SELECT
 ===================================================== */
 
 .select-box {
     width: 100% !important;
+
     max-width: 100% !important;
+
     min-width: 0 !important;
 }
 
@@ -706,7 +830,10 @@
     gap: 18px;
 
     width: 100%;
+
     max-width: 100%;
+
+    min-width: 0;
 }
 
 
@@ -727,6 +854,8 @@
     width: 100%;
     max-width: 100%;
 
+    min-width: 0;
+
     margin-bottom: 24px;
 
     padding: 17px;
@@ -741,8 +870,6 @@
             #eff6ff,
             #f8faff
         );
-
-    min-width: 0;
 }
 
 
@@ -753,6 +880,7 @@
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -778,6 +906,7 @@
     color: #1e3a8a;
 
     font-size: 13px;
+
     font-weight: 900;
 }
 
@@ -799,6 +928,7 @@
 
 .pincode-box {
     display: flex;
+
     align-items: center;
 
     gap: 8px;
@@ -839,6 +969,7 @@
     color: #ffffff;
 
     font-size: 13px;
+
     font-weight: 900;
 
     cursor: pointer;
@@ -946,6 +1077,7 @@
     height: 52px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -966,6 +1098,7 @@
     color: #334155;
 
     font-size: 14px;
+
     font-weight: 900;
 }
 
@@ -996,6 +1129,8 @@
     width: 100%;
     max-width: 100%;
 
+    min-width: 0;
+
     margin-top: 20px;
 
     padding: 15px;
@@ -1005,8 +1140,6 @@
     border-radius: 18px;
 
     background: #f8fafc;
-
-    min-width: 0;
 }
 
 
@@ -1014,6 +1147,7 @@
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
     gap: 15px;
@@ -1024,12 +1158,18 @@
 }
 
 
+.preview-header > div {
+    min-width: 0;
+}
+
+
 .preview-header strong {
     display: block;
 
     color: #334155;
 
     font-size: 13px;
+
     font-weight: 900;
 }
 
@@ -1085,6 +1225,7 @@
     color: #dc2626;
 
     font-size: 11px;
+
     font-weight: 800;
 
     cursor: pointer;
@@ -1095,6 +1236,7 @@
 
 .remove-image-btn:hover {
     background: #fee2e2;
+
     border-color: #fca5a5;
 }
 
@@ -1105,6 +1247,7 @@
 
 .success-message {
     display: flex;
+
     align-items: center;
 
     gap: 13px;
@@ -1135,6 +1278,7 @@
     flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1145,6 +1289,7 @@
     color: #ffffff;
 
     font-size: 20px;
+
     font-weight: 900;
 }
 
@@ -1155,6 +1300,7 @@
     color: #166534;
 
     font-size: 14px;
+
     font-weight: 900;
 }
 
@@ -1171,27 +1317,29 @@
 
 
 /* =====================================================
-   SUBMIT AREA
+   SUBMIT
 ===================================================== */
 
 .submit-area {
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
     gap: 20px;
 
     width: 100%;
 
-    padding-top: 5px;
-
     min-width: 0;
+
+    padding-top: 5px;
 }
 
 
 .submit-note {
     display: flex;
+
     align-items: center;
 
     gap: 9px;
@@ -1207,6 +1355,7 @@
     height: 34px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -1229,15 +1378,13 @@
 }
 
 
-/* =====================================================
-   SUBMIT BUTTON
-===================================================== */
-
 .complaint-button {
     min-width: 260px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     gap: 12px;
@@ -1258,6 +1405,7 @@
     color: #ffffff;
 
     font-size: 15px;
+
     font-weight: 900;
 
     cursor: pointer;
@@ -1301,7 +1449,8 @@
 
     line-height: 1;
 
-    transition: transform .25s ease;
+    transition:
+        transform .25s ease;
 }
 
 
@@ -1330,9 +1479,11 @@
 
 
 @keyframes buttonSpin {
+
     to {
         transform: rotate(360deg);
     }
+
 }
 
 
@@ -1361,10 +1512,12 @@
         padding: 32px;
     }
 
+
     .pincode-card {
         grid-template-columns:
             auto minmax(0,1fr);
     }
+
 
     .pincode-box {
         grid-column: 1 / -1;
@@ -1372,15 +1525,18 @@
         width: 100%;
     }
 
+
     .pincode-box .complaint-input {
         flex: 1 1 auto;
 
         width: auto;
     }
 
+
     .pin-btn {
         min-width: 100px;
     }
+
 }
 
 
@@ -1390,69 +1546,41 @@
 
 @media (max-width: 700px) {
 
-    html,
-    body {
-        width: 100%;
-        max-width: 100%;
-
-        margin: 0;
-        padding: 0;
-
-        overflow-x: clip !important;
-    }
-
-
-    #root {
-        width: 100%;
-        max-width: 100%;
-
-        margin: 0;
-        padding: 0;
-
-        overflow-x: clip !important;
-        overflow-y: visible !important;
-    }
-
-
     .create-page {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
-
-        margin: 0;
 
         padding:
             20px
             12px
             35px;
 
-        overflow-x: clip !important;
-        overflow-y: visible !important;
+        overflow-x: hidden;
     }
 
 
     .create-wrapper {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
-
-        margin: 0 auto;
-
-        overflow: visible !important;
     }
 
 
     .create-topbar {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
 
-        margin-bottom: 17px;
+        gap: 10px;
 
-        overflow: visible !important;
+        margin-bottom: 17px;
     }
 
 
@@ -1480,6 +1608,7 @@
 
     .complaint-container {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1488,12 +1617,13 @@
 
         border-radius: 24px;
 
-        overflow: visible !important;
+        overflow: visible;
     }
 
 
     .form-header {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1501,8 +1631,6 @@
         align-items: flex-start;
 
         gap: 12px;
-
-        overflow: visible !important;
     }
 
 
@@ -1518,6 +1646,7 @@
 
     .form-header > div:last-child {
         min-width: 0;
+
         max-width: 100%;
     }
 
@@ -1536,8 +1665,13 @@
     }
 
 
-    .form-progress {
+    /* =================================================
+       MOBILE PROGRESS
+    ================================================= */
+
+    .create-progress {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1550,35 +1684,44 @@
     }
 
 
-    .progress-item {
+    .create-progress-item {
         gap: 0;
 
         min-width: 0;
     }
 
 
-    .progress-item > span {
+    .create-progress-item > span {
         width: 29px;
         height: 29px;
     }
 
 
-    .progress-item div {
+    .create-progress-item > div {
         display: none;
     }
 
 
-    .progress-line {
+    .create-progress-line {
         flex: 1 1 auto;
 
+        width: auto;
+
         min-width: 8px;
+
+        height: 2px;
 
         margin: 0 7px;
     }
 
 
+    /* =================================================
+       FORM SECTIONS
+    ================================================= */
+
     .form-section {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1587,7 +1730,7 @@
 
         border-radius: 19px;
 
-        overflow: visible !important;
+        overflow: visible;
     }
 
 
@@ -1600,6 +1743,7 @@
 
     .section-heading > div:last-child {
         min-width: 0;
+
         max-width: 100%;
     }
 
@@ -1619,6 +1763,7 @@
 
     .field-group {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1629,6 +1774,7 @@
     .complaint-textarea,
     .select-box {
         width: 100% !important;
+
         max-width: 100% !important;
 
         min-width: 0 !important;
@@ -1652,10 +1798,13 @@
     }
 
 
-    /* PINCODE */
+    /* =================================================
+       PINCODE
+    ================================================= */
 
     .pincode-card {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1702,6 +1851,7 @@
         grid-column: 1 / -1;
 
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1730,12 +1880,15 @@
     }
 
 
-    /* IMAGE */
+    /* =================================================
+       IMAGE
+    ================================================= */
 
     .upload-area,
     .upload-content,
     .image-preview {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1765,6 +1918,7 @@
 
     .image-preview img {
         width: 100%;
+
         max-width: 100%;
 
         height: auto;
@@ -1788,10 +1942,13 @@
     }
 
 
-    /* SUBMIT */
+    /* =================================================
+       SUBMIT
+    ================================================= */
 
     .submit-area {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
@@ -1804,16 +1961,19 @@
 
     .submit-note {
         width: 100%;
+
         max-width: none;
     }
 
 
     .complaint-button {
         width: 100%;
+
         max-width: 100%;
 
         min-width: 0;
     }
+
 }
 
 
@@ -1899,7 +2059,7 @@
     }
 
 
-    .form-progress {
+    .create-progress {
         padding: 11px;
     }
 
@@ -2043,6 +2203,7 @@
     .create-footer {
         font-size: 9px;
     }
+
 }
 
 
@@ -2070,7 +2231,7 @@
     }
 
 
-    .create-brand .brand-icon {
+    .brand-icon {
         width: 28px;
         height: 28px;
 
@@ -2112,6 +2273,7 @@
 
     .form-section {
         padding-left: 12px;
+
         padding-right: 12px;
     }
 
@@ -2125,53 +2287,10 @@
         min-width: 68px;
 
         padding-left: 9px;
+
         padding-right: 9px;
     }
-}
 
-
-/* =====================================================
-   IMPORTANT GLOBAL MOBILE OVERFLOW FIX
-===================================================== */
-
-@media (max-width: 700px) {
-
-    html,
-    body {
-        overflow-x: hidden !important;
-        overflow-y: auto !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-
-
-    #root {
-        width: 100% !important;
-        max-width: 100% !important;
-
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
-    }
-
-
-    .create-page {
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
-    }
-
-
-    .create-wrapper,
-    .create-topbar,
-    .complaint-container,
-    .form-header,
-    .form-section,
-    .field-group,
-    .location-grid,
-    .submit-area {
-        max-width: 100% !important;
-        min-width: 0 !important;
-    }
 }
 
 
@@ -2179,10 +2298,11 @@
    ACCESSIBILITY
 ===================================================== */
 
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-    outline: 3px solid rgba(37,99,235,.25);
+.create-page button:focus-visible,
+.create-page input:focus-visible,
+.create-page textarea:focus-visible {
+    outline:
+        3px solid rgba(37,99,235,.25);
 
     outline-offset: 2px;
 }
@@ -2194,9 +2314,10 @@ textarea:focus-visible {
 
 @media (prefers-reduced-motion: reduce) {
 
-    *,
-    *::before,
-    *::after {
+    .create-page *,
+    .create-page *::before,
+    .create-page *::after {
+
         animation-duration: .01ms !important;
 
         animation-iteration-count: 1 !important;
@@ -2205,4 +2326,5 @@ textarea:focus-visible {
 
         scroll-behavior: auto !important;
     }
+
 }
