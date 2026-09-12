@@ -1,6 +1,6 @@
 /* =====================================================
    CIVICCONNECT CREATE COMPLAINT
-   RESPONSIVE + MOBILE OVERFLOW + CREATABLE SELECT FIX
+   RESPONSIVE + MOBILE + CREATABLE SELECT
 ===================================================== */
 
 
@@ -12,7 +12,9 @@
 .create-page *,
 .create-page *::before,
 .create-page *::after {
+
     box-sizing: border-box;
+
 }
 
 
@@ -21,6 +23,7 @@
 ===================================================== */
 
 .create-page {
+
     position: relative;
 
     width: 100%;
@@ -33,21 +36,25 @@
     padding: 30px 20px 50px;
 
     background:
+
         radial-gradient(
             circle at 5% 5%,
             rgba(59,130,246,.16),
             transparent 30%
         ),
+
         radial-gradient(
             circle at 95% 15%,
             rgba(124,58,237,.13),
             transparent 28%
         ),
+
         radial-gradient(
             circle at 50% 100%,
             rgba(20,184,166,.10),
             transparent 35%
         ),
+
         linear-gradient(
             135deg,
             #f8fafc,
@@ -63,6 +70,7 @@
     color: #1e293b;
 
     overflow-x: hidden;
+
 }
 
 
@@ -71,6 +79,7 @@
 ===================================================== */
 
 .create-wrapper {
+
     position: relative;
 
     width: 100%;
@@ -79,6 +88,7 @@
     min-width: 0;
 
     margin: 0 auto;
+
 }
 
 
@@ -87,6 +97,7 @@
 ===================================================== */
 
 .create-topbar {
+
     position: relative;
 
     width: 100%;
@@ -103,6 +114,7 @@
     gap: 15px;
 
     margin-bottom: 22px;
+
 }
 
 
@@ -111,6 +123,7 @@
 ===================================================== */
 
 .back-dashboard-btn {
+
     display: flex;
 
     align-items: center;
@@ -144,10 +157,12 @@
     white-space: nowrap;
 
     flex-shrink: 0;
+
 }
 
 
 .back-dashboard-btn:hover {
+
     background: #ffffff;
 
     color: #2563eb;
@@ -158,6 +173,7 @@
 
     box-shadow:
         0 8px 20px rgba(15,23,42,.08);
+
 }
 
 
@@ -166,6 +182,7 @@
 ===================================================== */
 
 .create-brand {
+
     display: flex;
 
     align-items: center;
@@ -185,16 +202,21 @@
     white-space: nowrap;
 
     flex-shrink: 0;
+
 }
 
 
 .create-brand > span:last-child {
+
     min-width: 0;
+
 }
 
 
 .create-brand > span:last-child > span {
+
     color: #0f766e;
+
 }
 
 
@@ -203,6 +225,7 @@
 ===================================================== */
 
 .brand-icon {
+
     width: 38px;
     height: 38px;
 
@@ -226,6 +249,7 @@
 
     box-shadow:
         0 8px 20px rgba(37,99,235,.25);
+
 }
 
 
@@ -234,6 +258,7 @@
 ===================================================== */
 
 .complaint-container {
+
     position: relative;
 
     width: 100%;
@@ -245,12 +270,17 @@
 
     padding: 42px;
 
-    background: rgba(255,255,255,.94);
+    background:
+        rgba(255,255,255,.94);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter:
+        blur(18px);
 
-    border: 1px solid rgba(255,255,255,.8);
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    border:
+        1px solid rgba(255,255,255,.8);
 
     border-radius: 30px;
 
@@ -261,6 +291,7 @@
         complaintFade .5s ease;
 
     overflow: visible;
+
 }
 
 
@@ -271,17 +302,21 @@
 @keyframes complaintFade {
 
     from {
+
         opacity: 0;
 
         transform:
             translateY(25px);
+
     }
 
     to {
+
         opacity: 1;
 
         transform:
             translateY(0);
+
     }
 
 }
@@ -292,6 +327,7 @@
 ===================================================== */
 
 .form-header {
+
     position: relative;
 
     display: flex;
@@ -305,6 +341,7 @@
     min-width: 0;
 
     padding-bottom: 28px;
+
 }
 
 
@@ -313,6 +350,7 @@
 ===================================================== */
 
 .form-header-icon {
+
     width: 68px;
     height: 68px;
 
@@ -332,12 +370,14 @@
             #ede9fe
         );
 
-    border: 1px solid #dbeafe;
+    border:
+        1px solid #dbeafe;
 
     font-size: 32px;
 
     box-shadow:
         0 10px 25px rgba(37,99,235,.10);
+
 }
 
 
@@ -346,6 +386,7 @@
 ===================================================== */
 
 .form-eyebrow {
+
     margin-bottom: 5px;
 
     color: #2563eb;
@@ -355,6 +396,7 @@
     font-weight: 900;
 
     letter-spacing: 1.7px;
+
 }
 
 
@@ -363,6 +405,7 @@
 ===================================================== */
 
 .complaint-container h1 {
+
     margin: 0;
 
     font-size: 34px;
@@ -380,11 +423,14 @@
             #7c3aed
         );
 
-    -webkit-background-clip: text;
+    -webkit-background-clip:
+        text;
 
-    background-clip: text;
+    background-clip:
+        text;
 
     color: transparent;
+
 }
 
 
@@ -393,6 +439,7 @@
 ===================================================== */
 
 .subtitle {
+
     margin: 7px 0 0;
 
     color: #64748b;
@@ -400,14 +447,18 @@
     font-size: 15px;
 
     line-height: 1.5;
+
 }
 
 
 /* =====================================================
-   CREATE PROGRESS
+   PROGRESS
+   IMPORTANT:
+   JSX uses form-progress
 ===================================================== */
 
-.create-progress {
+.form-progress {
+
     position: relative;
 
     display: flex;
@@ -423,7 +474,8 @@
 
     padding: 18px;
 
-    border: 1px solid #e2e8f0;
+    border:
+        1px solid #e2e8f0;
 
     border-radius: 18px;
 
@@ -435,6 +487,7 @@
         );
 
     overflow: hidden;
+
 }
 
 
@@ -442,7 +495,8 @@
    PROGRESS ITEM
 ===================================================== */
 
-.create-progress-item {
+.progress-item {
+
     position: relative;
 
     display: flex;
@@ -456,10 +510,12 @@
     min-width: 0;
 
     z-index: 1;
+
 }
 
 
-.create-progress-item > span {
+.progress-item > span {
+
     position: relative;
 
     width: 32px;
@@ -474,19 +530,26 @@
 
     border-radius: 50%;
 
-    background: #e2e8f0;
+    background:
+        #e2e8f0;
 
-    color: #64748b;
+    color:
+        #64748b;
 
-    font-size: 13px;
+    font-size:
+        13px;
 
-    font-weight: 900;
+    font-weight:
+        900;
 
-    z-index: 2;
+    z-index:
+        2;
+
 }
 
 
-.create-progress-item.active > span {
+.progress-item.active > span {
+
     background:
         linear-gradient(
             135deg,
@@ -494,10 +557,12 @@
             #7c3aed
         );
 
-    color: #ffffff;
+    color:
+        #ffffff;
 
     box-shadow:
         0 5px 14px rgba(37,99,235,.25);
+
 }
 
 
@@ -505,25 +570,35 @@
    PROGRESS TEXT
 ===================================================== */
 
-.create-progress-item strong {
+.progress-item strong {
+
     display: block;
 
-    color: #334155;
+    color:
+        #334155;
 
-    font-size: 12px;
+    font-size:
+        12px;
 
-    font-weight: 800;
+    font-weight:
+        800;
+
 }
 
 
-.create-progress-item small {
+.progress-item small {
+
     display: block;
 
-    margin-top: 2px;
+    margin-top:
+        2px;
 
-    color: #94a3b8;
+    color:
+        #94a3b8;
 
-    font-size: 10px;
+    font-size:
+        10px;
+
 }
 
 
@@ -531,20 +606,26 @@
    PROGRESS LINE
 ===================================================== */
 
-.create-progress-line {
+.progress-line {
+
     position: relative;
 
     display: block;
 
-    flex: 1 1 auto;
+    flex:
+        1 1 auto;
 
-    width: auto;
+    width:
+        auto;
 
-    height: 2px;
+    height:
+        2px;
 
-    min-width: 20px;
+    min-width:
+        20px;
 
-    margin: 0 12px;
+    margin:
+        0 12px;
 
     background:
         linear-gradient(
@@ -553,7 +634,9 @@
             #c4b5fd
         );
 
-    z-index: 0;
+    z-index:
+        0;
+
 }
 
 
@@ -562,10 +645,16 @@
 ===================================================== */
 
 .create-page form {
-    width: 100%;
-    max-width: 100%;
 
-    min-width: 0;
+    width:
+        100%;
+
+    max-width:
+        100%;
+
+    min-width:
+        0;
+
 }
 
 
@@ -574,24 +663,36 @@
 ===================================================== */
 
 .form-section {
+
     position: relative;
 
-    width: 100%;
-    max-width: 100%;
+    width:
+        100%;
 
-    min-width: 0;
+    max-width:
+        100%;
 
-    margin-bottom: 32px;
+    min-width:
+        0;
 
-    padding: 27px;
+    margin-bottom:
+        32px;
 
-    border: 1px solid #e2e8f0;
+    padding:
+        27px;
 
-    border-radius: 22px;
+    border:
+        1px solid #e2e8f0;
 
-    background: #ffffff;
+    border-radius:
+        22px;
 
-    overflow: visible;
+    background:
+        #ffffff;
+
+    overflow:
+        visible;
+
 }
 
 
@@ -600,17 +701,62 @@
 ===================================================== */
 
 .section-heading {
+
     display: flex;
 
     align-items: center;
 
-    gap: 13px;
+    gap:
+        13px;
 
-    width: 100%;
+    width:
+        100%;
 
-    min-width: 0;
+    min-width:
+        0;
 
-    margin-bottom: 25px;
+    margin-bottom:
+        25px;
+
+}
+
+
+.section-heading > div:last-child {
+
+    min-width:
+        0;
+
+}
+
+
+.section-heading h2 {
+
+    margin:
+        0;
+
+    color:
+        #0f172a;
+
+    font-size:
+        19px;
+
+    font-weight:
+        900;
+
+}
+
+
+.section-heading p {
+
+    margin:
+        3px 0 0;
+
+    color:
+        #94a3b8;
+
+    font-size:
+        12px;
+
 }
 
 
@@ -619,66 +765,59 @@
 ===================================================== */
 
 .section-icon {
-    width: 43px;
-    height: 43px;
 
-    flex-shrink: 0;
+    width:
+        43px;
 
-    display: flex;
+    height:
+        43px;
 
-    align-items: center;
-    justify-content: center;
+    flex-shrink:
+        0;
 
-    border-radius: 13px;
+    display:
+        flex;
 
-    background: #eff6ff;
+    align-items:
+        center;
 
-    border: 1px solid #dbeafe;
+    justify-content:
+        center;
 
-    font-size: 20px;
+    border-radius:
+        13px;
+
+    background:
+        #eff6ff;
+
+    border:
+        1px solid #dbeafe;
+
+    font-size:
+        20px;
+
 }
 
 
 .location-icon {
-    background: #ecfdf5;
 
-    border-color: #d1fae5;
+    background:
+        #ecfdf5;
+
+    border-color:
+        #d1fae5;
+
 }
 
 
 .image-icon {
-    background: #f5f3ff;
 
-    border-color: #ede9fe;
-}
+    background:
+        #f5f3ff;
 
+    border-color:
+        #ede9fe;
 
-/* =====================================================
-   SECTION HEADING TEXT
-===================================================== */
-
-.section-heading > div:last-child {
-    min-width: 0;
-}
-
-
-.section-heading h2 {
-    margin: 0;
-
-    color: #0f172a;
-
-    font-size: 19px;
-
-    font-weight: 900;
-}
-
-
-.section-heading p {
-    margin: 3px 0 0;
-
-    color: #94a3b8;
-
-    font-size: 12px;
 }
 
 
@@ -687,17 +826,27 @@
 ===================================================== */
 
 .field-group {
-    width: 100%;
-    max-width: 100%;
 
-    min-width: 0;
+    width:
+        100%;
 
-    margin-bottom: 21px;
+    max-width:
+        100%;
+
+    min-width:
+        0;
+
+    margin-bottom:
+        21px;
+
 }
 
 
 .field-group:last-child {
-    margin-bottom: 0;
+
+    margin-bottom:
+        0;
+
 }
 
 
@@ -706,22 +855,33 @@
 ===================================================== */
 
 .field-group label {
-    display: block;
 
-    margin-bottom: 8px;
+    display:
+        block;
 
-    color: #334155;
+    margin-bottom:
+        8px;
 
-    font-size: 13px;
+    color:
+        #334155;
 
-    font-weight: 800;
+    font-size:
+        13px;
+
+    font-weight:
+        800;
+
 }
 
 
 .field-group label span {
-    margin-left: 4px;
 
-    color: #ef4444;
+    margin-left:
+        4px;
+
+    color:
+        #ef4444;
+
 }
 
 
@@ -730,22 +890,33 @@
 ===================================================== */
 
 .label-row {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    justify-content: space-between;
+    align-items:
+        center;
 
-    gap: 10px;
+    justify-content:
+        space-between;
 
-    min-width: 0;
+    gap:
+        10px;
+
+    min-width:
+        0;
+
 }
 
 
 .label-row label {
-    min-width: 0;
 
-    margin-bottom: 8px;
+    min-width:
+        0;
+
+    margin-bottom:
+        8px;
+
 }
 
 
@@ -754,47 +925,69 @@
 ===================================================== */
 
 .character-count {
-    flex-shrink: 0;
 
-    margin-bottom: 8px;
+    flex-shrink:
+        0;
 
-    color: #64748b;
+    margin-bottom:
+        8px;
 
-    font-size: 11px;
+    color:
+        #64748b;
 
-    font-weight: 700;
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
 }
 
 
 .character-count.warning {
-    color: #f59e0b;
+
+    color:
+        #f59e0b;
+
 }
 
 
 /* =====================================================
-   INPUTS
+   NORMAL INPUTS
 ===================================================== */
 
 .complaint-input,
 .complaint-textarea {
-    display: block;
 
-    width: 100%;
-    max-width: 100%;
+    display:
+        block;
 
-    min-width: 0;
+    width:
+        100%;
 
-    padding: 15px 17px;
+    max-width:
+        100%;
 
-    border: 1px solid #dbe3ef;
+    min-width:
+        0;
 
-    border-radius: 15px;
+    padding:
+        15px 17px;
 
-    outline: none;
+    border:
+        1px solid #dbe3ef;
 
-    color: #1e293b;
+    border-radius:
+        15px;
 
-    background: #ffffff;
+    outline:
+        none;
+
+    color:
+        #1e293b;
+
+    background:
+        #ffffff;
 
     font-family:
         "Segoe UI",
@@ -802,47 +995,47 @@
         Helvetica,
         sans-serif;
 
-    font-size: 15px;
+    font-size:
+        15px;
 
     transition:
         border-color .25s ease,
         box-shadow .25s ease,
         background .25s ease;
+
 }
 
-
-/* =====================================================
-   INPUT PLACEHOLDER
-===================================================== */
 
 .complaint-input::placeholder,
 .complaint-textarea::placeholder {
-    color: #a0aec0;
+
+    color:
+        #a0aec0;
+
 }
 
-
-/* =====================================================
-   INPUT HOVER
-===================================================== */
 
 .complaint-input:hover,
 .complaint-textarea:hover {
-    border-color: #b8c7dc;
+
+    border-color:
+        #b8c7dc;
+
 }
 
 
-/* =====================================================
-   INPUT FOCUS
-===================================================== */
-
 .complaint-input:focus,
 .complaint-textarea:focus {
-    border-color: #2563eb;
 
-    background: #ffffff;
+    border-color:
+        #2563eb;
+
+    background:
+        #ffffff;
 
     box-shadow:
         0 0 0 4px rgba(37,99,235,.09);
+
 }
 
 
@@ -851,11 +1044,16 @@
 ===================================================== */
 
 .complaint-textarea {
-    min-height: 145px;
 
-    resize: vertical;
+    min-height:
+        145px;
 
-    line-height: 1.6;
+    resize:
+        vertical;
+
+    line-height:
+        1.6;
+
 }
 
 
@@ -864,26 +1062,220 @@
 ===================================================== */
 
 .field-hint {
-    margin-top: 7px;
 
-    color: #94a3b8;
+    margin-top:
+        7px;
 
-    font-size: 11px;
+    color:
+        #94a3b8;
 
-    line-height: 1.5;
+    font-size:
+        11px;
+
+    line-height:
+        1.5;
+
+}
+
+
+.manual-address-hint {
+
+    margin-bottom:
+        20px;
+
+    padding:
+        10px 12px;
+
+    border:
+        1px solid #dbeafe;
+
+    border-radius:
+        10px;
+
+    background:
+        #f8fbff;
+
+    color:
+        #64748b;
+
 }
 
 
 /* =====================================================
-   SELECT BOX
+   REACT SELECT
 ===================================================== */
 
-.select-box {
-    width: 100% !important;
+.create-page .select-box {
 
-    max-width: 100% !important;
+    width:
+        100% !important;
 
-    min-width: 0 !important;
+    max-width:
+        100% !important;
+
+    min-width:
+        0 !important;
+
+}
+
+
+/* =====================================================
+   REACT SELECT CONTROL
+===================================================== */
+
+.create-page .select-box
+[class*="control"] {
+
+    width:
+        100% !important;
+
+    max-width:
+        100% !important;
+
+    min-width:
+        0 !important;
+
+}
+
+
+/* =====================================================
+   VALUE CONTAINER
+===================================================== */
+
+.create-page .select-box
+[class*="ValueContainer"] {
+
+    min-width:
+        0;
+
+    overflow:
+        hidden;
+
+}
+
+
+/* =====================================================
+   SINGLE VALUE
+===================================================== */
+
+.create-page .select-box
+[class*="singleValue"] {
+
+    min-width:
+        0;
+
+    max-width:
+        100%;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =====================================================
+   SEARCH INPUT
+===================================================== */
+
+.create-page .select-box input {
+
+    color:
+        #1e293b !important;
+
+    min-width:
+        0 !important;
+
+}
+
+
+.create-page .select-box input::placeholder {
+
+    color:
+        #94a3b8 !important;
+
+}
+
+
+/* =====================================================
+   DROPDOWN MENU
+===================================================== */
+
+.create-page .select-box
+[class*="menu"] {
+
+    z-index:
+        99999 !important;
+
+}
+
+
+/* =====================================================
+   MENU LIST
+===================================================== */
+
+.create-page .select-box
+[class*="menuList"] {
+
+    max-height:
+        260px;
+
+    overflow-y:
+        auto;
+
+    overflow-x:
+        hidden;
+
+}
+
+
+/* =====================================================
+   MENU PORTAL
+===================================================== */
+
+.create-page
+[class*="menu-portal"] {
+
+    z-index:
+        99999 !important;
+
+}
+
+
+/* =====================================================
+   OPTIONS
+===================================================== */
+
+.create-page .select-box
+[class*="option"] {
+
+    min-width:
+        0;
+
+    overflow-wrap:
+        break-word;
+
+    word-break:
+        break-word;
+
+}
+
+
+/* =====================================================
+   CREATABLE "USE" OPTION
+===================================================== */
+
+.create-page .select-box
+[class*="option"][aria-selected="false"] {
+
+    cursor:
+        pointer;
+
 }
 
 
@@ -892,18 +1284,28 @@
 ===================================================== */
 
 .location-grid {
-    display: grid;
+
+    display:
+        grid;
 
     grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
 
-    gap: 18px;
+    gap:
+        18px;
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 100%;
+    max-width:
+        100%;
 
-    min-width: 0;
+    min-width:
+        0;
+
 }
 
 
@@ -912,27 +1314,39 @@
 ===================================================== */
 
 .pincode-card {
-    display: grid;
+
+    display:
+        grid;
 
     grid-template-columns:
-        auto minmax(0, 1fr) auto;
+        auto minmax(0,1fr) auto;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 14px;
+    gap:
+        14px;
 
-    width: 100%;
-    max-width: 100%;
+    width:
+        100%;
 
-    min-width: 0;
+    max-width:
+        100%;
 
-    margin-bottom: 24px;
+    min-width:
+        0;
 
-    padding: 17px;
+    margin-bottom:
+        24px;
 
-    border: 1px solid #dbeafe;
+    padding:
+        17px;
 
-    border-radius: 17px;
+    border:
+        1px solid #dbeafe;
+
+    border-radius:
+        17px;
 
     background:
         linear-gradient(
@@ -940,6 +1354,7 @@
             #eff6ff,
             #f8faff
         );
+
 }
 
 
@@ -948,24 +1363,37 @@
 ===================================================== */
 
 .pincode-card-icon {
-    width: 43px;
-    height: 43px;
 
-    flex-shrink: 0;
+    width:
+        43px;
 
-    display: flex;
+    height:
+        43px;
 
-    align-items: center;
-    justify-content: center;
+    flex-shrink:
+        0;
 
-    border-radius: 13px;
+    display:
+        flex;
 
-    background: #ffffff;
+    align-items:
+        center;
 
-    font-size: 20px;
+    justify-content:
+        center;
+
+    border-radius:
+        13px;
+
+    background:
+        #ffffff;
+
+    font-size:
+        20px;
 
     box-shadow:
         0 5px 15px rgba(37,99,235,.08);
+
 }
 
 
@@ -974,33 +1402,50 @@
 ===================================================== */
 
 .pincode-card-content {
-    min-width: 0;
+
+    min-width:
+        0;
+
 }
 
 
 .pincode-card-content strong {
-    display: block;
 
-    color: #1e3a8a;
+    display:
+        block;
 
-    font-size: 13px;
+    color:
+        #1e3a8a;
 
-    font-weight: 900;
+    font-size:
+        13px;
+
+    font-weight:
+        900;
+
 }
 
 
 .pincode-card-content span {
-    display: block;
 
-    margin-top: 3px;
+    display:
+        block;
 
-    color: #64748b;
+    margin-top:
+        3px;
 
-    font-size: 11px;
+    color:
+        #64748b;
 
-    line-height: 1.4;
+    font-size:
+        11px;
 
-    overflow-wrap: break-word;
+    line-height:
+        1.4;
+
+    overflow-wrap:
+        break-word;
+
 }
 
 
@@ -1009,41 +1454,59 @@
 ===================================================== */
 
 .pincode-box {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    gap: 8px;
+    align-items:
+        center;
 
-    min-width: 0;
+    gap:
+        8px;
+
+    min-width:
+        0;
+
 }
 
 
 .pincode-box .complaint-input {
-    width: 145px;
 
-    min-width: 0;
+    width:
+        145px;
 
-    margin: 0;
+    min-width:
+        0;
 
-    padding: 13px 14px;
+    margin:
+        0;
+
+    padding:
+        13px 14px;
+
 }
 
 
 /* =====================================================
-   FIND PINCODE BUTTON
+   PIN BUTTON
 ===================================================== */
 
 .pin-btn {
-    height: 48px;
 
-    flex-shrink: 0;
+    height:
+        48px;
 
-    padding: 0 18px;
+    flex-shrink:
+        0;
 
-    border: none;
+    padding:
+        0 18px;
 
-    border-radius: 13px;
+    border:
+        none;
+
+    border-radius:
+        13px;
 
     background:
         linear-gradient(
@@ -1052,13 +1515,17 @@
             #16a34a
         );
 
-    color: #ffffff;
+    color:
+        #ffffff;
 
-    font-size: 13px;
+    font-size:
+        13px;
 
-    font-weight: 900;
+    font-weight:
+        900;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     box-shadow:
         0 7px 18px rgba(22,163,74,.20);
@@ -1066,19 +1533,26 @@
     transition:
         transform .25s ease,
         box-shadow .25s ease;
+
 }
 
 
 .pin-btn:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 
     box-shadow:
         0 10px 25px rgba(22,163,74,.28);
+
 }
 
 
 .pin-btn:active {
-    transform: translateY(0);
+
+    transform:
+        translateY(0);
+
 }
 
 
@@ -1087,18 +1561,27 @@
 ===================================================== */
 
 .upload-area {
-    position: relative;
 
-    display: block;
+    position:
+        relative;
 
-    width: 100%;
-    max-width: 100%;
+    display:
+        block;
 
-    min-height: 175px;
+    width:
+        100%;
 
-    border: 2px dashed #bfdbfe;
+    max-width:
+        100%;
 
-    border-radius: 20px;
+    min-height:
+        175px;
+
+    border:
+        2px dashed #bfdbfe;
+
+    border-radius:
+        20px;
 
     background:
         linear-gradient(
@@ -1107,19 +1590,24 @@
             #f5f3ff
         );
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
     transition:
         border-color .25s ease,
         background .25s ease,
         transform .25s ease;
+
 }
 
 
 .upload-area:hover {
-    border-color: #60a5fa;
+
+    border-color:
+        #60a5fa;
 
     background:
         linear-gradient(
@@ -1128,7 +1616,9 @@
             #f5f3ff
         );
 
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
+
 }
 
 
@@ -1137,12 +1627,19 @@
 ===================================================== */
 
 .upload-area input {
-    position: absolute;
 
-    width: 1px;
-    height: 1px;
+    position:
+        absolute;
 
-    opacity: 0;
+    width:
+        1px;
+
+    height:
+        1px;
+
+    opacity:
+        0;
+
 }
 
 
@@ -1151,18 +1648,28 @@
 ===================================================== */
 
 .upload-content {
-    min-height: 175px;
 
-    display: flex;
+    min-height:
+        175px;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        flex;
 
-    flex-direction: column;
+    align-items:
+        center;
 
-    text-align: center;
+    justify-content:
+        center;
 
-    padding: 25px;
+    flex-direction:
+        column;
+
+    text-align:
+        center;
+
+    padding:
+        25px;
+
 }
 
 
@@ -1171,24 +1678,37 @@
 ===================================================== */
 
 .upload-icon {
-    width: 52px;
-    height: 52px;
 
-    display: flex;
+    width:
+        52px;
 
-    align-items: center;
-    justify-content: center;
+    height:
+        52px;
 
-    margin-bottom: 10px;
+    display:
+        flex;
 
-    border-radius: 16px;
+    align-items:
+        center;
 
-    background: #ffffff;
+    justify-content:
+        center;
 
-    font-size: 25px;
+    margin-bottom:
+        10px;
+
+    border-radius:
+        16px;
+
+    background:
+        #ffffff;
+
+    font-size:
+        25px;
 
     box-shadow:
         0 8px 20px rgba(37,99,235,.10);
+
 }
 
 
@@ -1197,29 +1717,44 @@
 ===================================================== */
 
 .upload-content strong {
-    color: #334155;
 
-    font-size: 14px;
+    color:
+        #334155;
 
-    font-weight: 900;
+    font-size:
+        14px;
+
+    font-weight:
+        900;
+
 }
 
 
 .upload-content span {
-    margin-top: 4px;
 
-    color: #64748b;
+    margin-top:
+        4px;
 
-    font-size: 12px;
+    color:
+        #64748b;
+
+    font-size:
+        12px;
+
 }
 
 
 .upload-content small {
-    margin-top: 7px;
 
-    color: #94a3b8;
+    margin-top:
+        7px;
 
-    font-size: 10px;
+    color:
+        #94a3b8;
+
+    font-size:
+        10px;
+
 }
 
 
@@ -1228,20 +1763,31 @@
 ===================================================== */
 
 .image-preview {
-    width: 100%;
-    max-width: 100%;
 
-    min-width: 0;
+    width:
+        100%;
 
-    margin-top: 20px;
+    max-width:
+        100%;
 
-    padding: 15px;
+    min-width:
+        0;
 
-    border: 1px solid #e2e8f0;
+    margin-top:
+        20px;
 
-    border-radius: 18px;
+    padding:
+        15px;
 
-    background: #f8fafc;
+    border:
+        1px solid #e2e8f0;
+
+    border-radius:
+        18px;
+
+    background:
+        #f8fafc;
+
 }
 
 
@@ -1250,52 +1796,79 @@
 ===================================================== */
 
 .preview-header {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    justify-content: space-between;
+    align-items:
+        center;
 
-    gap: 15px;
+    justify-content:
+        space-between;
 
-    margin-bottom: 12px;
+    gap:
+        15px;
 
-    min-width: 0;
+    margin-bottom:
+        12px;
+
+    min-width:
+        0;
+
 }
 
 
 .preview-header > div {
-    min-width: 0;
+
+    min-width:
+        0;
+
 }
 
 
 .preview-header strong {
-    display: block;
 
-    color: #334155;
+    display:
+        block;
 
-    font-size: 13px;
+    color:
+        #334155;
 
-    font-weight: 900;
+    font-size:
+        13px;
+
+    font-weight:
+        900;
+
 }
 
 
 .preview-header span {
-    display: block;
 
-    max-width: 450px;
+    display:
+        block;
 
-    margin-top: 3px;
+    max-width:
+        450px;
 
-    overflow: hidden;
+    margin-top:
+        3px;
 
-    text-overflow: ellipsis;
+    overflow:
+        hidden;
 
-    white-space: nowrap;
+    text-overflow:
+        ellipsis;
 
-    color: #94a3b8;
+    white-space:
+        nowrap;
 
-    font-size: 11px;
+    color:
+        #94a3b8;
+
+    font-size:
+        11px;
+
 }
 
 
@@ -1304,16 +1877,25 @@
 ===================================================== */
 
 .image-preview img {
-    display: block;
 
-    width: 100%;
-    max-width: 100%;
+    display:
+        block;
 
-    max-height: 330px;
+    width:
+        100%;
 
-    object-fit: cover;
+    max-width:
+        100%;
 
-    border-radius: 14px;
+    max-height:
+        330px;
+
+    object-fit:
+        cover;
+
+    border-radius:
+        14px;
+
 }
 
 
@@ -1322,32 +1904,48 @@
 ===================================================== */
 
 .remove-image-btn {
-    flex-shrink: 0;
 
-    padding: 8px 13px;
+    flex-shrink:
+        0;
 
-    border: 1px solid #fecaca;
+    padding:
+        8px 13px;
 
-    border-radius: 10px;
+    border:
+        1px solid #fecaca;
 
-    background: #fff1f2;
+    border-radius:
+        10px;
 
-    color: #dc2626;
+    background:
+        #fff1f2;
 
-    font-size: 11px;
+    color:
+        #dc2626;
 
-    font-weight: 800;
+    font-size:
+        11px;
 
-    cursor: pointer;
+    font-weight:
+        800;
 
-    transition: .25s ease;
+    cursor:
+        pointer;
+
+    transition:
+        .25s ease;
+
 }
 
 
 .remove-image-btn:hover {
-    background: #fee2e2;
 
-    border-color: #fca5a5;
+    background:
+        #fee2e2;
+
+    border-color:
+        #fca5a5;
+
 }
 
 
@@ -1356,21 +1954,30 @@
 ===================================================== */
 
 .success-message {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    gap: 13px;
+    align-items:
+        center;
 
-    width: 100%;
+    gap:
+        13px;
 
-    margin-bottom: 25px;
+    width:
+        100%;
 
-    padding: 16px 18px;
+    margin-bottom:
+        25px;
 
-    border: 1px solid #bbf7d0;
+    padding:
+        16px 18px;
 
-    border-radius: 16px;
+    border:
+        1px solid #bbf7d0;
+
+    border-radius:
+        16px;
 
     background:
         linear-gradient(
@@ -1378,51 +1985,79 @@
             #f0fdf4,
             #ecfdf5
         );
+
 }
 
 
 .success-icon {
-    width: 40px;
-    height: 40px;
 
-    flex-shrink: 0;
+    width:
+        40px;
 
-    display: flex;
+    height:
+        40px;
 
-    align-items: center;
-    justify-content: center;
+    flex-shrink:
+        0;
 
-    border-radius: 50%;
+    display:
+        flex;
 
-    background: #16a34a;
+    align-items:
+        center;
 
-    color: #ffffff;
+    justify-content:
+        center;
 
-    font-size: 20px;
+    border-radius:
+        50%;
 
-    font-weight: 900;
+    background:
+        #16a34a;
+
+    color:
+        #ffffff;
+
+    font-size:
+        20px;
+
+    font-weight:
+        900;
+
 }
 
 
 .success-message strong {
-    display: block;
 
-    color: #166534;
+    display:
+        block;
 
-    font-size: 14px;
+    color:
+        #166534;
 
-    font-weight: 900;
+    font-size:
+        14px;
+
+    font-weight:
+        900;
+
 }
 
 
 .success-message span {
-    display: block;
 
-    margin-top: 3px;
+    display:
+        block;
 
-    color: #4d7c5a;
+    margin-top:
+        3px;
 
-    font-size: 11px;
+    color:
+        #4d7c5a;
+
+    font-size:
+        11px;
+
 }
 
 
@@ -1431,19 +2066,28 @@
 ===================================================== */
 
 .submit-area {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    justify-content: space-between;
+    align-items:
+        center;
 
-    gap: 20px;
+    justify-content:
+        space-between;
 
-    width: 100%;
+    gap:
+        20px;
 
-    min-width: 0;
+    width:
+        100%;
 
-    padding-top: 5px;
+    min-width:
+        0;
+
+    padding-top:
+        5px;
+
 }
 
 
@@ -1452,43 +2096,68 @@
 ===================================================== */
 
 .submit-note {
-    display: flex;
 
-    align-items: center;
+    display:
+        flex;
 
-    gap: 9px;
+    align-items:
+        center;
 
-    max-width: 350px;
+    gap:
+        9px;
 
-    min-width: 0;
+    max-width:
+        350px;
+
+    min-width:
+        0;
+
 }
 
 
 .submit-note > span {
-    width: 34px;
-    height: 34px;
 
-    display: flex;
+    width:
+        34px;
 
-    align-items: center;
-    justify-content: center;
+    height:
+        34px;
 
-    flex-shrink: 0;
+    display:
+        flex;
 
-    border-radius: 10px;
+    align-items:
+        center;
 
-    background: #f1f5f9;
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        10px;
+
+    background:
+        #f1f5f9;
+
 }
 
 
 .submit-note p {
-    margin: 0;
 
-    color: #94a3b8;
+    margin:
+        0;
 
-    font-size: 11px;
+    color:
+        #94a3b8;
 
-    line-height: 1.5;
+    font-size:
+        11px;
+
+    line-height:
+        1.5;
+
 }
 
 
@@ -1497,21 +2166,30 @@
 ===================================================== */
 
 .complaint-button {
-    min-width: 260px;
 
-    display: flex;
+    min-width:
+        260px;
 
-    align-items: center;
+    display:
+        flex;
 
-    justify-content: center;
+    align-items:
+        center;
 
-    gap: 12px;
+    justify-content:
+        center;
 
-    padding: 16px 25px;
+    gap:
+        12px;
 
-    border: none;
+    padding:
+        16px 25px;
 
-    border-radius: 15px;
+    border:
+        none;
+
+    border-radius:
+        15px;
 
     background:
         linear-gradient(
@@ -1520,13 +2198,17 @@
             #7c3aed
         );
 
-    color: #ffffff;
+    color:
+        #ffffff;
 
-    font-size: 15px;
+    font-size:
+        15px;
 
-    font-weight: 900;
+    font-weight:
+        900;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     box-shadow:
         0 10px 25px rgba(37,99,235,.24);
@@ -1535,30 +2217,43 @@
         transform .25s ease,
         box-shadow .25s ease,
         opacity .25s ease;
+
 }
 
 
 .complaint-button:hover {
-    transform: translateY(-3px);
+
+    transform:
+        translateY(-3px);
 
     box-shadow:
         0 16px 35px rgba(37,99,235,.32);
+
 }
 
 
 .complaint-button:active {
-    transform: translateY(-1px);
+
+    transform:
+        translateY(-1px);
+
 }
 
 
 .complaint-button:disabled {
-    opacity: .7;
 
-    cursor: not-allowed;
+    opacity:
+        .7;
 
-    transform: none;
+    cursor:
+        not-allowed;
 
-    box-shadow: none;
+    transform:
+        none;
+
+    box-shadow:
+        none;
+
 }
 
 
@@ -1567,17 +2262,25 @@
 ===================================================== */
 
 .submit-arrow {
-    font-size: 21px;
 
-    line-height: 1;
+    font-size:
+        21px;
+
+    line-height:
+        1;
 
     transition:
         transform .25s ease;
+
 }
 
 
-.complaint-button:hover .submit-arrow {
-    transform: translateX(4px);
+.complaint-button:hover
+.submit-arrow {
+
+    transform:
+        translateX(4px);
+
 }
 
 
@@ -1586,24 +2289,35 @@
 ===================================================== */
 
 .button-spinner {
-    width: 17px;
-    height: 17px;
 
-    border: 2px solid rgba(255,255,255,.4);
+    width:
+        17px;
 
-    border-top-color: #ffffff;
+    height:
+        17px;
 
-    border-radius: 50%;
+    border:
+        2px solid rgba(255,255,255,.4);
+
+    border-top-color:
+        #ffffff;
+
+    border-radius:
+        50%;
 
     animation:
         buttonSpin .7s linear infinite;
+
 }
 
 
 @keyframes buttonSpin {
 
     to {
-        transform: rotate(360deg);
+
+        transform:
+            rotate(360deg);
+
     }
 
 }
@@ -1614,13 +2328,19 @@
 ===================================================== */
 
 .create-footer {
-    margin: 20px 0 0;
 
-    text-align: center;
+    margin:
+        20px 0 0;
 
-    color: #94a3b8;
+    text-align:
+        center;
 
-    font-size: 11px;
+    color:
+        #94a3b8;
+
+    font-size:
+        11px;
+
 }
 
 
@@ -1630,34 +2350,52 @@
 
 @media (max-width: 850px) {
 
+
     .complaint-container {
-        padding: 32px;
+
+        padding:
+            32px;
+
     }
 
 
     .pincode-card {
+
         grid-template-columns:
             auto minmax(0,1fr);
+
     }
 
 
     .pincode-box {
-        grid-column: 1 / -1;
 
-        width: 100%;
+        grid-column:
+            1 / -1;
+
+        width:
+            100%;
+
     }
 
 
     .pincode-box .complaint-input {
-        flex: 1 1 auto;
 
-        width: auto;
+        flex:
+            1 1 auto;
+
+        width:
+            auto;
+
     }
 
 
     .pin-btn {
-        min-width: 100px;
+
+        min-width:
+            100px;
+
     }
+
 
 }
 
@@ -1668,122 +2406,187 @@
 
 @media (max-width: 700px) {
 
+
     .create-page {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
+
+        min-width:
+            0;
 
         padding:
-            20px
-            12px
-            35px;
+            20px 12px 35px;
 
-        overflow-x: hidden;
+        overflow-x:
+            hidden;
+
     }
 
 
     .create-wrapper {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
+
+        min-width:
+            0;
+
     }
 
 
     .create-topbar {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        gap: 10px;
+        min-width:
+            0;
 
-        margin-bottom: 17px;
+        gap:
+            10px;
+
+        margin-bottom:
+            17px;
+
     }
 
 
     .create-brand {
-        min-width: 0;
 
-        font-size: 18px;
+        min-width:
+            0;
+
+        font-size:
+            18px;
+
     }
 
 
     .brand-icon {
-        width: 34px;
-        height: 34px;
 
-        font-size: 17px;
+        width:
+            34px;
+
+        height:
+            34px;
+
+        font-size:
+            17px;
+
     }
 
 
     .back-dashboard-btn {
-        padding: 9px 13px;
 
-        font-size: 12px;
+        padding:
+            9px 13px;
+
+        font-size:
+            12px;
+
     }
 
 
     .complaint-container {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        padding: 25px 18px;
+        min-width:
+            0;
 
-        border-radius: 24px;
+        padding:
+            25px 18px;
 
-        overflow: visible;
+        border-radius:
+            24px;
+
+        overflow:
+            visible;
+
     }
 
 
     .form-header {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        align-items: flex-start;
+        min-width:
+            0;
 
-        gap: 12px;
+        align-items:
+            flex-start;
+
+        gap:
+            12px;
+
     }
 
 
     .form-header-icon {
-        width: 54px;
-        height: 54px;
 
-        border-radius: 16px;
+        width:
+            54px;
 
-        font-size: 26px;
+        height:
+            54px;
+
+        border-radius:
+            16px;
+
+        font-size:
+            26px;
+
     }
 
 
     .form-header > div:last-child {
-        min-width: 0;
 
-        max-width: 100%;
+        min-width:
+            0;
+
+        max-width:
+            100%;
+
     }
 
 
     .complaint-container h1 {
-        font-size: 28px;
 
-        overflow-wrap: break-word;
+        font-size:
+            28px;
+
+        overflow-wrap:
+            break-word;
+
     }
 
 
     .subtitle {
-        font-size: 13px;
 
-        overflow-wrap: break-word;
+        font-size:
+            13px;
+
+        overflow-wrap:
+            break-word;
+
     }
 
 
@@ -1791,49 +2594,76 @@
        MOBILE PROGRESS
     ================================================= */
 
-    .create-progress {
-        width: 100%;
+    .form-progress {
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        padding: 13px;
+        min-width:
+            0;
 
-        margin-bottom: 25px;
+        padding:
+            13px;
 
-        overflow: hidden;
+        margin-bottom:
+            25px;
+
+        overflow:
+            hidden;
+
     }
 
 
-    .create-progress-item {
-        gap: 0;
+    .progress-item {
 
-        min-width: 0;
+        gap:
+            0;
+
+        min-width:
+            0;
+
     }
 
 
-    .create-progress-item > span {
-        width: 29px;
-        height: 29px;
+    .progress-item > span {
+
+        width:
+            29px;
+
+        height:
+            29px;
+
     }
 
 
-    .create-progress-item > div {
-        display: none;
+    .progress-item > div {
+
+        display:
+            none;
+
     }
 
 
-    .create-progress-line {
-        flex: 1 1 auto;
+    .progress-line {
 
-        width: auto;
+        flex:
+            1 1 auto;
 
-        min-width: 8px;
+        width:
+            auto;
 
-        height: 2px;
+        min-width:
+            8px;
 
-        margin: 0 7px;
+        height:
+            2px;
+
+        margin:
+            0 7px;
+
     }
 
 
@@ -1842,81 +2672,154 @@
     ================================================= */
 
     .form-section {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        padding: 20px 16px;
+        min-width:
+            0;
 
-        border-radius: 19px;
+        padding:
+            20px 16px;
 
-        overflow: visible;
+        border-radius:
+            19px;
+
+        overflow:
+            visible;
+
     }
 
 
     .section-heading {
-        width: 100%;
 
-        min-width: 0;
+        width:
+            100%;
+
+        min-width:
+            0;
+
     }
 
 
     .section-heading > div:last-child {
-        min-width: 0;
 
-        max-width: 100%;
+        min-width:
+            0;
+
+        max-width:
+            100%;
+
     }
 
 
     .section-heading h2,
     .section-heading p {
-        overflow-wrap: break-word;
+
+        overflow-wrap:
+            break-word;
+
     }
 
 
     .location-grid {
-        grid-template-columns: 1fr;
 
-        gap: 0;
+        grid-template-columns:
+            1fr;
+
+        gap:
+            0;
+
     }
 
 
     .field-group {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
+
+        min-width:
+            0;
+
     }
 
 
     .complaint-input,
     .complaint-textarea,
     .select-box {
-        width: 100% !important;
 
-        max-width: 100% !important;
+        width:
+            100% !important;
 
-        min-width: 0 !important;
+        max-width:
+            100% !important;
+
+        min-width:
+            0 !important;
+
     }
 
 
     .complaint-input,
     .complaint-textarea {
-        box-sizing: border-box !important;
 
-        padding: 13px 14px;
+        box-sizing:
+            border-box !important;
 
-        font-size: 14px;
+        padding:
+            13px 14px;
 
-        border-radius: 13px;
+        font-size:
+            14px;
+
+        border-radius:
+            13px;
+
     }
 
 
     .complaint-textarea {
-        min-height: 130px;
+
+        min-height:
+            130px;
+
+    }
+
+
+    /* =================================================
+       REACT SELECT MOBILE
+    ================================================= */
+
+    .create-page .select-box
+    [class*="control"] {
+
+        min-height:
+            50px;
+
+    }
+
+
+    .create-page .select-box
+    [class*="placeholder"] {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .create-page .select-box
+    [class*="singleValue"] {
+
+        font-size:
+            13px;
+
     }
 
 
@@ -1925,80 +2828,123 @@
     ================================================= */
 
     .pincode-card {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
+
+        min-width:
+            0;
 
         grid-template-columns:
             auto minmax(0,1fr);
 
-        padding: 13px;
+        padding:
+            13px;
 
-        gap: 10px;
+        gap:
+            10px;
 
-        overflow: hidden;
+        overflow:
+            hidden;
+
     }
 
 
     .pincode-card-icon {
-        width: 37px;
-        height: 37px;
 
-        border-radius: 10px;
+        width:
+            37px;
 
-        font-size: 17px;
+        height:
+            37px;
+
+        border-radius:
+            10px;
+
+        font-size:
+            17px;
+
     }
 
 
     .pincode-card-content {
-        min-width: 0;
+
+        min-width:
+            0;
+
     }
 
 
     .pincode-card-content strong {
-        font-size: 11px;
+
+        font-size:
+            11px;
+
     }
 
 
     .pincode-card-content span {
-        font-size: 9px;
 
-        overflow-wrap: break-word;
+        font-size:
+            9px;
+
+        overflow-wrap:
+            break-word;
+
     }
 
 
     .pincode-box {
-        grid-column: 1 / -1;
 
-        width: 100%;
+        grid-column:
+            1 / -1;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        display: flex;
+        min-width:
+            0;
+
+        display:
+            flex;
+
     }
 
 
     .pincode-box .complaint-input {
-        width: auto !important;
 
-        flex: 1 1 auto;
+        width:
+            auto !important;
 
-        min-width: 0 !important;
+        flex:
+            1 1 auto;
+
+        min-width:
+            0 !important;
+
     }
 
 
     .pin-btn {
-        flex-shrink: 0;
 
-        min-width: 75px;
+        flex-shrink:
+            0;
 
-        height: 45px;
+        min-width:
+            75px;
 
-        padding: 0 12px;
+        height:
+            45px;
+
+        padding:
+            0 12px;
+
     }
 
 
@@ -2009,58 +2955,91 @@
     .upload-area,
     .upload-content,
     .image-preview {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
+
+        min-width:
+            0;
+
     }
 
 
     .upload-area,
     .upload-content {
-        min-height: 155px;
+
+        min-height:
+            155px;
+
     }
 
 
     .upload-content {
-        padding: 18px;
+
+        padding:
+            18px;
+
     }
 
 
     .upload-icon {
-        width: 45px;
-        height: 45px;
 
-        border-radius: 13px;
+        width:
+            45px;
 
-        font-size: 21px;
+        height:
+            45px;
+
+        border-radius:
+            13px;
+
+        font-size:
+            21px;
+
     }
 
 
     .image-preview img {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        height: auto;
+        max-width:
+            100%;
+
+        height:
+            auto;
+
     }
 
 
     .preview-header {
-        align-items: flex-start;
 
-        flex-direction: column;
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
     }
 
 
     .preview-header span {
-        max-width: 220px;
+
+        max-width:
+            220px;
+
     }
 
 
     .remove-image-btn {
-        width: 100%;
+
+        width:
+            100%;
+
     }
 
 
@@ -2069,45 +3048,49 @@
     ================================================= */
 
     .submit-area {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
 
-        flex-direction: column-reverse;
+        min-width:
+            0;
 
-        align-items: stretch;
+        flex-direction:
+            column-reverse;
+
+        align-items:
+            stretch;
+
     }
 
 
     .submit-note {
-        width: 100%;
 
-        max-width: none;
+        width:
+            100%;
+
+        max-width:
+            none;
+
     }
 
 
     .complaint-button {
-        width: 100%;
 
-        max-width: 100%;
+        width:
+            100%;
 
-        min-width: 0;
+        max-width:
+            100%;
+
+        min-width:
+            0;
+
     }
 
-
-    /* =================================================
-       MOBILE CREATABLE SELECT
-    ================================================= */
-
-    .create-page .select-box {
-        width: 100% !important;
-
-        max-width: 100% !important;
-
-        min-width: 0 !important;
-    }
 
 }
 
@@ -2118,226 +3101,359 @@
 
 @media (max-width: 500px) {
 
+
     .create-page {
+
         padding:
-            15px
-            9px
-            30px;
+            15px 9px 30px;
+
     }
 
 
     .create-topbar {
-        gap: 8px;
+
+        gap:
+            8px;
+
     }
 
 
     .create-brand {
-        font-size: 16px;
+
+        font-size:
+            16px;
+
     }
 
 
     .brand-icon {
-        width: 31px;
-        height: 31px;
 
-        border-radius: 9px;
+        width:
+            31px;
 
-        font-size: 15px;
+        height:
+            31px;
+
+        border-radius:
+            9px;
+
+        font-size:
+            15px;
+
     }
 
 
     .back-dashboard-btn {
-        padding: 8px 10px;
 
-        border-radius: 10px;
+        padding:
+            8px 10px;
 
-        font-size: 11px;
+        border-radius:
+            10px;
+
+        font-size:
+            11px;
+
     }
 
 
     .complaint-container {
-        padding: 22px 13px;
 
-        border-radius: 21px;
+        padding:
+            22px 13px;
+
+        border-radius:
+            21px;
+
     }
 
 
     .form-header {
-        gap: 9px;
+
+        gap:
+            9px;
+
     }
 
 
     .form-header-icon {
-        width: 48px;
-        height: 48px;
 
-        font-size: 23px;
+        width:
+            48px;
+
+        height:
+            48px;
+
+        font-size:
+            23px;
+
     }
 
 
     .form-eyebrow {
-        font-size: 9px;
 
-        letter-spacing: 1.3px;
+        font-size:
+            9px;
+
+        letter-spacing:
+            1.3px;
+
     }
 
 
     .complaint-container h1 {
-        font-size: 24px;
 
-        letter-spacing: -.5px;
+        font-size:
+            24px;
+
+        letter-spacing:
+            -.5px;
+
     }
 
 
     .subtitle {
-        font-size: 12px;
+
+        font-size:
+            12px;
+
     }
 
 
-    .create-progress {
-        padding: 11px;
+    .form-progress {
+
+        padding:
+            11px;
+
     }
 
 
     .form-section {
-        padding: 18px 13px;
 
-        margin-bottom: 22px;
+        padding:
+            18px 13px;
+
+        margin-bottom:
+            22px;
+
     }
 
 
     .section-heading {
-        gap: 9px;
 
-        margin-bottom: 20px;
+        gap:
+            9px;
+
+        margin-bottom:
+            20px;
+
     }
 
 
     .section-icon {
-        width: 38px;
-        height: 38px;
 
-        border-radius: 11px;
+        width:
+            38px;
 
-        font-size: 17px;
+        height:
+            38px;
+
+        border-radius:
+            11px;
+
+        font-size:
+            17px;
+
     }
 
 
     .section-heading h2 {
-        font-size: 16px;
+
+        font-size:
+            16px;
+
     }
 
 
     .section-heading p {
-        font-size: 10px;
+
+        font-size:
+            10px;
+
     }
 
 
     .complaint-input,
     .complaint-textarea {
-        padding: 13px 14px;
 
-        font-size: 14px;
+        padding:
+            13px 14px;
 
-        border-radius: 13px;
+        font-size:
+            14px;
+
+        border-radius:
+            13px;
+
     }
 
 
     .complaint-textarea {
-        min-height: 130px;
+
+        min-height:
+            130px;
+
     }
 
 
     .pincode-card {
-        padding: 13px;
 
-        gap: 10px;
+        padding:
+            13px;
+
+        gap:
+            10px;
+
     }
 
 
     .pincode-card-icon {
-        width: 37px;
-        height: 37px;
 
-        font-size: 17px;
+        width:
+            37px;
+
+        height:
+            37px;
+
+        font-size:
+            17px;
+
     }
 
 
     .pincode-card-content strong {
-        font-size: 11px;
+
+        font-size:
+            11px;
+
     }
 
 
     .pincode-card-content span {
-        font-size: 9px;
+
+        font-size:
+            9px;
+
     }
 
 
     .pincode-box {
-        gap: 7px;
+
+        gap:
+            7px;
+
     }
 
 
     .pincode-box .complaint-input {
-        padding: 12px;
+
+        padding:
+            12px;
+
     }
 
 
     .pin-btn {
-        min-width: 75px;
 
-        height: 45px;
+        min-width:
+            75px;
 
-        padding: 0 12px;
+        height:
+            45px;
+
+        padding:
+            0 12px;
+
     }
 
 
     .upload-area,
     .upload-content {
-        min-height: 155px;
+
+        min-height:
+            155px;
+
     }
 
 
     .upload-content {
-        padding: 18px;
+
+        padding:
+            18px;
+
     }
 
 
     .upload-icon {
-        width: 45px;
-        height: 45px;
 
-        font-size: 21px;
+        width:
+            45px;
+
+        height:
+            45px;
+
+        font-size:
+            21px;
+
     }
 
 
     .success-message {
-        align-items: flex-start;
 
-        padding: 13px;
+        align-items:
+            flex-start;
+
+        padding:
+            13px;
+
     }
 
 
     .success-icon {
-        width: 34px;
-        height: 34px;
 
-        font-size: 17px;
+        width:
+            34px;
+
+        height:
+            34px;
+
+        font-size:
+            17px;
+
     }
 
 
     .complaint-button {
-        width: 100%;
 
-        padding: 15px;
+        width:
+            100%;
 
-        font-size: 14px;
+        padding:
+            15px;
+
+        font-size:
+            14px;
+
     }
 
 
     .create-footer {
-        font-size: 9px;
+
+        font-size:
+            9px;
+
     }
+
 
 }
 
@@ -2348,241 +3464,139 @@
 
 @media (max-width: 380px) {
 
+
     .create-page {
+
         padding:
-            12px
-            7px
-            25px;
+            12px 7px 25px;
+
     }
 
 
     .create-topbar {
-        gap: 6px;
+
+        gap:
+            6px;
+
     }
 
 
     .create-brand {
-        font-size: 13px;
+
+        font-size:
+            13px;
+
     }
 
 
     .brand-icon {
-        width: 28px;
-        height: 28px;
 
-        font-size: 13px;
+        width:
+            28px;
+
+        height:
+            28px;
+
+        font-size:
+            13px;
+
     }
 
 
     .back-dashboard-btn {
-        font-size: 10px;
 
-        padding: 7px 8px;
+        font-size:
+            10px;
+
+        padding:
+            7px 8px;
+
     }
 
 
     .complaint-container {
-        padding: 20px 11px;
 
-        border-radius: 19px;
+        padding:
+            20px 11px;
+
+        border-radius:
+            19px;
+
     }
 
 
     .complaint-container h1 {
-        font-size: 21px;
+
+        font-size:
+            21px;
+
     }
 
 
     .form-header {
-        gap: 7px;
+
+        gap:
+            7px;
+
     }
 
 
     .form-header-icon {
-        width: 43px;
-        height: 43px;
 
-        font-size: 20px;
+        width:
+            43px;
+
+        height:
+            43px;
+
+        font-size:
+            20px;
+
     }
 
 
     .form-section {
-        padding-left: 12px;
 
-        padding-right: 12px;
+        padding-left:
+            12px;
+
+        padding-right:
+            12px;
+
     }
 
 
     .pincode-box {
-        gap: 6px;
+
+        gap:
+            6px;
+
     }
 
 
     .pin-btn {
-        min-width: 68px;
 
-        padding-left: 9px;
+        min-width:
+            68px;
 
-        padding-right: 9px;
+        padding-left:
+            9px;
+
+        padding-right:
+            9px;
+
     }
 
-}
+
+    .create-page .select-box
+    [class*="control"] {
+
+        min-height:
+            48px;
+
+    }
 
 
-/* =====================================================
-   CREATABLE SELECT
-   MANUAL STATE / DISTRICT / CITY ENTRY
-===================================================== */
-
-
-/*
-   React Select uses dynamically generated class names.
-   Therefore we use attribute/class matching instead of
-   depending only on one generated class name.
-*/
-
-.create-page .select-box {
-    width: 100% !important;
-
-    max-width: 100% !important;
-
-    min-width: 0 !important;
-}
-
-
-/* =====================================================
-   VALUE CONTAINER
-===================================================== */
-
-.create-page .select-box
-[class*="ValueContainer"] {
-    min-width: 0;
-
-    overflow: hidden;
-}
-
-
-/* =====================================================
-   SINGLE VALUE
-===================================================== */
-
-.create-page .select-box
-[class*="singleValue"] {
-    min-width: 0;
-
-    max-width: 100%;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-}
-
-
-/* =====================================================
-   SEARCH INPUT
-===================================================== */
-
-.create-page .select-box input {
-    color: #1e293b !important;
-
-    min-width: 0 !important;
-}
-
-
-.create-page .select-box input::placeholder {
-    color: #94a3b8 !important;
-}
-
-
-/* =====================================================
-   SELECT CONTROL
-===================================================== */
-
-.create-page .select-box
-[class*="control"] {
-    width: 100%;
-
-    max-width: 100%;
-
-    min-width: 0;
-}
-
-
-/* =====================================================
-   DROPDOWN MENU
-===================================================== */
-
-.create-page .select-box
-[class*="menu"] {
-    z-index: 9999 !important;
-}
-
-
-/* =====================================================
-   MENU LIST
-===================================================== */
-
-.create-page .select-box
-[class*="menuList"] {
-    max-height: 260px;
-
-    overflow-y: auto;
-
-    overflow-x: hidden;
-}
-
-
-/* =====================================================
-   MENU PORTAL
-===================================================== */
-
-.create-page
-[class*="menu-portal"] {
-    z-index: 99999 !important;
-}
-
-
-/* =====================================================
-   DROPDOWN OPTIONS
-===================================================== */
-
-.create-page .select-box
-[class*="option"] {
-    overflow-wrap: break-word;
-
-    word-break: break-word;
-}
-
-
-/* =====================================================
-   CLEAR INDICATOR
-===================================================== */
-
-.create-page .select-box
-[class*="clearIndicator"] {
-    cursor: pointer;
-}
-
-
-/* =====================================================
-   DROPDOWN INDICATORS
-===================================================== */
-
-.create-page .select-box
-[class*="indicatorsContainer"] {
-    flex-shrink: 0;
-}
-
-
-/* =====================================================
-   MANUALLY CREATED OPTION
-===================================================== */
-
-.create-page .select-box
-[class*="option"] {
-    min-width: 0;
 }
 
 
@@ -2592,11 +3606,15 @@
 
 .create-page button:focus-visible,
 .create-page input:focus-visible,
-.create-page textarea:focus-visible {
+.create-page textarea:focus-visible,
+.create-page [class*="control"]:focus-visible {
+
     outline:
         3px solid rgba(37,99,235,.25);
 
-    outline-offset: 2px;
+    outline-offset:
+        2px;
+
 }
 
 
@@ -2606,17 +3624,23 @@
 
 @media (prefers-reduced-motion: reduce) {
 
+
     .create-page *,
     .create-page *::before,
     .create-page *::after {
 
-        animation-duration: .01ms !important;
+        animation-duration:
+            .01ms !important;
 
-        animation-iteration-count: 1 !important;
+        animation-iteration-count:
+            1 !important;
 
-        transition-duration: .01ms !important;
+        transition-duration:
+            .01ms !important;
 
-        scroll-behavior: auto !important;
+        scroll-behavior:
+            auto !important;
+
     }
 
 }

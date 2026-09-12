@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import Select from "react-select";
+
 import CreatableSelect from "react-select/creatable";
 
 import API from "../api/axios";
@@ -17,12 +18,13 @@ import "./CreateComplaint.css";
 
 function CreateComplaint() {
 
+
     const navigate = useNavigate();
 
 
-    // =====================================================
-    // INITIAL FORM
-    // =====================================================
+    /* =====================================================
+       INITIAL FORM
+    ===================================================== */
 
     const initialForm = {
 
@@ -39,46 +41,151 @@ function CreateComplaint() {
     };
 
 
-    const [formData, setFormData] = useState(initialForm);
+    /* =====================================================
+       STATE
+    ===================================================== */
 
-    const [image, setImage] = useState(null);
-
-    const [preview, setPreview] = useState(null);
-
-    const [states, setStates] = useState([]);
-
-    const [districtOptions, setDistrictOptions] = useState([]);
-
-    const [cityOptions, setCityOptions] = useState([]);
-
-    const [selectedState, setSelectedState] = useState(null);
-
-    const [selectedDistrict, setSelectedDistrict] = useState(null);
-
-    const [selectedCity, setSelectedCity] = useState(null);
-
-    const [loading, setLoading] = useState(false);
-
-    const [message, setMessage] = useState("");
+    const [formData, setFormData] =
+        useState(initialForm);
 
 
-    // =====================================================
-    // KEEP PAGE AT TOP
-    // =====================================================
+    const [image, setImage] =
+        useState(null);
+
+
+    const [preview, setPreview] =
+        useState(null);
+
+
+    const [states, setStates] =
+        useState([]);
+
+
+    const [districtOptions, setDistrictOptions] =
+        useState([]);
+
+
+    const [cityOptions, setCityOptions] =
+        useState([]);
+
+
+    const [selectedState, setSelectedState] =
+        useState(null);
+
+
+    const [selectedDistrict, setSelectedDistrict] =
+        useState(null);
+
+
+    const [selectedCity, setSelectedCity] =
+        useState(null);
+
+
+    const [loading, setLoading] =
+        useState(false);
+
+
+    const [message, setMessage] =
+        useState("");
+
+
+    /* =====================================================
+       PREVENT HORIZONTAL SCROLL
+    ===================================================== */
 
     useEffect(() => {
 
+        const html =
+            document.documentElement;
+
+        const body =
+            document.body;
+
+        const root =
+            document.getElementById("root");
+
+
+        const previousHtmlOverflowX =
+            html.style.overflowX;
+
+        const previousBodyOverflowX =
+            body.style.overflowX;
+
+        const previousRootOverflowX =
+            root
+                ? root.style.overflowX
+                : "";
+
+
+        html.style.overflowX =
+            "hidden";
+
+        body.style.overflowX =
+            "hidden";
+
+
+        if (root) {
+
+            root.style.overflowX =
+                "hidden";
+
+        }
+
+
         window.scrollTo({
-            top: 0,
-            left: 0
+
+            left: 0,
+
+            top: window.scrollY
+
         });
+
+
+        return () => {
+
+            html.style.overflowX =
+                previousHtmlOverflowX;
+
+            body.style.overflowX =
+                previousBodyOverflowX;
+
+
+            if (root) {
+
+                root.style.overflowX =
+                    previousRootOverflowX;
+
+            }
+
+        };
 
     }, []);
 
 
-    // =====================================================
-    // CATEGORY
-    // =====================================================
+    /* =====================================================
+       CLEAN IMAGE PREVIEW URL
+    ===================================================== */
+
+    useEffect(() => {
+
+        return () => {
+
+            if (preview) {
+
+                URL.revokeObjectURL(
+                    preview
+                );
+
+            }
+
+        };
+
+    }, [preview]);
+
+
+    /* =====================================================
+       CATEGORY
+    ===================================================== */
 
     const categories = [
 
@@ -120,9 +227,9 @@ function CreateComplaint() {
     ];
 
 
-    // =====================================================
-    // LOAD STATES
-    // =====================================================
+    /* =====================================================
+       LOAD STATES
+    ===================================================== */
 
     useEffect(() => {
 
@@ -130,31 +237,42 @@ function CreateComplaint() {
 
             try {
 
-                const res = await API.get(
-                    "/location/states"
+                const res =
+                    await API.get(
+                        "/location/states"
+                    );
+
+
+                const stateData =
+                    Array.isArray(res.data)
+                        ? res.data
+                        : [];
+
+
+                setStates(
+
+                    stateData.map(
+                        item => ({
+
+                            value: item,
+
+                            label: item
+
+                        })
+                    )
+
                 );
-
-
-                const stateList = res.data.map(
-                    item => ({
-
-                        value: item,
-
-                        label: item
-
-                    })
-                );
-
-
-                setStates(stateList);
 
             }
+
             catch (err) {
 
                 console.log(
                     "LOAD STATES ERROR:",
                     err
                 );
+
+                setStates([]);
 
             }
 
@@ -166,9 +284,9 @@ function CreateComplaint() {
     }, []);
 
 
-    // =====================================================
-    // NORMAL INPUT CHANGE
-    // =====================================================
+    /* =====================================================
+       NORMAL INPUT CHANGE
+    ===================================================== */
 
     const handleChange = (e) => {
 
@@ -189,21 +307,40 @@ function CreateComplaint() {
     };
 
 
-    // =====================================================
-    // IMAGE
-    // =====================================================
+    /* =====================================================
+       IMAGE
+    ===================================================== */
 
     const handleImage = (e) => {
 
-        const file = e.target.files[0];
+        const file =
+            e.target.files?.[0];
 
 
         if (!file) {
+
             return;
+
         }
 
 
-        if (file.size > 5 * 1024 * 1024) {
+        if (!file.type.startsWith("image/")) {
+
+            alert(
+                "Please select an image file"
+            );
+
+            e.target.value = "";
+
+            return;
+
+        }
+
+
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
 
             alert(
                 "Image size must be below 5MB"
@@ -216,7 +353,17 @@ function CreateComplaint() {
         }
 
 
+        if (preview) {
+
+            URL.revokeObjectURL(
+                preview
+            );
+
+        }
+
+
         setImage(file);
+
 
         setPreview(
             URL.createObjectURL(file)
@@ -225,7 +372,20 @@ function CreateComplaint() {
     };
 
 
+    /* =====================================================
+       REMOVE IMAGE
+    ===================================================== */
+
     const removeImage = () => {
+
+        if (preview) {
+
+            URL.revokeObjectURL(
+                preview
+            );
+
+        }
+
 
         setImage(null);
 
@@ -234,13 +394,13 @@ function CreateComplaint() {
     };
 
 
-    // =====================================================
-    // GET DISTRICTS
-    // =====================================================
+    /* =====================================================
+       GET DISTRICTS
+    ===================================================== */
 
     const getDistricts = async (state) => {
 
-        if (!state || !state.trim()) {
+        if (!state) {
 
             setDistrictOptions([]);
 
@@ -251,29 +411,38 @@ function CreateComplaint() {
 
         try {
 
-            const res = await API.get(
+            const res =
+                await API.get(
 
-                `/location/districts/${encodeURIComponent(
-                    state.trim()
-                )}`
+                    `/location/districts/${encodeURIComponent(
+                        state
+                    )}`
+
+                );
+
+
+            const districtData =
+                Array.isArray(res.data)
+                    ? res.data
+                    : [];
+
+
+            setDistrictOptions(
+
+                districtData.map(
+                    item => ({
+
+                        value: item,
+
+                        label: item
+
+                    })
+                )
 
             );
-
-
-            const options = res.data.map(
-                item => ({
-
-                    value: item,
-
-                    label: item
-
-                })
-            );
-
-
-            setDistrictOptions(options);
 
         }
+
         catch (err) {
 
             console.log(
@@ -281,6 +450,12 @@ function CreateComplaint() {
                 err
             );
 
+            /*
+             * Do not block manual entry.
+             * The citizen can still create
+             * a district manually.
+             */
+
             setDistrictOptions([]);
 
         }
@@ -288,18 +463,34 @@ function CreateComplaint() {
     };
 
 
-    // =====================================================
-    // SEARCH CITY
-    // =====================================================
+    /* =====================================================
+       SEARCH CITY
+    ===================================================== */
 
-    const searchCity = async (value) => {
+    const searchCity = async (
+        value,
+        actionMeta
+    ) => {
 
-        const searchValue = value?.trim();
+        if (
+            actionMeta &&
+            actionMeta.action !==
+                "input-change"
+        ) {
+
+            return;
+
+        }
 
 
-        if (!searchValue || searchValue.length < 2) {
+        const searchValue =
+            String(value || "")
+                .trim();
 
-            setCityOptions([]);
+
+        if (
+            searchValue.length < 2
+        ) {
 
             return;
 
@@ -308,30 +499,42 @@ function CreateComplaint() {
 
         try {
 
-            const res = await API.get(
+            const res =
+                await API.get(
 
-                `/location/search/${encodeURIComponent(
-                    searchValue
-                )}`
+                    `/location/search/${encodeURIComponent(
+                        searchValue
+                    )}`
+
+                );
+
+
+            const cityData =
+                Array.isArray(res.data)
+                    ? res.data
+                    : [];
+
+
+            setCityOptions(
+
+                cityData.map(
+                    item => ({
+
+                        value:
+                            item.name,
+
+                        label:
+                            item.district
+                                ? `${item.name} (${item.district})`
+                                : item.name
+
+                    })
+                )
 
             );
-
-
-            const results = res.data.map(
-                item => ({
-
-                    value: item.name,
-
-                    label:
-                        `${item.name} (${item.district})`
-
-                })
-            );
-
-
-            setCityOptions(results);
 
         }
+
         catch (err) {
 
             console.log(
@@ -339,21 +542,18 @@ function CreateComplaint() {
                 err
             );
 
-            setCityOptions([]);
-
         }
 
     };
 
 
-    // =====================================================
-    // PINCODE SEARCH
-    // =====================================================
+    /* =====================================================
+       PINCODE
+    ===================================================== */
 
     const searchPincode = async () => {
 
         if (
-            !formData.pincode ||
             formData.pincode.length !== 6
         ) {
 
@@ -368,14 +568,16 @@ function CreateComplaint() {
 
         try {
 
-            const res = await API.get(
+            const res =
+                await API.get(
 
-                `/location/pincode/${formData.pincode}`
+                    `/location/pincode/${formData.pincode}`
 
-            );
+                );
 
 
-            const data = res.data;
+            const data =
+                res.data;
 
 
             if (
@@ -394,8 +596,6 @@ function CreateComplaint() {
             }
 
 
-            // ================= STATE =================
-
             const stateOption = {
 
                 value: data.state,
@@ -405,8 +605,6 @@ function CreateComplaint() {
             };
 
 
-            // ================= DISTRICT =================
-
             const districtOption = {
 
                 value: data.district,
@@ -415,8 +613,6 @@ function CreateComplaint() {
 
             };
 
-
-            // ================= CITY =================
 
             const cityOption = {
 
@@ -431,40 +627,52 @@ function CreateComplaint() {
                 stateOption
             );
 
+
             setSelectedDistrict(
                 districtOption
             );
+
 
             setSelectedCity(
                 cityOption
             );
 
 
-            // Load districts for the suggested state
+            /*
+             * Load complete district list.
+             * This allows the citizen to
+             * correct the district.
+             */
 
             await getDistricts(
                 data.state
             );
 
 
-            // Keep suggested city available
+            /*
+             * Keep pincode city as
+             * initial suggestion.
+             */
 
             setCityOptions([
+
                 cityOption
+
             ]);
 
-
-            // Update form
 
             setFormData(prev => ({
 
                 ...prev,
 
-                state: data.state,
+                state:
+                    data.state,
 
-                district: data.district,
+                district:
+                    data.district,
 
-                city: data.city
+                city:
+                    data.city
 
             }));
 
@@ -474,12 +682,14 @@ function CreateComplaint() {
             );
 
         }
+
         catch (err) {
 
             console.log(
                 "PINCODE SEARCH ERROR:",
                 err
             );
+
 
             alert(
                 "Unable to find address for this pincode. You can enter the address manually."
@@ -490,32 +700,64 @@ function CreateComplaint() {
     };
 
 
-    // =====================================================
-    // STATE CHANGE
-    // =====================================================
+    /* =====================================================
+       CREATE STATE MANUALLY
+    ===================================================== */
 
-    const handleStateChange = (selected) => {
+    const handleCreateState = (
+        inputValue
+    ) => {
 
-        setSelectedState(selected);
+        const value =
+            inputValue.trim();
 
-        // State changed, so old district and city
-        // should no longer remain selected.
 
-        setSelectedDistrict(null);
+        if (!value) {
 
-        setSelectedCity(null);
+            return;
 
-        setDistrictOptions([]);
+        }
 
-        setCityOptions([]);
+
+        const option = {
+
+            value: value,
+
+            label: value
+
+        };
+
+
+        setSelectedState(
+            option
+        );
+
+
+        setSelectedDistrict(
+            null
+        );
+
+
+        setSelectedCity(
+            null
+        );
+
+
+        setDistrictOptions(
+            []
+        );
+
+
+        setCityOptions(
+            []
+        );
 
 
         setFormData(prev => ({
 
             ...prev,
 
-            state:
-                selected?.value || "",
+            state: value,
 
             district: "",
 
@@ -524,77 +766,126 @@ function CreateComplaint() {
         }));
 
 
-        if (selected?.value) {
+        /*
+         * Try to load districts
+         * for manually entered state.
+         * If API does not find them,
+         * manual district creation
+         * remains available.
+         */
 
-            getDistricts(
-                selected.value
-            );
+        getDistricts(value);
+
+    };
+
+
+    /* =====================================================
+       CREATE DISTRICT MANUALLY
+    ===================================================== */
+
+    const handleCreateDistrict = (
+        inputValue
+    ) => {
+
+        const value =
+            inputValue.trim();
+
+
+        if (!value) {
+
+            return;
 
         }
 
-    };
+
+        const option = {
+
+            value: value,
+
+            label: value
+
+        };
 
 
-    // =====================================================
-    // DISTRICT CHANGE
-    // =====================================================
-
-    const handleDistrictChange = (selected) => {
-
-        setSelectedDistrict(selected);
-
-        // District changed, so old city should be removed.
-
-        setSelectedCity(null);
-
-        setCityOptions([]);
+        setSelectedDistrict(
+            option
+        );
 
 
         setFormData(prev => ({
 
             ...prev,
 
-            district:
-                selected?.value || "",
-
-            city: ""
+            district: value
 
         }));
 
     };
 
 
-    // =====================================================
-    // CITY CHANGE
-    // =====================================================
+    /* =====================================================
+       CREATE CITY MANUALLY
+    ===================================================== */
 
-    const handleCityChange = (selected) => {
+    const handleCreateCity = (
+        inputValue
+    ) => {
 
-        setSelectedCity(selected);
+        const value =
+            inputValue.trim();
+
+
+        if (!value) {
+
+            return;
+
+        }
+
+
+        const option = {
+
+            value: value,
+
+            label: value
+
+        };
+
+
+        setSelectedCity(
+            option
+        );
 
 
         setFormData(prev => ({
 
             ...prev,
 
-            city:
-                selected?.value || ""
+            city: value
 
         }));
 
     };
 
 
-    // =====================================================
-    // SUBMIT
-    // =====================================================
+    /* =====================================================
+       SUBMIT
+    ===================================================== */
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
 
 
-        // ================= CATEGORY =================
+        if (!formData.title.trim()) {
+
+            alert(
+                "Enter complaint title"
+            );
+
+            return;
+
+        }
+
 
         if (!formData.category) {
 
@@ -607,9 +898,10 @@ function CreateComplaint() {
         }
 
 
-        // ================= DESCRIPTION =================
-
-        if (formData.description.length < 20) {
+        if (
+            formData.description.trim().length <
+            20
+        ) {
 
             alert(
                 "Description should contain minimum 20 characters"
@@ -619,8 +911,6 @@ function CreateComplaint() {
 
         }
 
-
-        // ================= PINCODE =================
 
         if (
             !formData.pincode ||
@@ -636,8 +926,6 @@ function CreateComplaint() {
         }
 
 
-        // ================= STATE =================
-
         if (!formData.state.trim()) {
 
             alert(
@@ -648,8 +936,6 @@ function CreateComplaint() {
 
         }
 
-
-        // ================= DISTRICT =================
 
         if (!formData.district.trim()) {
 
@@ -662,8 +948,6 @@ function CreateComplaint() {
         }
 
 
-        // ================= CITY =================
-
         if (!formData.city.trim()) {
 
             alert(
@@ -674,8 +958,6 @@ function CreateComplaint() {
 
         }
 
-
-        // ================= STREET =================
 
         if (!formData.street.trim()) {
 
@@ -695,17 +977,20 @@ function CreateComplaint() {
             setMessage("");
 
 
-            const data = new FormData();
+            const data =
+                new FormData();
 
 
-            Object.keys(formData).forEach(key => {
+            Object.keys(formData).forEach(
+                key => {
 
-                data.append(
-                    key,
-                    formData[key]
-                );
+                    data.append(
+                        key,
+                        formData[key]
+                    );
 
-            });
+                }
+            );
 
 
             if (image) {
@@ -718,21 +1003,17 @@ function CreateComplaint() {
             }
 
 
+            /*
+             * Do not manually set the
+             * multipart boundary.
+             * Axios/browser handles it.
+             */
+
             await API.post(
 
                 "/complaints/create",
 
-                data,
-
-                {
-                    headers: {
-
-                        "Content-Type":
-                            "multipart/form-data"
-
-                    }
-
-                }
+                data
 
             );
 
@@ -751,6 +1032,7 @@ function CreateComplaint() {
             }, 1500);
 
         }
+
         catch (err) {
 
             console.log(
@@ -758,15 +1040,16 @@ function CreateComplaint() {
                 err
             );
 
+
             alert(
 
                 err.response?.data?.message ||
-
                 "Complaint failed"
 
             );
 
         }
+
         finally {
 
             setLoading(false);
@@ -776,15 +1059,20 @@ function CreateComplaint() {
     };
 
 
-    // =====================================================
-    // SELECT STYLES
-    // =====================================================
+    /* =====================================================
+       SELECT STYLES
+    ===================================================== */
 
     const selectStyles = {
 
-        control: (base, state) => ({
+        control: (
+            base,
+            state
+        ) => ({
 
             ...base,
+
+            width: "100%",
 
             minHeight: "56px",
 
@@ -800,124 +1088,194 @@ function CreateComplaint() {
                     ? "0 0 0 4px rgba(37,99,235,.10)"
                     : "none",
 
-            backgroundColor: "#ffffff",
+            backgroundColor:
+                "#ffffff",
 
-            cursor: "text",
+            cursor:
+                "text",
 
             "&:hover": {
 
-                borderColor: "#2563eb"
+                borderColor:
+                    "#2563eb"
 
             }
 
         }),
 
 
-        valueContainer: (base) => ({
+        valueContainer:
+            (base) => ({
 
-            ...base,
+                ...base,
 
-            padding: "4px 15px"
+                minWidth: 0,
 
-        }),
+                padding:
+                    "4px 15px"
 
-
-        placeholder: (base) => ({
-
-            ...base,
-
-            color: "#94a3b8",
-
-            fontSize: "15px"
-
-        }),
+            }),
 
 
-        singleValue: (base) => ({
+        placeholder:
+            (base) => ({
 
-            ...base,
+                ...base,
 
-            color: "#1e293b",
+                color:
+                    "#94a3b8",
 
-            fontSize: "15px",
+                fontSize:
+                    "15px"
 
-            fontWeight: "600"
-
-        }),
-
-
-        input: (base) => ({
-
-            ...base,
-
-            color: "#1e293b",
-
-            fontSize: "15px"
-
-        }),
+            }),
 
 
-        menu: (base) => ({
+        singleValue:
+            (base) => ({
 
-            ...base,
+                ...base,
 
-            borderRadius: "14px",
+                maxWidth:
+                    "calc(100% - 10px)",
 
-            overflow: "hidden",
+                overflow:
+                    "hidden",
 
-            boxShadow:
-                "0 15px 40px rgba(15,23,42,.15)",
+                textOverflow:
+                    "ellipsis",
 
-            zIndex: 9999
+                whiteSpace:
+                    "nowrap",
 
-        }),
+                color:
+                    "#1e293b",
+
+                fontSize:
+                    "15px",
+
+                fontWeight:
+                    "600"
+
+            }),
 
 
-        menuPortal: (base) => ({
+        input:
+            (base) => ({
 
-            ...base,
+                ...base,
 
-            zIndex: 9999
+                color:
+                    "#1e293b",
 
-        }),
+                minWidth:
+                    "0"
+
+            }),
 
 
-        option: (base, state) => ({
+        menu:
+            (base) => ({
 
-            ...base,
+                ...base,
 
-            padding: "12px 15px",
+                width:
+                    "100%",
 
-            backgroundColor:
-                state.isFocused
-                    ? "#eff6ff"
-                    : "#ffffff",
+                minWidth:
+                    "100%",
 
-            color: "#1e293b",
+                borderRadius:
+                    "14px",
 
-            cursor: "pointer"
+                overflow:
+                    "hidden",
 
-        })
+                boxShadow:
+                    "0 15px 40px rgba(15,23,42,.15)",
+
+                zIndex:
+                    99999
+
+            }),
+
+
+        menuPortal:
+            (base) => ({
+
+                ...base,
+
+                zIndex:
+                    99999
+
+            }),
+
+
+        menuList:
+            (base) => ({
+
+                ...base,
+
+                maxHeight:
+                    "260px",
+
+                overflowY:
+                    "auto",
+
+                overflowX:
+                    "hidden"
+
+            }),
+
+
+        option:
+            (base, state) => ({
+
+                ...base,
+
+                padding:
+                    "12px 15px",
+
+                backgroundColor:
+                    state.isFocused
+                        ? "#eff6ff"
+                        : "#ffffff",
+
+                color:
+                    "#1e293b",
+
+                cursor:
+                    "pointer",
+
+                overflowWrap:
+                    "break-word",
+
+                wordBreak:
+                    "break-word"
+
+            })
 
     };
 
 
-    // =====================================================
-    // RETURN
-    // =====================================================
+    /* =====================================================
+       RENDER
+    ===================================================== */
 
     return (
 
         <div className="create-page">
 
+
             <div className="create-wrapper">
 
 
                 {/* =================================================
-                    TOP BAR
+                   TOP BAR
                 ================================================= */}
 
                 <div className="create-topbar">
+
 
                     <button
                         type="button"
@@ -941,65 +1299,81 @@ function CreateComplaint() {
                         </span>
 
                         <span>
-                            Civic<span>Connect</span>
+                            Civic
+                            <span>
+                                Connect
+                            </span>
                         </span>
 
                     </div>
+
 
                 </div>
 
 
                 {/* =================================================
-                    MAIN CARD
+                   MAIN CARD
                 ================================================= */}
 
                 <div className="complaint-container">
 
 
                     {/* =================================================
-                        HEADER
+                       HEADER
                     ================================================= */}
 
                     <div className="form-header">
 
+
                         <div className="form-header-icon">
+
                             🚨
+
                         </div>
 
 
                         <div>
 
                             <div className="form-eyebrow">
+
                                 CITIZEN SERVICE
+
                             </div>
 
 
                             <h1>
+
                                 Report a Civic Issue
+
                             </h1>
 
 
                             <p className="subtitle">
+
                                 Help make your city smarter,
                                 cleaner and better.
+
                             </p>
 
                         </div>
+
 
                     </div>
 
 
                     {/* =================================================
-                        PROGRESS
+                       PROGRESS
                     ================================================= */}
 
-                    <div className="create-progress">
+                    <div className="form-progress">
 
-                        <div className="create-progress-item active">
+
+                        <div className="progress-item active">
 
                             <span>
                                 1
                             </span>
+
 
                             <div>
 
@@ -1016,14 +1390,15 @@ function CreateComplaint() {
                         </div>
 
 
-                        <div className="create-progress-line"></div>
+                        <div className="progress-line"></div>
 
 
-                        <div className="create-progress-item active">
+                        <div className="progress-item active">
 
                             <span>
                                 2
                             </span>
+
 
                             <div>
 
@@ -1040,14 +1415,15 @@ function CreateComplaint() {
                         </div>
 
 
-                        <div className="create-progress-line"></div>
+                        <div className="progress-line"></div>
 
 
-                        <div className="create-progress-item active">
+                        <div className="progress-item active">
 
                             <span>
                                 3
                             </span>
+
 
                             <div>
 
@@ -1063,19 +1439,28 @@ function CreateComplaint() {
 
                         </div>
 
+
                     </div>
 
 
-                    <form onSubmit={handleSubmit}>
+                    {/* =================================================
+                       FORM
+                    ================================================= */}
+
+                    <form
+                        onSubmit={handleSubmit}
+                    >
 
 
                         {/* =================================================
-                            ISSUE DETAILS
+                           ISSUE DETAILS
                         ================================================= */}
 
                         <div className="form-section">
 
+
                             <div className="section-heading">
+
 
                                 <div className="section-icon">
                                     📝
@@ -1094,12 +1479,14 @@ function CreateComplaint() {
 
                                 </div>
 
+
                             </div>
 
 
                             {/* TITLE */}
 
                             <div className="field-group">
+
 
                                 <label htmlFor="title">
 
@@ -1130,9 +1517,12 @@ function CreateComplaint() {
                                         handleChange
                                     }
 
+                                    maxLength="150"
+
                                     required
 
                                 />
+
 
                             </div>
 
@@ -1141,7 +1531,9 @@ function CreateComplaint() {
 
                             <div className="field-group">
 
+
                                 <div className="label-row">
+
 
                                     <label htmlFor="description">
 
@@ -1162,10 +1554,13 @@ function CreateComplaint() {
                                         }
                                     >
 
-                                        {formData.description.length}
+                                        {
+                                            formData.description.length
+                                        }
                                         /500
 
                                     </span>
+
 
                                 </div>
 
@@ -1187,7 +1582,8 @@ function CreateComplaint() {
                                     onChange={(e) => {
 
                                         if (
-                                            e.target.value.length <= 500
+                                            e.target.value.length <=
+                                            500
                                         ) {
 
                                             handleChange(e);
@@ -1209,12 +1605,14 @@ function CreateComplaint() {
 
                                 </div>
 
+
                             </div>
 
 
                             {/* CATEGORY */}
 
                             <div className="field-group">
+
 
                                 <label>
 
@@ -1236,22 +1634,31 @@ function CreateComplaint() {
                                     placeholder="Choose the type of civic issue"
 
                                     value={
+
                                         categories.find(
                                             x =>
                                                 x.value ===
                                                 formData.category
                                         ) || null
+
                                     }
 
-                                    onChange={(selected) =>
-                                        setFormData(prev => ({
+                                    onChange={
+                                        selected => {
 
-                                            ...prev,
+                                            setFormData(
+                                                prev => ({
 
-                                            category:
-                                                selected?.value || ""
+                                                    ...prev,
 
-                                        }))
+                                                    category:
+                                                        selected?.value ||
+                                                        ""
+
+                                                })
+                                            );
+
+                                        }
                                     }
 
                                     styles={
@@ -1266,21 +1673,26 @@ function CreateComplaint() {
 
                                     isSearchable={false}
 
+                                    isClearable
+
                                 />
 
+
                             </div>
+
 
                         </div>
 
 
                         {/* =================================================
-                            LOCATION
+                           LOCATION
                         ================================================= */}
 
                         <div className="form-section">
 
 
                             <div className="section-heading">
+
 
                                 <div className="section-icon location-icon">
                                     📍
@@ -1299,12 +1711,14 @@ function CreateComplaint() {
 
                                 </div>
 
+
                             </div>
 
 
                             {/* PINCODE */}
 
                             <div className="pincode-card">
+
 
                                 <div className="pincode-card-icon">
                                     🔎
@@ -1327,6 +1741,7 @@ function CreateComplaint() {
 
                                 <div className="pincode-box">
 
+
                                     <input
 
                                         className="complaint-input"
@@ -1343,17 +1758,26 @@ function CreateComplaint() {
 
                                             const value =
                                                 e.target.value
-                                                    .replace(/\D/g, "")
-                                                    .slice(0, 6);
+                                                    .replace(
+                                                        /\D/g,
+                                                        ""
+                                                    )
+                                                    .slice(
+                                                        0,
+                                                        6
+                                                    );
 
 
-                                            setFormData(prev => ({
+                                            setFormData(
+                                                prev => ({
 
-                                                ...prev,
+                                                    ...prev,
 
-                                                pincode: value
+                                                    pincode:
+                                                        value
 
-                                            }));
+                                                })
+                                            );
 
                                         }}
 
@@ -1380,24 +1804,29 @@ function CreateComplaint() {
 
                                     </button>
 
+
                                 </div>
 
-                            </div>
-
-
-                            <div className="field-hint">
-
-                                ✏️ You can manually enter or correct the
-                                address fields below, even after using the pincode finder.
 
                             </div>
 
 
-                            {/* =================================================
-                                STATE
-                            ================================================= */}
+                            {/* MANUAL NOTE */}
+
+                            <div className="field-hint manual-address-hint">
+
+                                ✏️ You can manually select or create
+                                State, District and City entries.
+                                This is useful when the pincode suggestion
+                                is incorrect or unavailable.
+
+                            </div>
+
+
+                            {/* STATE */}
 
                             <div className="field-group">
+
 
                                 <label>
 
@@ -1414,16 +1843,76 @@ function CreateComplaint() {
 
                                     className="select-box"
 
+                                    classNamePrefix="civic-select"
+
                                     options={states}
 
-                                    placeholder="Select or enter your state"
+                                    placeholder="Select or type your state"
 
                                     value={
                                         selectedState
                                     }
 
-                                    onChange={
-                                        handleStateChange
+                                    onChange={(selected) => {
+
+                                        setSelectedState(
+                                            selected
+                                        );
+
+
+                                        setSelectedDistrict(
+                                            null
+                                        );
+
+
+                                        setSelectedCity(
+                                            null
+                                        );
+
+
+                                        setDistrictOptions(
+                                            []
+                                        );
+
+
+                                        setCityOptions(
+                                            []
+                                        );
+
+
+                                        setFormData(
+                                            prev => ({
+
+                                                ...prev,
+
+                                                state:
+                                                    selected?.value ||
+                                                    "",
+
+                                                district:
+                                                    "",
+
+                                                city:
+                                                    ""
+
+                                            })
+                                        );
+
+
+                                        if (
+                                            selected?.value
+                                        ) {
+
+                                            getDistricts(
+                                                selected.value
+                                            );
+
+                                        }
+
+                                    }}
+
+                                    onCreateOption={
+                                        handleCreateState
                                     }
 
                                     styles={
@@ -1440,27 +1929,34 @@ function CreateComplaint() {
 
                                     isClearable
 
-                                    formatCreateLabel={(inputValue) =>
-                                        `Use "${inputValue}"`
+                                    formatCreateLabel={
+                                        inputValue =>
+                                            `Use "${inputValue}"`
                                     }
 
                                 />
 
+
+                                <div className="field-hint">
+
+                                    Type your own state and press Enter
+                                    if it is not available in the list.
+
+                                </div>
+
+
                             </div>
 
 
-                            {/* =================================================
-                                DISTRICT + CITY
-                            ================================================= */}
+                            {/* DISTRICT + CITY */}
 
                             <div className="location-grid">
 
 
-                                {/* =================================================
-                                    DISTRICT
-                                ================================================= */}
+                                {/* DISTRICT */}
 
                                 <div className="field-group">
+
 
                                     <label>
 
@@ -1477,18 +1973,49 @@ function CreateComplaint() {
 
                                         className="select-box"
 
+                                        classNamePrefix="civic-select"
+
                                         options={
                                             districtOptions
                                         }
 
-                                        placeholder="Select or enter district"
+                                        placeholder={
+
+                                            selectedState
+                                                ? "Select or type district"
+                                                : "Select state first"
+
+                                        }
 
                                         value={
                                             selectedDistrict
                                         }
 
                                         onChange={
-                                            handleDistrictChange
+                                            selected => {
+
+                                                setSelectedDistrict(
+                                                    selected
+                                                );
+
+
+                                                setFormData(
+                                                    prev => ({
+
+                                                        ...prev,
+
+                                                        district:
+                                                            selected?.value ||
+                                                            ""
+
+                                                    })
+                                                );
+
+                                            }
+                                        }
+
+                                        onCreateOption={
+                                            handleCreateDistrict
                                         }
 
                                         styles={
@@ -1501,24 +2028,37 @@ function CreateComplaint() {
 
                                         menuPosition="fixed"
 
+                                        isDisabled={
+                                            !selectedState
+                                        }
+
                                         isSearchable
 
                                         isClearable
 
-                                        formatCreateLabel={(inputValue) =>
-                                            `Use "${inputValue}"`
+                                        formatCreateLabel={
+                                            inputValue =>
+                                                `Use "${inputValue}"`
                                         }
 
                                     />
 
+
+                                    <div className="field-hint">
+
+                                        Type a district manually
+                                        if the correct one is not listed.
+
+                                    </div>
+
+
                                 </div>
 
 
-                                {/* =================================================
-                                    CITY
-                                ================================================= */}
+                                {/* CITY */}
 
                                 <div className="field-group">
+
 
                                     <label>
 
@@ -1535,39 +2075,47 @@ function CreateComplaint() {
 
                                         className="select-box"
 
+                                        classNamePrefix="civic-select"
+
                                         options={
                                             cityOptions
                                         }
 
-                                        placeholder="Search or enter city / town"
+                                        placeholder="Search or type city"
 
                                         value={
                                             selectedCity
                                         }
 
-                                        onInputChange={(
-                                            inputValue,
-                                            actionMeta
-                                        ) => {
+                                        onInputChange={
+                                            searchCity
+                                        }
 
-                                            if (
-                                                actionMeta.action ===
-                                                "input-change"
-                                            ) {
+                                        onChange={
+                                            selected => {
 
-                                                searchCity(
-                                                    inputValue
+                                                setSelectedCity(
+                                                    selected
+                                                );
+
+
+                                                setFormData(
+                                                    prev => ({
+
+                                                        ...prev,
+
+                                                        city:
+                                                            selected?.value ||
+                                                            ""
+
+                                                    })
                                                 );
 
                                             }
+                                        }
 
-
-                                            return inputValue;
-
-                                        }}
-
-                                        onChange={
-                                            handleCityChange
+                                        onCreateOption={
+                                            handleCreateCity
                                         }
 
                                         styles={
@@ -1584,13 +2132,24 @@ function CreateComplaint() {
 
                                         isClearable
 
-                                        formatCreateLabel={(inputValue) =>
-                                            `Use "${inputValue}"`
+                                        formatCreateLabel={
+                                            inputValue =>
+                                                `Use "${inputValue}"`
                                         }
 
                                     />
 
+
+                                    <div className="field-hint">
+
+                                        Search for a city or type your
+                                        own city and press Enter.
+
+                                    </div>
+
+
                                 </div>
+
 
                             </div>
 
@@ -1598,6 +2157,7 @@ function CreateComplaint() {
                             {/* STREET */}
 
                             <div className="field-group">
+
 
                                 <label htmlFor="street">
 
@@ -1628,6 +2188,8 @@ function CreateComplaint() {
                                         handleChange
                                     }
 
+                                    maxLength="200"
+
                                     required
 
                                 />
@@ -1640,19 +2202,22 @@ function CreateComplaint() {
 
                                 </div>
 
+
                             </div>
+
 
                         </div>
 
 
                         {/* =================================================
-                            IMAGE
+                           IMAGE
                         ================================================= */}
 
                         <div className="form-section">
 
 
                             <div className="section-heading">
+
 
                                 <div className="section-icon image-icon">
                                     📷
@@ -1672,10 +2237,12 @@ function CreateComplaint() {
 
                                 </div>
 
+
                             </div>
 
 
                             <label className="upload-area">
+
 
                                 <input
 
@@ -1691,6 +2258,7 @@ function CreateComplaint() {
 
 
                                 <div className="upload-content">
+
 
                                     <div className="upload-icon">
                                         📸
@@ -1711,18 +2279,22 @@ function CreateComplaint() {
                                         JPG, JPEG, PNG • Maximum 5MB
                                     </small>
 
+
                                 </div>
+
 
                             </label>
 
 
-                            {/* IMAGE PREVIEW */}
+                            {/* PREVIEW */}
 
                             {preview && (
 
                                 <div className="image-preview">
 
+
                                     <div className="preview-header">
+
 
                                         <div>
 
@@ -1753,6 +2325,7 @@ function CreateComplaint() {
 
                                         </button>
 
+
                                     </div>
 
 
@@ -1764,20 +2337,23 @@ function CreateComplaint() {
 
                                     />
 
+
                                 </div>
 
                             )}
+
 
                         </div>
 
 
                         {/* =================================================
-                            SUCCESS
+                           SUCCESS
                         ================================================= */}
 
                         {message && (
 
                             <div className="success-message">
+
 
                                 <div className="success-icon">
                                     ✓
@@ -1790,12 +2366,12 @@ function CreateComplaint() {
                                         Complaint Submitted!
                                     </strong>
 
-
                                     <span>
                                         Redirecting you to your dashboard...
                                     </span>
 
                                 </div>
+
 
                             </div>
 
@@ -1803,21 +2379,25 @@ function CreateComplaint() {
 
 
                         {/* =================================================
-                            SUBMIT
+                           SUBMIT
                         ================================================= */}
 
                         <div className="submit-area">
 
+
                             <div className="submit-note">
+
 
                                 <span>
                                     🔒
                                 </span>
 
+
                                 <p>
                                     Your complaint will be securely
                                     submitted to CivicConnect.
                                 </p>
+
 
                             </div>
 
@@ -1828,9 +2408,12 @@ function CreateComplaint() {
 
                                 className="complaint-button"
 
-                                disabled={loading}
+                                disabled={
+                                    loading
+                                }
 
                             >
+
 
                                 {loading ? (
 
@@ -1856,17 +2439,21 @@ function CreateComplaint() {
 
                                 )}
 
+
                             </button>
+
 
                         </div>
 
+
                     </form>
+
 
                 </div>
 
 
                 {/* =================================================
-                    FOOTER
+                   FOOTER
                 ================================================= */}
 
                 <p className="create-footer">
@@ -1875,7 +2462,9 @@ function CreateComplaint() {
 
                 </p>
 
+
             </div>
+
 
         </div>
 
